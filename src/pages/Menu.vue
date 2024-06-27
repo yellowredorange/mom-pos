@@ -3,35 +3,74 @@
     <q-list bordered padding class="rounded-borders">
       <q-item
         v-for="item in menuItems"
-        :key="item.id"
+        :key="item.menu_id"
         clickable
         @click="addToCart(item)"
       >
+        <q-item-section avatar>
+          <q-img src="https://i.imgur.com/ksUioso.png" />
+        </q-item-section>
+
         <q-item-section>
-          <q-item-label>{{ item.name }}</q-item-label>
+          <q-item-label>{{ item.item_name }}</q-item-label>
+          <q-item-label caption>{{ item.item_description }}</q-item-label>
           <q-item-label caption>{{ item.price }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
+
+    <div class="q-pa-md q-gutter-sm">
+      <q-btn color="primary" label="結帳" @click="goToCart" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
-
-// 引入购物车 store
+import { getMenu } from '@/api/MosPosApi'
+import { Menu } from '@/interfaces/Menu'
+import { Notify } from 'quasar'
 const cartStore = useCartStore()
+const router = useRouter()
+const menuItems = ref<Menu[]>([])
 
-// 菜单项示例
-const menuItems = ref([
-  { id: 1, name: 'Dish 1', price: '$10' },
-  { id: 2, name: 'Dish 2', price: '$12' },
-  // 更多菜單項目
-])
-
-// 添加到购物车函数
-const addToCart = (item: { id: number; name: string; price: string }) => {
+const addToCart = (item: Menu) => {
   cartStore.addToCart(item)
+  Notify.create({
+    message: '已經成功加到購物車了',
+    color: 'positive',
+    position: 'top',
+  })
 }
+
+const goToCart = () => {
+  router.push('/cart')
+}
+
+const fetchMenu = async () => {
+  try {
+    menuItems.value = await getMenu()
+  } catch (error) {
+    console.error('Failed to fetch menu:', error)
+  }
+}
+
+onMounted(fetchMenu)
 </script>
+
+<style scoped>
+.q-list .q-item {
+  margin-bottom: 15px;
+}
+.q-list .q-item-section {
+  display: flex;
+  align-items: center;
+}
+.q-list .q-item-section img {
+  max-width: 60px;
+  max-height: 60px;
+  border-radius: 50%;
+}
+</style>

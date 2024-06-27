@@ -13,7 +13,7 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router) // 使用路由
 app.use(Quasar, {
-  plugins: {}, // import Quasar plugins and add here
+  plugins: { Notify }, // import Quasar plugins and add here
   lang: quasarLang,
 })
 

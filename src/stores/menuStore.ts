@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
 import { getAllMenus,submitOrder } from '../api/MosPosApi';
-import { CreateOrderItem, CreateOrderRequest } from '@/interfaces/Order';
+import { OrderItem, CreateOrderRequest } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
 
 
@@ -154,7 +154,11 @@ export const useMenuStore = defineStore('menu', {
             menuItemId: item.menuItemId,
             quantity: item.quantity,
             unitPrice: item.price,
-            options: item.menuItemOptions ? item.menuItemOptions.map(option => option.option) : []
+            options: item.selectedOptions.map(option => ({
+              optionCategory: option.category,
+              optionName: option.option,
+              additionalPrice: option.additionalPrice
+            }))
           }))
         };
         console.log('Submitting order data:', JSON.stringify(orderData));
@@ -170,7 +174,7 @@ export const useMenuStore = defineStore('menu', {
     },
     async checkout() {
       try {
-        const orderItems: CreateOrderItem[] = this.cart.map(item => ({
+        const orderItems: OrderItem[] = this.cart.map(item => ({
           menuItemId: item.menuItemId,
           quantity: item.quantity,
           unitPrice: item.price,
@@ -180,16 +184,12 @@ export const useMenuStore = defineStore('menu', {
             additionalPrice: opt.additionalPrice
           }))
         }));
-
         const orderRequest: CreateOrderRequest = {
-          items: orderItems,
-          totalAmount: this.cartTotal
+          items: orderItems
         };
-
         const response = await submitOrder(orderRequest);
-        
+
         if (response) {
-          // 清空購物車
           this.cart = [];
           this.orderSuccess = true;
           return response;
@@ -199,6 +199,4 @@ export const useMenuStore = defineStore('menu', {
         this.error = 'Checkout failed. Please try again.';
         throw error;
       }
-    }
-  },
-});
+    }}})

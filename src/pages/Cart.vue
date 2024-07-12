@@ -39,15 +39,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from '../stores/menuStore';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
 const menuStore = useMenuStore();
 const { cart } = storeToRefs(menuStore);
 const cartTotal = computed(() => menuStore.cartTotal);
+const loading = ref(false);
+const $q = useQuasar();
 
 const getMenuItemPhotoUrl = (menuItemId: number) => {
   const menuItem = menuStore.menuItems.find(item => item.menuItemId === menuItemId);
@@ -68,8 +71,22 @@ const decreaseQuantity = (index: number) => {
   }
 };
 
-const checkout = () => {
-  // Implement checkout logic here
-  console.log('Checkout clicked');
+const checkout = async () => {
+  loading.value = true;
+  try {
+    const response = await menuStore.checkout();
+    $q.notify({
+      type: 'positive',
+      message: 'Order placed successfully!'
+    });
+    router.push('/order-history');
+  } catch (error) {
+    $q.notify({
+      type: 'negative',
+      message: 'Failed to place order. Please try again.'
+    });
+  } finally {
+    loading.value = false;
+  }
 };
 </script>

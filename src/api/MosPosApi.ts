@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { AllMenusApiResponse  } from '../interfaces/Menu'
-import { CreateOrderRequest, Order  } from '../interfaces/Order'
+import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API,
@@ -18,7 +18,7 @@ export const getAllMenus = async (): Promise<AllMenusApiResponse>  => {
     throw error;
 }
 }
-export const submitOrder = async (orderData: CreateOrderRequest): Promise<Order> => {
+export const submitOrder = async (orderData: CreateOrderRequest): Promise<OrderResponse> => {
   try {
     const response = await api.post('/Order', orderData);
     return response.data;
@@ -27,9 +27,9 @@ export const submitOrder = async (orderData: CreateOrderRequest): Promise<Order>
     throw error;
   }
 };
-export const getOrderHistory = async (): Promise<Order[]> => {
+export const getOrderHistory = async (): Promise<OrderResponse[]> => {
   try {
-    const response = await api.get<Order[]>('/Order');
+    const response = await api.get<OrderResponse[]>('/Order');
     return response.data;
   } catch (error) {
     console.error('Error fetching order history:', error);

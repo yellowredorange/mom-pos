@@ -22,9 +22,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { getOrderHistory } from '../api/MosPosApi';
-import { Order } from '../interfaces/Order';
+import { OrderResponse } from '../interfaces/Order';
 
-const orders = ref<Order[]>([]);
+const orders = ref<OrderResponse[]>([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
 

@@ -11,32 +11,34 @@ export interface CartItem extends MenuItem {
   totalPrice: number;
 }
 
-export interface CreateOrderItem {
+export interface OrderOption {
+optionCategory: string;
+  optionName: string;}
+
+export interface OrderItem {
   menuItemId: number;
   quantity: number;
-  unitPrice: number;
-  options: CreateOrderItemOption[];
-}
-
-export interface OrderItem extends CreateOrderItem {
-  orderItemId: number;
-  menuItemName : string;
-}
-
-export interface Order {
-  orderId: number;
-  orderDate: string;
-  totalAmount: number;
-  orderItems: OrderItem[];
+  options: OrderOption[];
 }
 
 export interface CreateOrderRequest {
-  items: CreateOrderItem[];
-  totalAmount: number;
+  items: OrderItem[];
 }
 
-export interface CreateOrderItemOption {
-  optionCategory: string;
-  optionName: string;
-  additionalPrice: number;
+//api打回來的order裡的項目
+export interface OrderItemResponse {
+  orderItemId: number;
+  menuItemId: number;
+  menuItemName: string;
+  quantity: number;
+  unitPrice: number;
+  options: string;
 }
+
+export interface OrderResponse {
+  orderId: number;
+  orderDate: string;
+  totalAmount: number;
+  orderItems: OrderItemResponse[];
+}
+

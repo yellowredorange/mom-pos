@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router' // 引入路由
 import './index.css'
-import { Quasar } from 'quasar'
+import { Notify, Quasar } from 'quasar'
 import quasarLang from 'quasar/lang/zh-TW' // 或者其他语言
 import 'quasar/dist/quasar.sass'
 import '@quasar/extras/material-icons/material-icons.css'

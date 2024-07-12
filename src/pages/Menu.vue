@@ -1,76 +1,75 @@
 <template>
-  <div class="q-pa-md">
-    <q-list bordered padding class="rounded-borders">
-      <q-item
-        v-for="item in menuItems"
-        :key="item.menu_id"
-        clickable
-        @click="addToCart(item)"
+  <q-page class="q-pa-md">
+    <div class="q-mb-md">
+      <q-tabs
+        v-model="currentCategory"
+        dense
+        class="text-grey"
+        active-color="primary"
+        indicator-color="primary"
+        align="justify"
+        narrow-indicator
       >
-        <q-item-section avatar>
-          <q-img src="https://i.imgur.com/ksUioso.png" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>{{ item.item_name }}</q-item-label>
-          <q-item-label caption>{{ item.item_description }}</q-item-label>
-          <q-item-label caption>{{ item.price }}</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn color="primary" label="結帳" @click="goToCart" />
+        <q-tab v-for="category in categories" :key="category.categoryId" :name="category.categoryId" :label="category.name" />
+      </q-tabs>
     </div>
-  </div>
+
+    <div class="row q-col-gutter-md">
+      <div v-for="item in currentItems" :key="item.menuItemId" class="col-12 col-sm-6 col-md-4">
+        <q-card class="my-card">
+          <q-img :src="item.photoUrl" />
+
+          <q-card-section>
+            <div class="text-h6">{{ item.name }}</div>
+            <div class="text-subtitle2">{{ item.description }}</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            <div class="text-h5 q-mt-sm q-mb-xs">${{ item.price.toFixed(2) }}</div>
+            <q-btn color="primary" label="Add to Cart" @click="viewDetails(item)" />
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn fab icon="shopping_cart" color="primary" @click="goToCart">
+        <q-badge color="red" floating>{{ cartItemCount }}</q-badge>
+      </q-btn>
+    </q-page-sticky>
+  </q-page>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useCartStore } from '@/stores/cart'
-import { getMenu } from '@/api/MosPosApi'
-import { Menu } from '@/interfaces/Menu'
-import { Notify } from 'quasar'
-const cartStore = useCartStore()
-const router = useRouter()
-const menuItems = ref<Menu[]>([])
+<script lang="ts" setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useMenuStore } from '../stores/menuStore';
 
-const addToCart = (item: Menu) => {
-  cartStore.addToCart(item)
-  Notify.create({
-    message: '已經成功加到購物車了',
-    color: 'positive',
-    position: 'top',
-  })
-}
+const router = useRouter();
+const menuStore = useMenuStore();
+const { categories, cart } = storeToRefs(menuStore);
+const currentCategory = ref<number | null>(null);
+const currentItems = computed(() =>
+  currentCategory.value ? categories.value.find(c => c.categoryId === currentCategory.value)?.menuItems : []
+);
+
+const cartItemCount = computed(() => menuStore.cartItemCount);
+
+onMounted(async () => {
+  if (menuStore.menuConfigurations.length === 0) {
+    await menuStore.fetchAllMenus();
+  }
+  if (categories.value.length > 0) {
+    currentCategory.value = categories.value[0].categoryId;
+  }
+});
+
+const viewDetails = (item: { menuItemId: any; }) => {
+  router.push(`/item/${item.menuItemId}`);
+};
 
 const goToCart = () => {
-  router.push('/cart')
-}
-
-const fetchMenu = async () => {
-  try {
-    menuItems.value = await getMenu()
-  } catch (error) {
-    console.error('Failed to fetch menu:', error)
-  }
-}
-
-onMounted(fetchMenu)
+  router.push('/cart');
+};
 </script>
-
-<style scoped>
-.q-list .q-item {
-  margin-bottom: 15px;
-}
-.q-list .q-item-section {
-  display: flex;
-  align-items: center;
-}
-.q-list .q-item-section img {
-  max-width: 60px;
-  max-height: 60px;
-  border-radius: 50%;
-}
-</style>

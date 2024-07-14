@@ -1,56 +1,69 @@
 <template>
-  <div class="order-history">
-    <h2>Order History</h2>
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="error">{{ error }}</div>
-    <div v-else>
-      <div v-for="order in orders" :key="order.orderId" class="order-item">
-        <h3>Order #{{ order.orderId }}</h3>
-        <p>Date: {{ new Date(order.orderDate).toLocaleString() }}</p>
-        <p>Total: ${{ order.totalAmount.toFixed(2) }}</p>
-        <h4>Items:</h4>
-        <ul>
-          <li v-for="item in order.orderItems" :key="item.orderItemId">
-            {{ item.menuItemName }} - Quantity: {{ item.quantity }} - ${{ item.unitPrice.toFixed(2) }}
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <q-page padding>
+    <h5 class="q-mt-none">Order History</h5>
+    <q-list bordered separator>
+      <q-expansion-item
+        v-for="order in orders"
+        :key="order.orderId"
+        :label="`Order #${order.orderId} - ${formatDate(order.orderDate)}`"
+        :caption="`Total: $${order.totalAmount.toFixed(2)}`"
+        group="orders"
+        header-class="text-primary"
+      >
+        <q-card>
+          <q-card-section>
+            <q-list dense>
+              <q-item v-for="item in order.orderItems" :key="item.orderItemId">
+                <q-item-section>
+                  <q-item-label>
+                    {{ item.quantity }}x {{ item.menuItemName }}
+                    <span v-if="hasValidOptions(item.options)" class="text-grey-8">
+    ({{ formatOptions(item.options) }})</span>
+                  </q-item-label>
+                  <q-item-label caption>
+                    Unit Price: ${{ item.unitPrice.toFixed(2) }}
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  ${{ item.totalPrice.toFixed(2) }}
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
+    </q-list>
+  </q-page>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { getOrderHistory } from '../api/MosPosApi';
+import { useMenuStore } from '../stores/menuStore';
 import { OrderResponse } from '../interfaces/Order';
 
+const menuStore = useMenuStore();
 const orders = ref<OrderResponse[]>([]);
-const loading = ref(true);
-const error = ref<string | null>(null);
 
-const fetchOrderHistory = async () => {
+onMounted(async () => {
   try {
-    orders.value = await getOrderHistory();
-  } catch (err) {
-    error.value = 'Failed to fetch order history';
-    console.error(err);
-  } finally {
-    loading.value = false;
+    orders.value = await menuStore.getAllOrders();
+  } catch (error) {
+    console.error('Failed to fetch orders:', error);
   }
+});
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleString();
 };
 
-onMounted(fetchOrderHistory);
+const hasValidOptions = (options: string[]): boolean => {
+  return options.some(opt => opt.trim() !== '');
+};
+
+const formatOptions = (options: string[]): string => {
+  return options
+    .filter(opt => opt.trim() !== '')
+    .join(', ');
+};
 </script>
-
-<style scoped>
-.order-history {
-  padding: 20px;
-}
-
-.order-item {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-}
-</style>

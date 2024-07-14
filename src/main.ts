@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router' // 引入路由
 import './index.css'
@@ -9,9 +10,10 @@ import 'quasar/dist/quasar.sass'
 import '@quasar/extras/material-icons/material-icons.css'
 import quasarIconSet from 'quasar/icon-set/material-icons'
 
+const pinia=createPinia()
+pinia.use(piniaPluginPersistedstate)
 const app = createApp(App)
-
-app.use(createPinia())
+app.use(pinia)
 app.use(router) // 使用路由
 app.use(Quasar, {
   plugins: { Notify }, // import Quasar plugins and add here

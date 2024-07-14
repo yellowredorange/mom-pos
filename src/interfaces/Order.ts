@@ -32,7 +32,8 @@ export interface OrderItemResponse {
   menuItemName: string;
   quantity: number;
   unitPrice: number;
-  options: string;
+  options: string[];
+  totalPrice:number;
 }
 
 export interface OrderResponse {

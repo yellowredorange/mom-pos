@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
-import { getAllMenus,submitOrder } from '../api/MosPosApi';
-import { OrderItem, CreateOrderRequest } from '@/interfaces/Order';
+import { getAllMenus,getOrderHistory,submitOrder } from '../api/MosPosApi';
+import { OrderItem, CreateOrderRequest, OrderResponse } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
 
 
@@ -144,34 +144,6 @@ export const useMenuStore = defineStore('menu', {
     clearCart() {
       this.cart = [];
     },
-    async submitOrder() {
-      this.loading = true;
-      this.error = null;
-      this.orderSuccess = false;
-      try {
-        const orderData: CreateOrderRequest = {
-          items: this.cart.map(item => ({
-            menuItemId: item.menuItemId,
-            quantity: item.quantity,
-            unitPrice: item.price,
-            options: item.selectedOptions.map(option => ({
-              optionCategory: option.category,
-              optionName: option.option,
-              additionalPrice: option.additionalPrice
-            }))
-          }))
-        };
-        console.log('Submitting order data:', JSON.stringify(orderData));
-        await submitOrder(orderData);
-        this.orderSuccess = true;
-        this.clearCart();
-      } catch (error) {
-        console.error('Error submitting order:', error);
-        this.error = 'Failed to submit order';
-      } finally {
-        this.loading = false;
-      }
-    },
     async checkout() {
       try {
         const orderItems: OrderItem[] = this.cart.map(item => ({
@@ -199,4 +171,41 @@ export const useMenuStore = defineStore('menu', {
         this.error = 'Checkout failed. Please try again.';
         throw error;
       }
-    }}})
+    },
+    async submitOrder() {
+      this.loading = true;
+      this.error = null;
+      this.orderSuccess = false;
+      try {
+        const orderData: CreateOrderRequest = {
+          items: this.cart.map(item => ({
+            menuItemId: item.menuItemId,
+            quantity: item.quantity,
+            unitPrice: item.price,
+            options: item.selectedOptions.filter(option => option.option !== '').map(option => ({
+              optionCategory: option.category,
+              optionName: option.option}))
+          }))
+        };
+        console.log('Submitting order data:', JSON.stringify(orderData));
+        await submitOrder(orderData);
+        this.orderSuccess = true;
+        this.clearCart();
+      } catch (error) {
+        console.error('Error submitting order:', error);
+        this.error = 'Failed to submit order';
+      } finally {
+        this.loading = false;
+      }
+    },
+    async getAllOrders(): Promise<OrderResponse[]>  {
+      try {
+        return await getOrderHistory();
+      } catch (error) {
+        console.error('Error fetching order history:', error);
+        throw error;
+      }
+    }
+  },
+persist:true
+})

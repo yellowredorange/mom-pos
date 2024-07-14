@@ -29,7 +29,7 @@ export const submitOrder = async (orderData: CreateOrderRequest): Promise<OrderR
 };
 export const getOrderHistory = async (): Promise<OrderResponse[]> => {
   try {
-    const response = await api.get<OrderResponse[]>('/Order');
+    const response = await api.get<OrderResponse[]>('/order/history');
     return response.data;
   } catch (error) {
     console.error('Error fetching order history:', error);

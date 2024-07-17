@@ -57,9 +57,7 @@ const currentItems = computed(() =>
 const cartItemCount = computed(() => menuStore.cartItemCount);
 
 onMounted(async () => {
-  if (menuStore.menuConfigurations.length === 0) {
-    await menuStore.fetchAllMenus();
-  }
+  await menuStore.fetchAllMenus();
   if (categories.value.length > 0) {
     currentCategory.value = categories.value[0].categoryId;
   }

@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses:  actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -22,6 +22,11 @@ jobs:
 
       - name: Build project
         run: npm run build -- --mode production
+      - name: List dist directory
+        run: |
+          ls -la dist
+          echo "Dist directory contents:"
+          find dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

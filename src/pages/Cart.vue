@@ -74,7 +74,7 @@ const decreaseQuantity = (index: number) => {
 const checkout = async () => {
   loading.value = true;
   try {
-    const response = await menuStore.checkout();
+    await menuStore.checkout();
     $q.notify({
       type: 'positive',
       message: 'Order placed successfully!'

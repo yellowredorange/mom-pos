@@ -47,7 +47,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from '../stores/menuStore';
-import{SelectedOption,CartItem} from'../interfaces/Order'
+import{SelectedOption} from'../interfaces/Order'
 const route = useRoute();
 const router = useRouter();
 const menuStore = useMenuStore();

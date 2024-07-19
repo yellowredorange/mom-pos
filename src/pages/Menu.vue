@@ -48,7 +48,7 @@ import { useMenuStore } from '../stores/menuStore';
 
 const router = useRouter();
 const menuStore = useMenuStore();
-const { categories, cart } = storeToRefs(menuStore);
+const { categories } = storeToRefs(menuStore);
 const currentCategory = ref<number | null>(null);
 const currentItems = computed(() =>
   currentCategory.value ? categories.value.find(c => c.categoryId === currentCategory.value)?.menuItems : []

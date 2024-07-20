@@ -142,8 +142,8 @@ watch(currentCategory, (newValue) => {
 }
 
 .q-tab {
-  font-size: 1.1rem; /* 增大字體大小 */
-  font-weight: 500; /* 稍微加粗字體 */ /* 增加內邊距 */
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .scroll-indicator {

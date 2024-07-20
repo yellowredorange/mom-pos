@@ -1,6 +1,9 @@
 <template>
   <q-page padding>
     <q-list bordered separator>
+      <div v-if="loading" class="loading-overlay">
+        <q-spinner-dots color="white" size="50px" />
+      </div>
       <q-expansion-item
         v-for="order in orders"
         :key="order.orderId"
@@ -42,12 +45,15 @@ import { OrderResponse } from '../interfaces/Order';
 
 const menuStore = useMenuStore();
 const orders = ref<OrderResponse[]>([]);
-
+const loading = ref(true);
 onMounted(async () => {
   try {
     orders.value = await menuStore.getAllOrders();
   } catch (error) {
     console.error('Failed to fetch orders:', error);
+  }
+  finally{
+    loading.value=false;
   }
 });
 
@@ -78,6 +84,17 @@ const formatOptions = (options: string[]): string => {
 ::v-deep .text-caption{
   font-size: 0.95rem;
 }
-
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 確保遮罩層在最上層 */
+}
 
 </style>

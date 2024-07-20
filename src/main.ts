@@ -11,7 +11,7 @@ import '@quasar/extras/material-icons/material-icons.css'
 import quasarIconSet from 'quasar/icon-set/material-icons'
 import ScrollReveal from 'scrollreveal';
 import '@mdi/font/css/materialdesignicons.min.css'
-
+import '@/global.scss'
 const pinia=createPinia()
 pinia.use(piniaPluginPersistedstate)
 const app = createApp(App)

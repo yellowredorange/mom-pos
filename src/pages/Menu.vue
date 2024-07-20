@@ -1,16 +1,23 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="q-mb-md">
+    <div class="q-mb-md category-tabs-container">
       <q-tabs
         v-model="currentCategory"
         dense
-        class="text-grey"
+        class="text-primary category-tabs"
         active-color="primary"
         indicator-color="primary"
-        align="justify"
-        narrow-indicator
+        inline-label
+        outside-arrows
+        mobile-arrows
       >
-        <q-tab v-for="category in categories" :key="category.categoryId" :name="category.categoryId" :label="category.name" />
+        <q-tab v-for="category in categories" :key="category.categoryId" :name="category.categoryId">
+          <template v-slot:default>
+            <div class="row items-center">
+              {{ category.name }}
+            </div>
+          </template>
+        </q-tab>
       </q-tabs>
     </div>
 
@@ -26,13 +33,13 @@
           :ratio="$q.screen.lt.sm?16/9:4/3"
           class="card-image" />
           <q-card-section class="card-content">
-            <div class="text-h6 ellipsis-2-lines"><strong>{{ item.name }}</strong></div>
+            <div class="item-font ellipsis-2-lines">{{ item.name }}</div>
             <div class="text-subtitle2 ellipsis-2-lines">{{ item.description }}</div>
           </q-card-section>
 
           <q-card-section class="q-pt-none card-footer">
             <div class="row items-center no-wrap q-mt-sm q-mb-xs">
-            <div class="text-h6 col">
+            <div class="price-font col">
               ${{ item.price.toFixed(2) }}</div>
               <div class="col-auto">
               <q-btn color="primary" label="Add to Cart" @click="viewDetails(item)" /></div>
@@ -92,7 +99,7 @@ watch(currentCategory, (newValue) => {
   }
 });
 </script>
-<style scoped>
+<style scoped lang="scss">
 .all-card {
   display: flex;
   flex-direction: column;
@@ -119,10 +126,81 @@ watch(currentCategory, (newValue) => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.category-tabs-container {
+  position: relative;
+  overflow: hidden;
+}
 
+.q-tabs {
+  overflow-x: auto;
+  scrollbar-width: none; /* 對於 Firefox */
+  -ms-overflow-style: none; /* 對於 Internet Explorer 和 Edge */
+}
+
+.q-tabs::-webkit-scrollbar {
+  display: none; /* 對於 Chrome, Safari 和 Opera */
+}
+
+.q-tab {
+  font-size: 1.1rem; /* 增大字體大小 */
+  font-weight: 500; /* 稍微加粗字體 */ /* 增加內邊距 */
+}
+
+.scroll-indicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(to left, white, transparent);
+  padding-left: 20px;
+  pointer-events: none; /* 使指示器不會干擾點擊 */
+}
+@media (min-width: 1024px) {
+  .category-tabs {
+    display: flex;
+  }
+
+  .category-tabs ::v-deep .q-tabs__content {
+    width: 100%;
+  }
+
+  .category-tabs ::v-deep .q-tab {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+}
+.item-font{
+  font-size: 1.3rem;
+  font-weight: 550;
+  color: rgba(0, 0, 0, 0.8);;
+}
+.price-font{
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.8);;
+}
 @media (max-width: 599px) {
   .card-image {
     max-height: 6.25rem;
   }
+
+  .text-h6 {
+    font-size: 1.25rem ; /* 增大標題字體 */
+  }
+
+  .text-subtitle2 {
+    font-size: 1.1rem !important; /* 增大副標題字體 */
+  }
+
+  .q-card-section {
+    padding: 12px !important; /* 減少卡片內部填充，為更大的字體騰出空間 */
+  }
+
+  .q-btn {
+    font-size: 0.9rem;
+    padding: 0.5em 1em; 
+  }
+
 }
+
+
 </style>

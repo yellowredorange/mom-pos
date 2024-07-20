@@ -7,6 +7,7 @@
       dense
       class="absolute-top-left q-ma-md"
       @click="goBack"
+      style="z-index: 999;"
     />
     <div class="column items-center" style="width: 100%; max-width: 600px;">
       <div class="full-width flex justify-center q-mb-md">
@@ -33,7 +34,7 @@
       <div class="q-mt-md">
         <q-btn-group>
           <q-btn icon="remove" @click="decreaseQuantity" />
-          <q-btn :label="quantity" />
+          <q-btn style="font-size: 1.25rem;" :label="quantity" />
           <q-btn icon="add" @click="increaseQuantity" />
         </q-btn-group>
       </div>
@@ -55,9 +56,9 @@
         </div>
       </div>
 
-      <q-btn color="primary" class="q-mt-md q-px-xl" label="Add to Cart" @click="addToCart" />
+      <q-btn color="primary" class="q-mt-md q-px-xl" label="Add to Cart" @click="addToCart" style="font-size: 1.1rem;"/>
 
-      <div class="text-body1 q-mt-md text-center">{{ currentMenuItem.description }}</div>
+      <div class="text-h6 q-mt-md text-center">{{ currentMenuItem.description }}</div>
     </div>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
@@ -174,3 +175,6 @@ const totalPrice = computed(() => {
   return price * quantity.value;
 });
 </script>
+<style scoped lang="scss">
+
+</style>

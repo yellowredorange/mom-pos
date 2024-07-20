@@ -1,11 +1,10 @@
 <template>
   <div class="home container mx-auto px-4 py-8">
     <div class="flex flex-col items-center">
-      <div class="h-4"></div>
       <div class="logo-container mb-8 scroll-reveal">
         <img src="@/assets/MomPosMainPage.webp" alt="MOM POS Logo" class="logo max-w-full h-auto" loading="lazy">
       </div>
-      <h1 class="text-3xl font-bold text-center mb-2 scroll-reveal">歡迎使用 MomPos</h1>
+      <h1 class="text-3xl font-bold text-center mb-4 scroll-reveal">歡迎使用 MomPos</h1>
       <section class="text-center max-w-2xl mx-auto mb-8 scroll-reveal">
         <h2 class="text-xl font-semibold mb-2 scroll-reveal primary-color" >最貼心的點餐 Pos 神器</h2>
         <p class="mb-4">
@@ -13,7 +12,7 @@
         </p>
         <v-typical
     class="blink text-lg font-semibold mb-2"
-    :steps="[' 連我媽都說', 1000, ' 連我媽都說好用的', 500, ' 連我媽都說好用的 Pos 系統', 1000,' 連我媽都說好用的 Pos 系統👍',500]"
+    :steps="[' 媽媽都說', 1000, ' 媽媽都說好用的', 500, ' 媽媽都說好用的 Pos 系統', 1000,' 媽媽都說好用的 Pos 系統👍',500]"
     :loop="2"
     :wrapper="'h2'"
   ></v-typical>
@@ -37,7 +36,7 @@ export default defineComponent({
   setup() {
     onMounted(async () => {
       ScrollReveal().reveal('.scroll-reveal', {
-        delay: 0,
+        delay: 200,
         distance: '15px',
         origin: 'bottom',
         duration: 1000,
@@ -81,5 +80,15 @@ export default defineComponent({
   text-decoration: none;
   border-radius: 5px;
   margin-top: 0px;
+}
+p {
+  font-size: 1.25rem; // Adjust font size for better readability
+  line-height: 1.6;
+}
+h1 {
+  font-size: 2.5rem; // Increase font size for h1
+}
+h2 {
+  font-size: 1.5rem; // Increase font size for h2
 }
 </style>

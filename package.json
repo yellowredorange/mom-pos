@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@quasar/extras": "^1.16.11",
     "axios": "^1.7.2",
     "pinia": "^2.1.7",

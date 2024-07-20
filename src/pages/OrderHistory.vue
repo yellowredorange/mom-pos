@@ -1,6 +1,5 @@
 <template>
   <q-page padding>
-    <h5 class="q-mt-none">Order History</h5>
     <q-list bordered separator>
       <q-expansion-item
         v-for="order in orders"
@@ -8,7 +7,7 @@
         :label="`Order #${order.orderId} - ${formatDate(order.orderDate)}`"
         :caption="`Total: $${order.totalAmount.toFixed(2)}`"
         group="orders"
-        header-class="text-primary"
+        header-class="order-header"
       >
         <q-card>
           <q-card-section>
@@ -67,3 +66,18 @@ const formatOptions = (options: string[]): string => {
     .join(', ');
 };
 </script>
+<style lang="scss" scoped>
+::v-deep .order-header{
+  font-size: 1rem ;
+  color: $primary;
+}
+.q-item__label{
+  font-size: 0.95rem;
+}
+
+::v-deep .text-caption{
+  font-size: 0.95rem;
+}
+
+
+</style>

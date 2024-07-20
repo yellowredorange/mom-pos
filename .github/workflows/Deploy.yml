@@ -28,6 +28,9 @@ jobs:
           echo "Dist directory contents:"
           find dist
 
+      - name: Add CNAME file to dist
+        run: echo 'mompos.yellowredorange.com' > ./dist/CNAME
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

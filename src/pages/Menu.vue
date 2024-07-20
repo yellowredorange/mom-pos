@@ -16,17 +16,27 @@
 
     <div class="row q-col-gutter-md">
       <div v-for="item in currentItems" :key="item.menuItemId" class="col-12 col-sm-6 col-md-4">
-        <q-card class="my-card">
-          <q-img :src="item.photoUrl" />
-
-          <q-card-section>
-            <div class="text-h6">{{ item.name }}</div>
-            <div class="text-subtitle2">{{ item.description }}</div>
+        <q-card class="all-card">
+          <q-img
+            v-if="item.photoUrl && item.photoUrl !== ''"
+            :src="item.photoUrl"
+            :ratio="$q.screen.lt.sm?16/9:4/3"
+            class="card-image" />
+          <q-img v-else src="../assets/DefaultItemImage.webp"
+          :ratio="$q.screen.lt.sm?16/9:4/3"
+          class="card-image" />
+          <q-card-section class="card-content">
+            <div class="text-h6 ellipsis-2-lines"><strong>{{ item.name }}</strong></div>
+            <div class="text-subtitle2 ellipsis-2-lines">{{ item.description }}</div>
           </q-card-section>
 
-          <q-card-section class="q-pt-none">
-            <div class="text-h5 q-mt-sm q-mb-xs">${{ item.price.toFixed(2) }}</div>
-            <q-btn color="primary" label="Add to Cart" @click="viewDetails(item)" />
+          <q-card-section class="q-pt-none card-footer">
+            <div class="row items-center no-wrap q-mt-sm q-mb-xs">
+            <div class="text-h6 col">
+              ${{ item.price.toFixed(2) }}</div>
+              <div class="col-auto">
+              <q-btn color="primary" label="Add to Cart" @click="viewDetails(item)" /></div>
+              </div>
           </q-card-section>
         </q-card>
       </div>
@@ -41,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from '../stores/menuStore';
@@ -49,7 +59,10 @@ import { useMenuStore } from '../stores/menuStore';
 const router = useRouter();
 const menuStore = useMenuStore();
 const { categories } = storeToRefs(menuStore);
-const currentCategory = ref<number | null>(null);
+const currentCategory = computed({
+  get: () => menuStore.currentCategory?.categoryId || null,
+  set: (value: number | null) => menuStore.setCurrentCategory(value)
+});
 const currentItems = computed(() =>
   currentCategory.value ? categories.value.find(c => c.categoryId === currentCategory.value)?.menuItems : []
 );
@@ -57,8 +70,10 @@ const currentItems = computed(() =>
 const cartItemCount = computed(() => menuStore.cartItemCount);
 
 onMounted(async () => {
-  await menuStore.fetchAllMenus();
-  if (categories.value.length > 0) {
+  await menuStore.checkMenuUpdate();
+  if (menuStore.lastSelectedCategory !== null) {
+    currentCategory.value = menuStore.lastSelectedCategory;
+  } else if (categories.value.length > 0) {
     currentCategory.value = categories.value[0].categoryId;
   }
 });
@@ -70,4 +85,44 @@ const viewDetails = (item: { menuItemId: any; }) => {
 const goToCart = () => {
   router.push('/cart');
 };
+
+watch(currentCategory, (newValue) => {
+  if (newValue !== null) {
+    menuStore.lastSelectedCategory = newValue;
+  }
+});
 </script>
+<style scoped>
+.all-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-image {
+  max-height: 18.75rem;
+  object-fit: cover;
+}
+
+.card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-footer {
+  margin-top: auto;
+}
+
+.ellipsis-2-lines {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 599px) {
+  .card-image {
+    max-height: 6.25rem;
+  }
+}
+</style>

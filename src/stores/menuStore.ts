@@ -16,6 +16,7 @@ interface MenuState {
   error: string | null;
   orderSuccess: boolean;
   lastSelectedCategory: number | null;
+  lastChecked: number | null;
 }
 
 export const useMenuStore = defineStore('menu', {
@@ -29,7 +30,8 @@ export const useMenuStore = defineStore('menu', {
     loading: false,
     error: null,
     orderSuccess: false,
-    lastSelectedCategory: null
+    lastSelectedCategory: null as number | null,
+    lastChecked: null as number | null,
   }),
 
   getters: {
@@ -48,6 +50,14 @@ export const useMenuStore = defineStore('menu', {
   },
 
   actions: {
+    async checkMenuUpdate() {
+      const now = Date.now();
+      if (this.lastChecked && now - this.lastChecked < 24 *60 * 60 * 1000) {
+        return;
+      }
+      await this.fetchAllMenus();
+      this.lastChecked = now;
+    },
     async fetchAllMenus() {
       this.loading = true;
       this.error = null;
@@ -71,10 +81,16 @@ export const useMenuStore = defineStore('menu', {
         this.setCurrentCategory(menuConfiguration.categories[0]);
       }
     },
-
-    setCurrentCategory(category: Category) {
-      this.currentCategory = category;
-      this.menuItems = category.menuItems;
+    setCurrentCategory(category: Category | number | null) {
+      if (typeof category === 'number') {
+        this.currentCategory = this.categories.find(c => c.categoryId === category) || null;
+      } else {
+        this.currentCategory = category;
+      }
+      if (this.currentCategory) {
+        this.menuItems = this.currentCategory.menuItems;
+        this.lastSelectedCategory = this.currentCategory.categoryId;
+      }
     },
 
     setCurrentMenuItem(itemId: number) {
@@ -205,7 +221,8 @@ export const useMenuStore = defineStore('menu', {
         console.error('Error fetching order history:', error);
         throw error;
       }
-    }
+    },
+    
   },
 persist:true
 })

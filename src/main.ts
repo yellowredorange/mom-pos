@@ -14,6 +14,9 @@ const pinia=createPinia()
 pinia.use(piniaPluginPersistedstate)
 const app = createApp(App)
 app.use(pinia)
+router.afterEach(() => {
+  window.scrollTo(0, 0);
+})
 app.use(router)
 app.use(ScrollReveal)
 app.use(Quasar, {

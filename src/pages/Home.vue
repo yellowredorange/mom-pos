@@ -3,7 +3,7 @@
     <div class="flex flex-col items-center">
       <div class="h-4"></div>
       <div class="logo-container mb-8 scroll-reveal">
-        <img src="../assets/MomPosMainPage.png" alt="MOM POS Logo" class="logo max-w-full h-auto">
+        <img src="@/assets/MomPosMainPage.webp" alt="MOM POS Logo" class="logo max-w-full h-auto" loading="lazy">
       </div>
       <h1 class="text-3xl font-bold text-center mb-2 scroll-reveal">歡迎使用 MomPos</h1>
       <section class="text-center max-w-2xl mx-auto mb-8 scroll-reveal">
@@ -30,19 +30,23 @@
 import { defineComponent, onMounted } from 'vue';
 import ScrollReveal from 'scrollreveal';
 import VTypical from 'vue-typical';
-
+import { useMenuStore } from '@/stores/menuStore';
+const menuStore = useMenuStore();
 export default defineComponent({
   name: 'Home',
   setup() {
-    onMounted(() => {
+    onMounted(async () => {
       ScrollReveal().reveal('.scroll-reveal', {
-        delay: 200,
+        delay: 0,
         distance: '15px',
         origin: 'bottom',
         duration: 1000,
         easing: 'ease-in-out',
-        interval: 100
+        interval: 100,
+        opacity: 0,
+        scale: 1
       });
+      await menuStore.fetchAllMenus()
     });
   },
   components: {
@@ -51,6 +55,18 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.scroll-reveal {
+  visibility: hidden;
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height:50vh;
+  width: 100%;
+  max-width: 50vh; // 16:9 aspect ratio (height/width * 100%)
+}
 .logo {
   max-width: 50vh;
 }

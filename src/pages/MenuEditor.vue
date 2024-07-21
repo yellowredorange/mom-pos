@@ -5,10 +5,10 @@
       <div class="flex items-center mb-2">
         <div class="w-1/12 drag-handle" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
           <div class="text-sm font-medium">Index</div>
-          <q-input 
-            v-model.number="category.sortOrder" 
-            type="number" 
-            dense 
+          <q-input
+            v-model.number="category.sortOrder"
+            type="number"
+            dense
             @change="updateCategorySortOrder(category, categoryIndex)"
           />
         </div>
@@ -18,9 +18,9 @@
         </div>
       </div>
       <q-list bordered separator>
-        <draggable 
-          v-model="category.menuItems" 
-          group="menuItems" 
+        <draggable
+          v-model="category.menuItems"
+          group="menuItems"
           @change="updateItemSortOrder(category)"
           item-key="menuItemId"
           handle=".drag-handle"
@@ -48,8 +48,8 @@
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
-                <q-toggle 
-                  v-model="element.isActive" 
+                <q-toggle
+                  v-model="element.isActive"
                   @update:model-value="updateMenuItem(element)"
                 >
                   <q-tooltip>Toggle item availability</q-tooltip>
@@ -90,7 +90,7 @@
           <div v-else>
             <q-btn color="primary" label="Upload Image" @click="openImageUpload" class="q-mt-sm" />
           </div>
-          
+
           <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" style="display: none;" />
         </q-card-section>
 
@@ -101,38 +101,18 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="cropperDialog">
-      <q-card style="min-width: 300px">
-        <q-card-section>
-          <vue-picture-cropper
-            :boxStyle="{
-              width: '100%',
-              height: '300px',
-              backgroundColor: '#f7f7f7',
-              margin: 'auto'
-            }"
-            :img="cropperImg"
-            :options="{
-              viewMode: 1,
-              dragMode: 'crop',
-              aspectRatio: 1,
-              cropBoxResizable: false,
-            }"
-            @cropper-init="cropperInit"
-          />
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn label="Confirm" color="secondary" @click="confirmCrop" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <EditPhotoFrame
+    v-model="cropperDialogOpen"
+    :photo="cropperImg"
+    @cropped-image="handleCroppedImage"
+    @clear-photo="clearPhoto"
+  />
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn 
+      <q-btn
         fab
-        icon="save" 
-        color="secondary" 
+        icon="save"
+        color="secondary"
         @click="saveAllChanges"
         :disable="!hasChanges"
         size="lg"
@@ -144,31 +124,32 @@
 </template>
 
 <script lang="ts" setup>
-import { uploadToImgur } from '../api/ImgurApi';
 import { ref, computed, nextTick } from 'vue';
 import { useMenuStore } from '../stores/menuStore';
 import { MenuItem, Category } from '../interfaces/Menu';
 import draggable from 'vuedraggable';
 import { useQuasar } from 'quasar';
-import VuePictureCropper from 'vue-picture-cropper';
 import { onBeforeRouteLeave } from 'vue-router';
+import EditPhotoFrame from '@/components/EditPhotoFrame.vue';
+import { uploadImage } from '../api/MosPosApi';
 
 const $q = useQuasar();
 const menuStore = useMenuStore();
 const categories = computed(() => menuStore.categories);
 
 const editDialog = ref(false);
-const cropperDialog = ref(false);
 const editedItem = ref<MenuItem>({} as MenuItem);
 const isNewItem = ref(false);
 const isSaving = ref(false);
 const changedCategories = ref<Set<number>>(new Set());
 const changedItems = ref<Set<number>>(new Set());
+
+const cropperDialogOpen = ref(false);
 const cropperImg = ref('');
-const cropper = ref(null);
+const tempImageUrl = ref('');
+
 const fileInput = ref<HTMLInputElement | null>(null);
 const hasChanges = computed(() => changedCategories.value.size > 0 || changedItems.value.size > 0);
-const croppedImageBlob = ref<Blob | null>(null);
 
 const touchStartY = ref(0);
 const touchEndY = ref(0);
@@ -224,10 +205,6 @@ const addMenuItem = (category: Category) => {
   editDialog.value = true;
 };
 
-const cropperInit = (cropperInstance: any) => {
-  cropper.value = cropperInstance;
-};
-
 const openImageUpload = () => {
   fileInput.value?.click();
 };
@@ -239,68 +216,73 @@ const handleFileChange = (e: Event) => {
     const reader = new FileReader();
     reader.onload = (event: ProgressEvent<FileReader>) => {
       cropperImg.value = event.target?.result as string;
-      cropperDialog.value = true;
+      cropperDialogOpen.value = true;
     };
     reader.readAsDataURL(file);
   }
 };
-
-const confirmCrop = () => {
-  if (cropper.value) {
-    // cropper.value.getCroppedCanvas().toBlob((blob: Blob) => {
-    //   croppedImageBlob.value = blob;
-    //   editedItem.value.photoUrl = URL.createObjectURL(blob);
-    //   cropperDialog.value = false;
-    // });
-  }
-};
-
-const uploadImage = async () => {
-  if (croppedImageBlob.value) {
-    try {
-      const imageUrl = await uploadToImgur(croppedImageBlob.value);
-      editedItem.value.photoUrl = imageUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      $q.notify({
-        color: 'negative',
-        message: 'Failed to upload image. Please try again.'
-      });
-    }
-  }
-};
-
-const saveMenuItem = async () => {
+const handleCroppedImage = async (imageBlob: Blob) => {
   try {
-    isSaving.value = true;
-    await uploadImage();
-    if (isNewItem.value) {
-      await menuStore.addMenuItem(editedItem.value);
-    } else {
-      await menuStore.updateMenuItem(editedItem.value);
-    }
-    changedItems.value.add(editedItem.value.menuItemId);
-    $q.notify({
-      color: 'positive',
-      message: 'Item saved successfully'
-    });
-    editDialog.value = false;
+    const file = new File([imageBlob], 'image.webp', { type: 'image/webp' });
+    const imageUrl = await uploadImage(file);
+    tempImageUrl.value = imageUrl;
+    editedItem.value.photoUrl = imageUrl;
+    cropperDialogOpen.value = false;
   } catch (error) {
-    console.error('Error saving menu item:', error);
+    console.error('Error uploading image:', error);
     $q.notify({
       color: 'negative',
-      message: 'Failed to save item. Please try again.'
+      message: 'Failed to upload image. Please try again.'
     });
-  } finally {
-    isSaving.value = false;
-    resetEditedItem();
   }
 };
+const clearPhoto = () => {
+  if (fileInput.value) {
+    fileInput.value.value = '';
+  }
+};
+const saveMenuItem = async () => {
+  // try {
+  //   isSaving.value = true;
+
+  //   if (tempImageUrl.value) {
+  //     editedItem.value.photoUrl = tempImageUrl.value;
+  //   }
+
+  //   let savedItem: MenuItem;
+  //   if (isNewItem.value) {
+  //     savedItem = await addMenuItem(editedItem.value);
+  //   } else {
+  //     savedItem = await updateMenuItem(editedItem.value.menuItemId, editedItem.value);
+  //   }
+
+  //   // 更新本地數據
+  //   Object.assign(editedItem.value, savedItem);
+  //   changedItems.value.add(savedItem.menuItemId);
+  //   tempImageUrl.value = ''; // 清除臨時URL
+
+  //   $q.notify({
+  //     color: 'positive',
+  //     message: 'Item saved successfully'
+  //   });
+  //   editDialog.value = false;
+  // } catch (error) {
+  //   console.error('Error saving menu item:', error);
+  //   $q.notify({
+  //     color: 'negative',
+  //     message: 'Failed to save item. Please try again.'
+  //   });
+  // } finally {
+  //   isSaving.value = false;
+  //   resetEditedItem();
+  // }
+};
+
 
 const resetEditedItem = () => {
   editedItem.value = {} as MenuItem;
   cropperImg.value = '';
-  croppedImageBlob.value = null;
+  tempImageUrl.value = '';
   if (fileInput.value) {
     fileInput.value.value = '';
   }
@@ -313,13 +295,13 @@ const markCategoryAsChanged = (category: Category) => {
 const updateCategorySortOrder = async (category: Category, index: number) => {
   const maxSortOrder = categories.value.length;
   category.sortOrder = Math.max(1, Math.min(category.sortOrder, maxSortOrder));
-  
+
   if (category.sortOrder !== index + 1) {
     const oldIndex = index;
     const newIndex = category.sortOrder - 1;
     const categoryToMove = categories.value.splice(oldIndex, 1)[0];
     categories.value.splice(newIndex, 0, categoryToMove);
-    
+
     categories.value.forEach((cat, idx) => {
       cat.sortOrder = idx + 1;
       changedCategories.value.add(cat.categoryId);
@@ -396,7 +378,6 @@ onBeforeRouteLeave((to, from, next) => {
 
 <style scoped>
 .menu-editor {
-  height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
 }

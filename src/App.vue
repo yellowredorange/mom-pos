@@ -33,7 +33,7 @@
           />
           <q-route-tab
             to="/menu-editor"
-            :label="$q.screen.gt.xs ? 'Menu Editor' : ''"
+            :label="$q.screen.gt.xs ? 'Editor' : ''"
             icon="edit"
           />
         </q-tabs>

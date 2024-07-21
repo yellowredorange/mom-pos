@@ -36,3 +36,6 @@ export interface MenuConfiguration {
 
 export type AllMenusApiResponse = MenuConfiguration[];
 
+export type UploadImageResponse= {
+  imageUrl: string;
+}

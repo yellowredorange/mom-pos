@@ -25,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/order-history',
     name: 'OrderHistory',
     component:() => import('../pages/OrderHistory.vue')
+  },
+  {
+    path: '/menu-editor',
+    name: 'MenuEditor',
+    component: () => import('../pages/MenuEditor.vue')
   }
   // 可以根據需要添加更多路由
 ]

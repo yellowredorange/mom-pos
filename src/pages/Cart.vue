@@ -98,7 +98,7 @@ const checkout = async () => {
     $q.notify({
       color: 'secondary',
       message: 'Order placed successfully!',
-      position: 'top',
+      position: 'bottom',
       timeout: 2000
     });
     router.push('/order-history');

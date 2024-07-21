@@ -23,7 +23,7 @@
 
     <div class="row q-col-gutter-md">
       <div v-for="item in currentItems" :key="item.menuItemId" class="col-12 col-sm-6 col-md-4">
-        <q-card class="all-card">
+        <q-card class="all-card" @click="viewDetails(item)">
           <q-img
             v-if="item.photoUrl && item.photoUrl !== ''"
             :src="item.photoUrl"
@@ -104,6 +104,7 @@ watch(currentCategory, (newValue) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  cursor: pointer;
 }
 
 .card-image {

@@ -17,8 +17,11 @@
     "quasar": "^2.16.4",
     "scrollreveal": "^4.0.9",
     "vue": "^3.4.21",
+    "vue-picture-cropper": "^0.7.0",
+    "vue-picture-input": "^3.0.1",
     "vue-router": "^4.1.0",
-    "vue-typical": "^2.1.0"
+    "vue-typical": "^2.1.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.5.0",

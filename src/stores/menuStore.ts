@@ -222,6 +222,18 @@ export const useMenuStore = defineStore('menu', {
         throw error;
       }
     },
+    async addMenuItem(menuItem: MenuItem) {
+      // 實現添加菜單項的邏輯
+    },
+    async updateMenuItem(menuItem: MenuItem) {
+      // 實現更新菜單項的邏輯
+    },
+    async updateCategory(category: Category) {
+      // 實現更新類別的邏輯
+    },
+    async updateCategorySortOrder(category: Category) {
+      // 實現更新類別排序的邏輯
+    }
     
   },
 persist:true

@@ -31,6 +31,11 @@
             :label="$q.screen.gt.xs ? 'History' : ''"
             icon="history"
           />
+          <q-route-tab
+            to="/menu-editor"
+            :label="$q.screen.gt.xs ? 'Menu Editor' : ''"
+            icon="edit"
+          />
         </q-tabs>
       </q-toolbar>
     </q-header>

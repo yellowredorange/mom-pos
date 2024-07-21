@@ -4,7 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router' // 引入路由
 import './index.css'
-import { Notify, Quasar } from 'quasar'
+import { Dialog, Notify, Quasar } from 'quasar'
 import quasarLang from 'quasar/lang/zh-TW' // 或者其他语言
 import 'quasar/dist/quasar.sass'
 import '@quasar/extras/material-icons/material-icons.css'
@@ -22,7 +22,7 @@ router.afterEach(() => {
 app.use(router)
 app.use(ScrollReveal)
 app.use(Quasar, {
-  plugins: { Notify },
+  plugins: { Notify,Dialog },
   lang: quasarLang,
   iconSet:quasarIconSet,
   config: {

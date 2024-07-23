@@ -10,7 +10,7 @@
           maxWidth: '500px',
           maxHeight: '500px',
         }"
-        :img="photo"
+        :img="props.photo"
         :options="{
           viewMode: 1,
           dragMode: 'move',

@@ -154,7 +154,7 @@ watch(currentCategory, (newValue) => {
   transform: translateY(-50%);
   background: linear-gradient(to left, white, transparent);
   padding-left: 20px;
-  pointer-events: none; /* 使指示器不會干擾點擊 */
+  pointer-events: none;
 }
 @media (min-width: 1024px) {
   .category-tabs {
@@ -185,15 +185,15 @@ watch(currentCategory, (newValue) => {
   }
 
   .text-h6 {
-    font-size: 1.25rem ; /* 增大標題字體 */
+    font-size: 1.25rem ;
   }
 
   .text-subtitle2 {
-    font-size: 1.1rem !important; /* 增大副標題字體 */
+    font-size: 1.1rem !important;
   }
 
   .q-card-section {
-    padding: 12px !important; /* 減少卡片內部填充，為更大的字體騰出空間 */
+    padding: 12px !important;
   }
 
   .q-btn {

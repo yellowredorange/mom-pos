@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AllMenusApiResponse,MenuItem,UploadImageResponse  } from '../interfaces/Menu'
+import { AllMenusApiResponse,Category,MenuItem,UploadImageResponse  } from '../interfaces/Menu'
 import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
 
 const api = axios.create({
@@ -74,3 +74,24 @@ export const addMenuItem = async (menuItemData: Omit<MenuItem, 'menuItemId'>): P
     throw error;
   }
 };
+
+export const removeMenuItem = async (menuItemId:number): Promise<number> => {
+  try {
+    const response = await api.delete(`/MenuItem/${menuItemId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding menu item:', error);
+    throw error;
+  }
+};
+
+export const updateCategory = async (categoryId: number, categoryData: Partial<Category>): Promise<Category> => {
+  try {
+    const response = await api.put<Category>(`/Category/${categoryId}`, categoryData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating category:', error);
+    throw error;
+  }
+};
+

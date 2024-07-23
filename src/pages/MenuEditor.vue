@@ -48,13 +48,17 @@
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
+                <div>
                 <q-toggle
                   v-model="element.isActive"
                   @update:model-value="updateMenuItem(element)"
                 >
                   <q-tooltip>Toggle item availability</q-tooltip>
                 </q-toggle>
-                <q-btn color="primary" label="Edit" @click="editMenuItem(element)" class="text-base" />
+                <q-btn flat round color="primary" icon="close" @click="confirmRemove(element)">
+  <q-tooltip>Delete item</q-tooltip>
+</q-btn></div>
+                <q-btn color="primary" label="Edit" @click="editMenuItem(element)" class="text-base" style="margin-right: 1rem" />
               </q-item-section>
             </q-item>
           </template>
@@ -108,7 +112,7 @@
     @clear-photo="clearPhoto"
   />
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[18, 50]">
       <q-btn
         fab
         icon="save"
@@ -124,7 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, onMounted } from 'vue';
 import { useMenuStore } from '../stores/menuStore';
 import { MenuItem, Category } from '../interfaces/Menu';
 import draggable from 'vuedraggable';
@@ -156,6 +160,16 @@ const touchEndY = ref(0);
 const isSwiping = ref(false);
 const swipeThreshold = 10; // pixels
 
+
+onMounted(async () => {
+  try {
+    await menuStore.fetchAllMenus();
+  } catch (error) {
+    console.error('Failed to fetch orders:', error);
+  }
+});
+
+
 const handleTouchStart = (event: TouchEvent) => {
   touchStartY.value = event.touches[0].clientY;
 };
@@ -169,26 +183,59 @@ const handleTouchMove = (event: TouchEvent) => {
   }
 
   if (isSwiping.value) {
-    // Allow page scrolling
     event.stopPropagation();
   }
 };
 
 const handleTouchEnd = (event: TouchEvent) => {
   if (!isSwiping.value) {
-    // If not swiping, treat as a click event
     const input = event.target as HTMLInputElement;
     input.focus();
   }
   isSwiping.value = false;
 };
 
+const confirmRemove = (item: MenuItem) => {
+  $q.dialog({
+    title: 'Confirm Deletion',
+    message: `Are you sure you want to delete "${item.name}"?`,
+    persistent: true,
+    ok: {
+      push: true,
+      color: 'negative',
+      label: 'Delete'
+    },
+    cancel: {
+      push: true,
+      color: 'white',
+      textColor: 'black',
+      label: 'Cancel'
+    }
+  }).onOk(() => {
+    removeMenuItem(item);
+  });
+};
+const removeMenuItem = async (item: MenuItem) => {
+  try {
+    await menuStore.removeMenuItem(item);
+    await nextTick();
+    $q.notify({
+      color: 'positive',
+      message: 'Item removed successfully'
+    });
+  } catch (error) {
+    console.error('Error removing menu item:', error);
+    $q.notify({
+      color: 'negative',
+      message: 'Failed to remove item. Please try again.'
+    });
+  }
+};
 const editMenuItem = (item: MenuItem) => {
-  editedItem.value = { ...item };
+  editedItem.value = { ...item, categoryId: item.categoryId };
   isNewItem.value = false;
   editDialog.value = true;
 };
-
 const addMenuItem = (category: Category) => {
   editedItem.value = {
     menuItemId: 0,
@@ -223,6 +270,7 @@ const handleFileChange = (e: Event) => {
 };
 const handleCroppedImage = async (imageBlob: Blob) => {
   try {
+    isSaving.value=true;
     const file = new File([imageBlob], 'image.webp', { type: 'image/webp' });
     const imageUrl = await uploadImage(file);
     tempImageUrl.value = imageUrl;
@@ -235,6 +283,9 @@ const handleCroppedImage = async (imageBlob: Blob) => {
       message: 'Failed to upload image. Please try again.'
     });
   }
+  finally{
+    isSaving.value=false;
+  }
 };
 const clearPhoto = () => {
   if (fileInput.value) {
@@ -242,40 +293,39 @@ const clearPhoto = () => {
   }
 };
 const saveMenuItem = async () => {
-  // try {
-  //   isSaving.value = true;
+  try {
+    isSaving.value = true;
 
-  //   if (tempImageUrl.value) {
-  //     editedItem.value.photoUrl = tempImageUrl.value;
-  //   }
+    if (tempImageUrl.value) {
+      editedItem.value.photoUrl = tempImageUrl.value;
+    }
 
-  //   let savedItem: MenuItem;
-  //   if (isNewItem.value) {
-  //     savedItem = await addMenuItem(editedItem.value);
-  //   } else {
-  //     savedItem = await updateMenuItem(editedItem.value.menuItemId, editedItem.value);
-  //   }
+    console.log('Saving item with categoryId:', editedItem.value.categoryId);
+    console.log('Edited item:', editedItem.value);
 
-  //   // 更新本地數據
-  //   Object.assign(editedItem.value, savedItem);
-  //   changedItems.value.add(savedItem.menuItemId);
-  //   tempImageUrl.value = ''; // 清除臨時URL
-
-  //   $q.notify({
-  //     color: 'positive',
-  //     message: 'Item saved successfully'
-  //   });
-  //   editDialog.value = false;
-  // } catch (error) {
-  //   console.error('Error saving menu item:', error);
-  //   $q.notify({
-  //     color: 'negative',
-  //     message: 'Failed to save item. Please try again.'
-  //   });
-  // } finally {
-  //   isSaving.value = false;
-  //   resetEditedItem();
-  // }
+    let savedItem: MenuItem;
+    if (isNewItem.value) {
+      savedItem = await menuStore.addMenuItem(editedItem.value);
+    } else {
+      savedItem = await menuStore.updateMenuItem(editedItem.value);
+    }
+    Object.assign(editedItem.value, savedItem);
+    tempImageUrl.value = '';
+    $q.notify({
+      color: 'positive',
+      message: 'Item saved successfully'
+    });
+    editDialog.value = false;
+  } catch (error) {
+    console.error('Error saving menu item:', error);
+    $q.notify({
+      color: 'negative',
+      message: 'Failed to save item. Please try again.'
+    });
+  } finally {
+    isSaving.value = false;
+    resetEditedItem();
+  }
 };
 
 
@@ -357,7 +407,7 @@ const saveAllChanges = async () => {
   }
 };
 
-onBeforeRouteLeave((to, from, next) => {
+onBeforeRouteLeave((_to, _from, next) => {
   if (hasChanges.value) {
     $q.dialog({
       title: 'Unsaved Changes',

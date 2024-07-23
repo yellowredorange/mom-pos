@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
-import { getAllMenus,getOrderHistory,submitOrder } from '../api/MosPosApi';
+import { addMenuItem, getAllMenus,getOrderHistory,removeMenuItem,submitOrder, updateCategory, updateMenuItem } from '../api/MosPosApi';
 import { OrderItem, CreateOrderRequest, OrderResponse } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
 
@@ -63,6 +63,13 @@ export const useMenuStore = defineStore('menu', {
       this.error = null;
       try {
         const data = await getAllMenus();
+        data.forEach(menuConfig => {
+          menuConfig.categories.forEach(category => {
+            category.menuItems.forEach(item => {
+              item.categoryId = category.categoryId;
+            });
+          });
+        });
         this.menuConfigurations = data;
         if (this.menuConfigurations.length > 0) {
           this.setCurrentMenuConfiguration(this.menuConfigurations[0]);
@@ -88,7 +95,10 @@ export const useMenuStore = defineStore('menu', {
         this.currentCategory = category;
       }
       if (this.currentCategory) {
-        this.menuItems = this.currentCategory.menuItems;
+        this.menuItems = this.currentCategory.menuItems.map(item => ({
+          ...item,
+          categoryId: this.currentCategory!.categoryId
+        }));
         this.lastSelectedCategory = this.currentCategory.categoryId;
       }
     },
@@ -108,7 +118,7 @@ export const useMenuStore = defineStore('menu', {
       this.error = 'Menu item not found';
     },
     addToCart(menuItem: MenuItem, quantity: number, selectedOptions: SelectedOption[]) {
-      const cartItemIndex = this.cart.findIndex(item => 
+      const cartItemIndex = this.cart.findIndex(item =>
         item.menuItemId === menuItem.menuItemId &&
         JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
       );
@@ -116,11 +126,9 @@ export const useMenuStore = defineStore('menu', {
       const totalPrice = this.calculateTotalPrice(menuItem, quantity, selectedOptions);
 
       if (cartItemIndex !== -1) {
-        // Update existing item
         this.cart[cartItemIndex].quantity += quantity;
         this.cart[cartItemIndex].totalPrice += totalPrice;
       } else {
-        // Add new item
         this.cart.push({
           menuItemId: menuItem.menuItemId,
           name: menuItem.name,
@@ -222,19 +230,88 @@ export const useMenuStore = defineStore('menu', {
         throw error;
       }
     },
-    async addMenuItem(menuItem: MenuItem) {
-      // 實現添加菜單項的邏輯
-    },
-    async updateMenuItem(menuItem: MenuItem) {
-      // 實現更新菜單項的邏輯
-    },
-    async updateCategory(category: Category) {
-      // 實現更新類別的邏輯
-    },
-    async updateCategorySortOrder(category: Category) {
-      // 實現更新類別排序的邏輯
+async addMenuItem(menuItem: Omit<MenuItem, 'menuItemId'>) {
+  try {
+    const newItem = await addMenuItem(menuItem);
+    const category = this.categories.find(c => c.categoryId === newItem.categoryId);
+    if (category) {
+      category.menuItems.push(newItem);
     }
-    
+    return newItem;
+  } catch (error) {
+    console.error('Error adding menu item:', error);
+    throw error;
+  }
+},
+
+async removeMenuItem(removeItem:MenuItem) {
+  try {
+    await removeMenuItem(removeItem.menuItemId);
+    if (this.currentMenuConfiguration) {
+      const updatedCategories = this.currentMenuConfiguration.categories.map(category => {
+        if (category.categoryId === removeItem.categoryId) {
+          return {
+            ...category,
+            menuItems: category.menuItems
+              .filter(item => item.menuItemId !== removeItem.menuItemId)
+              .map((item, index) => ({ ...item, sortOrder: index + 1 }))
+          };
+        }
+        return category;
+      });
+
+      this.currentMenuConfiguration = {
+        ...this.currentMenuConfiguration,
+        categories: updatedCategories
+      };
+    }
+    return true;
+  } catch (error) {
+    console.error('Error removing menu item:', error);
+    throw error;
+  }
+},
+
+async updateMenuItem(menuItem: MenuItem) {
+  try {
+    const updatedItem = await updateMenuItem(menuItem.menuItemId, menuItem);
+    const category = this.categories.find(c => c.categoryId === updatedItem.categoryId);
+    if (category) {
+      const index = category.menuItems.findIndex(item => item.menuItemId === updatedItem.menuItemId);
+      if (index !== -1) {
+        category.menuItems[index] = updatedItem;
+      }
+    }
+    return updatedItem;
+  } catch (error) {
+    console.error('Error updating menu item:', error);
+    throw error;
+  }
+},
+
+async updateCategory(category: Category) {
+  try {
+    const updatedCategory = await updateCategory(category.categoryId, category);
+    const index = this.categories.findIndex(c => c.categoryId === updatedCategory.categoryId);
+    if (index !== -1) {
+      this.categories[index] = updatedCategory;
+    }
+    return updatedCategory;
+  } catch (error) {
+    console.error('Error updating category:', error);
+    throw error;
+  }
+},
+// async updateCategorySortOrder(categories: Category[]) {
+//   try {
+//     const updatedCategories = await updateCategoriesSortOrder(categories);
+//     this.categories = updatedCategories;
+//   } catch (error) {
+//     console.error('Error updating category sort order:', error);
+//     throw error;
+//   }
+// },
+
   },
 persist:true
 })

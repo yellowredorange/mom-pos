@@ -31,7 +31,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'MenuEditor',
     component: () => import('../pages/MenuEditor.vue')
   }
-  // 可以根據需要添加更多路由
 ]
 
 const router = createRouter({

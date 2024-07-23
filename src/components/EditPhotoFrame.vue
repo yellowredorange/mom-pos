@@ -7,6 +7,8 @@
           height: '100%',
           backgroundColor: '#f8f8f8',
           margin: 'auto',
+          maxWidth: '500px',
+          maxHeight: '500px',
         }"
         :img="photo"
         :options="{

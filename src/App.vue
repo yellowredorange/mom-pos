@@ -2,41 +2,34 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <router-link to="/" class="q-toolbar-title-link">
-        <q-toolbar-title>
-          MomPos
-        </q-toolbar-title>
-      </router-link>
-      <q-space></q-space>
-        <q-tabs align="right">
-          <q-route-tab
-            to="/"
-            :label="$q.screen.gt.xs ? 'Home' : ''"
-            icon="home"
-          />
-          <q-route-tab
-            to="/menu"
-            :label="$q.screen.gt.xs ? 'Menu' : ''"
-            icon="restaurant_menu"
-          />
-          <q-route-tab
-            to="/cart"
-            :label="$q.screen.gt.xs ? `Cart (${cartItemCount})` : ''"
-            icon="shopping_cart"
-          >
-            <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
-          </q-route-tab>
-          <q-route-tab
-            to="/order-history"
-            :label="$q.screen.gt.xs ? 'History' : ''"
-            icon="history"
-          />
-          <q-route-tab
-            to="/menu-editor"
-            :label="$q.screen.gt.xs ? 'Editor' : ''"
-            icon="edit"
-          />
-        </q-tabs>
+        <router-link to="/" class="q-toolbar-title-link gt-xs">
+          <q-toolbar-title :class="{ 'fade-out': isFadeOut, 'fade-in': isFadeIn }">
+            MomPos
+          </q-toolbar-title>
+        </router-link>
+        <q-space></q-space>
+        <div class="gt-xs">
+          <q-tabs align="right">
+            <q-route-tab to="/" label="Home" icon="home" />
+            <q-route-tab to="/menu" label="Menu" icon="restaurant_menu" />
+            <q-route-tab :to="'/cart'" :label="`Cart (${cartItemCount})`" icon="shopping_cart">
+              <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
+            </q-route-tab>
+            <q-route-tab to="/order-history" label="History" icon="history" />
+            <q-route-tab to="/menu-editor" label="Editor" icon="edit" />
+          </q-tabs>
+        </div>
+        <div class="lt-sm full-width row items-center justify-between">
+          <div class="marquee-container col">
+            <div class="marquee" @animationiteration="onMarqueeIteration">
+              🐎 &copy; 2024 MomPos. Created by Hendrix Huang. 🌟✨🐕
+            </div>
+          </div>
+          <div class="col-auto">
+            <q-btn flat round icon="mdi-github" type="a" href="https://github.com/yellowredorange" target="_blank" />
+            <q-btn flat round icon="mdi-linkedin" type="a" href="https://www.linkedin.com/in/hendrixhuang/" target="_blank" />
+          </div>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -44,25 +37,28 @@
       <router-view />
     </q-page-container>
 
-    <q-footer class="copyright-footer">
+    <q-footer class="copyright-footer gt-xs">
       <q-toolbar class="toolbar">
         <q-toolbar-title class="custom-copyright-title">
-          <div class="marquee-container">
-            <div class="marquee">
-              🐎 &copy; 2024 MomPos. Created by Hendrix Huang. 🌟✨🐕
-            </div>
-          </div>
           <div class="desktop-display">
             &copy; 2024 MomPos. Created by Hendrix Huang.
             <q-btn flat round icon="mdi-github" type="a" href="https://github.com/yellowredorange" target="_blank" />
             <q-btn flat round icon="mdi-linkedin" type="a" href="https://www.linkedin.com/in/hendrixhuang/" target="_blank" />
           </div>
         </q-toolbar-title>
-        <div class="mobile-icons">
-          <q-btn flat round icon="mdi-github" type="a" href="https://github.com/yellowredorange" target="_blank" />
-          <q-btn flat round icon="mdi-linkedin" type="a" href="https://www.linkedin.com/in/hendrixhuang/" target="_blank" />
-        </div>
       </q-toolbar>
+    </q-footer>
+
+    <q-footer class="lt-sm">
+      <q-tabs align="justify" class="bg-primary text-white">
+        <q-route-tab to="/" icon="home" />
+        <q-route-tab to="/menu" icon="restaurant_menu" />
+        <q-route-tab :to="'/cart'" icon="shopping_cart">
+          <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
+        </q-route-tab>
+        <q-route-tab to="/order-history" icon="history" />
+        <q-route-tab to="/menu-editor" icon="edit" />
+      </q-tabs>
     </q-footer>
   </q-layout>
 </template>
@@ -70,9 +66,27 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from './stores/menuStore';
+import { onMounted, ref } from 'vue';
 
 const menuStore = useMenuStore();
 const { cartItemCount } = storeToRefs(menuStore);
+const isFadeOut = ref(false);
+const isFadeIn = ref(false);
+const loading = ref(true);
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 3000); // 给足够的时间加载样式
+});
+const onMarqueeIteration = () => {
+  isFadeOut.value = true;
+  isFadeIn.value = false;
+  
+  setTimeout(() => {
+    isFadeOut.value = false;
+    isFadeIn.value = true;
+  }, 7500);}
+
 </script>
 
 <style scoped lang="scss">
@@ -94,47 +108,26 @@ const { cartItemCount } = storeToRefs(menuStore);
   overflow: hidden;
   white-space: nowrap;
   box-sizing: border-box;
-  display: none;
 }
 
 .marquee {
   display: inline-block;
   padding-left: 100%;
-  animation: marquee 10s linear infinite;
+  animation: marquee 15s linear infinite;
 }
-.desktop-display{
-    display: block;
-  }
-.mobile-icons {
-  display: none;
-}
+
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
 
-@media (max-width: 600px) {
-  .custom-copyright-title {
-    overflow: hidden;
-    white-space: nowrap;
-  }
+.desktop-display {
+  display: block;
+}
 
+@media (max-width: 599px) {
   .marquee-container {
-    display: block;
-  }
-
-  .marquee {
-    animation: marquee 15s linear infinite;
-  }
-  .desktop-display{
-    display: none;
-  }
-  .mobile-icons {
-    display: flex;
-    position: absolute;
-    right: 0px;
-    background-color: $primary;
-    height: 6vh;
+    font-size: 2vh;
   }
 }
 </style>

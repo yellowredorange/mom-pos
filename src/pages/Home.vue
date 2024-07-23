@@ -64,7 +64,7 @@ export default defineComponent({
   position: relative;
   height:50vh;
   width: 100%;
-  max-width: 50vh; // 16:9 aspect ratio (height/width * 100%)
+  max-width: 50vh;
 }
 .logo {
   max-width: 50vh;
@@ -82,13 +82,14 @@ export default defineComponent({
   margin-top: 0px;
 }
 p {
-  font-size: 1.25rem; // Adjust font size for better readability
+  font-size: 1.25rem;
   line-height: 1.6;
 }
 h1 {
-  font-size: 2.5rem; // Increase font size for h1
+  font-size: 2.5rem;
 }
 h2 {
-  font-size: 1.5rem; // Increase font size for h2
+  font-size: 1.5rem;
 }
+
 </style>

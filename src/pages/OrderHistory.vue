@@ -94,7 +94,7 @@ const formatOptions = (options: string[]): string => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* 確保遮罩層在最上層 */
+  z-index: 9999;
 }
 
 </style>

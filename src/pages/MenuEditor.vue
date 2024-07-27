@@ -271,7 +271,7 @@ const handleFileChange = (e: Event) => {
 const handleCroppedImage = async (imageBlob: Blob) => {
   try {
     isSaving.value=true;
-    const file = new File([imageBlob], 'image.webp', { type: 'image/webp' });
+    const file = new File([imageBlob], 'image.jpeg', { type: 'image/jpeg' });
     const imageUrl = await uploadImage(file);
     tempImageUrl.value = imageUrl;
     editedItem.value.photoUrl = imageUrl;

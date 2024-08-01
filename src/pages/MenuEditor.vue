@@ -201,12 +201,11 @@ const confirmRemove = (item: MenuItem) => {
     message: `Are you sure you want to delete "${item.name}"?`,
     persistent: true,
     ok: {
-      push: true,
       color: 'negative',
       label: 'Delete'
     },
     cancel: {
-      push: true,
+      flat:true,
       color: 'white',
       textColor: 'black',
       label: 'Cancel'
@@ -412,8 +411,13 @@ onBeforeRouteLeave((_to, _from, next) => {
     $q.dialog({
       title: 'Unsaved Changes',
       message: 'You have unsaved changes. Do you want to save before leaving?',
-      ok: 'Save',
-      cancel: 'Discard',
+      ok: {
+        color:'positive',
+        label:'Save'},
+      cancel: {
+        flat:true,
+        color:'black',
+        label:'Cancel'},
       persistent: true
     }).onOk(() => {
       saveAllChanges().then(() => next());

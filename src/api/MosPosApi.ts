@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AllMenusApiResponse,Category,MenuItem,UploadImageResponse  } from '../interfaces/Menu'
+import { AllMenusApiResponse,Category,MenuConfigurationUpdateDto,MenuItem,UploadImageResponse  } from '../interfaces/Menu'
 import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
 
 const api = axios.create({
@@ -95,3 +95,12 @@ export const updateCategory = async (categoryId: number, categoryData: Partial<C
   }
 };
 
+export const updateAllMenuConfiguration = async (updateDto: MenuConfigurationUpdateDto): Promise<MenuConfigurationUpdateDto> => {
+  try {
+    const response = await api.put<MenuConfigurationUpdateDto>('/MenuConfiguration/update-all', updateDto);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating menu configuration:', error);
+    throw error;
+  }
+};

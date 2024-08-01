@@ -302,15 +302,7 @@ async updateCategory(category: Category) {
     throw error;
   }
 },
-// async updateCategorySortOrder(categories: Category[]) {
-//   try {
-//     const updatedCategories = await updateCategoriesSortOrder(categories);
-//     this.categories = updatedCategories;
-//   } catch (error) {
-//     console.error('Error updating category sort order:', error);
-//     throw error;
-//   }
-// },
+
 
   },
 persist:true

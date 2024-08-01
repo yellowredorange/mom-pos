@@ -39,3 +39,9 @@ export type AllMenusApiResponse = MenuConfiguration[];
 export type UploadImageResponse= {
   imageUrl: string;
 }
+
+export interface MenuConfigurationUpdateDto {
+  updatedCategories?: Category[];
+  updatedMenuItems?: MenuItem[];
+  updatedMenuItemOptions?: MenuItemOption[];
+}

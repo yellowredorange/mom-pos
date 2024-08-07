@@ -128,7 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, nextTick, onMounted } from 'vue';
+import { ref, computed, nextTick, onMounted, watch } from 'vue';
 import { useMenuStore } from '../stores/menuStore';
 import { MenuItem, Category } from '../interfaces/Menu';
 import draggable from 'vuedraggable';
@@ -140,6 +140,45 @@ import { uploadImage } from '../api/MosPosApi';
 const $q = useQuasar();
 const menuStore = useMenuStore();
 const categories = computed(() => menuStore.categories);
+
+const localEditedItems = ref<{
+  categories: Record<number, Partial<Category>>,
+  menuItems: Record<number, Partial<MenuItem>>
+}>({
+  categories: {},
+  menuItems: {}
+});
+
+const hasChanges = computed(() => 
+  Object.keys(localEditedItems.value.categories).length > 0 || 
+  Object.keys(localEditedItems.value.menuItems).length > 0
+);
+
+watch(categories, (newCategories) => {
+  newCategories.forEach(category => {
+    watch(() => category.name, (newName) => {
+      if (newName !== menuStore.getOriginalCategory(category.categoryId)?.name) {
+        localEditedItems.value.categories[category.categoryId] = {
+          ...localEditedItems.value.categories[category.categoryId],
+          name: newName
+        };
+      }
+    });
+
+    watch(() => category.menuItems, (newItems) => {
+      newItems.forEach(item => {
+        watch(() => item, (newItem) => {
+          if (JSON.stringify(newItem) !== JSON.stringify(menuStore.getOriginalMenuItem(item.menuItemId))) {
+            localEditedItems.value.menuItems[item.menuItemId] = {
+              ...localEditedItems.value.menuItems[item.menuItemId],
+              ...newItem
+            };
+          }
+        }, { deep: true });
+      });
+    }, { deep: true });
+  });
+}, { deep: true });
 
 const editDialog = ref(false);
 const editedItem = ref<MenuItem>({} as MenuItem);
@@ -153,7 +192,6 @@ const cropperImg = ref('');
 const tempImageUrl = ref('');
 
 const fileInput = ref<HTMLInputElement | null>(null);
-const hasChanges = computed(() => changedCategories.value.size > 0 || changedItems.value.size > 0);
 
 const touchStartY = ref(0);
 const touchEndY = ref(0);
@@ -376,21 +414,11 @@ const updateMenuItem = (item: MenuItem) => {
 
 const saveAllChanges = async () => {
   try {
-    isSaving.value = true;
-    for (const categoryId of changedCategories.value) {
-      const category = categories.value.find(c => c.categoryId === categoryId);
-      if (category) {
-        await menuStore.updateCategory(category);
-      }
-    }
-    for (const itemId of changedItems.value) {
-      const item = categories.value.flatMap(c => c.menuItems).find(i => i.menuItemId === itemId);
-      if (item) {
-        await menuStore.updateMenuItem(item);
-      }
-    }
-    changedCategories.value.clear();
-    changedItems.value.clear();
+    await menuStore.saveAllChanges({
+      updatedCategories: Object.values(localEditedItems.value.categories),
+      updatedMenuItems: Object.values(localEditedItems.value.menuItems)
+    });
+    localEditedItems.value = { categories: {}, menuItems: {} };
     $q.notify({
       color: 'positive',
       message: 'All changes saved successfully'
@@ -401,8 +429,6 @@ const saveAllChanges = async () => {
       color: 'negative',
       message: 'Failed to save changes. Please try again.'
     });
-  } finally {
-    isSaving.value = false;
   }
 };
 

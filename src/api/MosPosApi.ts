@@ -95,9 +95,12 @@ export const updateCategory = async (categoryId: number, categoryData: Partial<C
   }
 };
 
-export const updateAllMenuConfiguration = async (updateDto: MenuConfigurationUpdateDto): Promise<MenuConfigurationUpdateDto> => {
+export const updateAllMenuConfiguration = async (changes: {
+  updatedCategories: Partial<Category>[],
+  updatedMenuItems: Partial<MenuItem>[]
+}) => {
   try {
-    const response = await api.put<MenuConfigurationUpdateDto>('/MenuConfiguration/update-all', updateDto);
+    const response = await api.put('/MenuConfiguration/update-all', changes);
     return response.data;
   } catch (error) {
     console.error('Error updating menu configuration:', error);

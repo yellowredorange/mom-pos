@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
-import { addMenuItem, getAllMenus,getOrderHistory,removeMenuItem,submitOrder, updateCategory, updateMenuItem } from '../api/MosPosApi';
+import { addMenuItem, getAllMenus,getOrderHistory,removeMenuItem,submitOrder, updateAllMenuConfiguration, updateCategory, updateMenuItem } from '../api/MosPosApi';
 import { OrderItem, CreateOrderRequest, OrderResponse } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
 
@@ -17,6 +17,10 @@ interface MenuState {
   orderSuccess: boolean;
   lastSelectedCategory: number | null;
   lastChecked: number | null;
+  originalData: {
+    categories: Record<number, Category>;
+    menuItems: Record<number, MenuItem>;
+  };
 }
 
 export const useMenuStore = defineStore('menu', {
@@ -32,6 +36,10 @@ export const useMenuStore = defineStore('menu', {
     orderSuccess: false,
     lastSelectedCategory: null as number | null,
     lastChecked: null as number | null,
+    originalData: {
+      categories: {},
+      menuItems: {}
+    }
   }),
 
   getters: {
@@ -302,8 +310,76 @@ async updateCategory(category: Category) {
     throw error;
   }
 },
+initializeOriginalData() {
+  this.originalData.categories = {};
+  this.originalData.menuItems = {};
+  
+  this.categories.forEach(category => {
+    this.originalData.categories[category.categoryId] = { ...category };
+    category.menuItems.forEach(item => {
+      this.originalData.menuItems[item.menuItemId] = { ...item };
+    });
+  });
+},
 
+async saveAllChanges(changes: {
+  updatedCategories: Partial<Category>[],
+  updatedMenuItems: Partial<MenuItem>[]
+}) {
+  try {
+    const response = await updateAllMenuConfiguration(changes);
+    console.log('Response from updateAllMenuConfiguration:', response);
+    
+    if (response && response.message === 'All changes saved successfully') {
+      // 直接使用本地修改過的數據更新狀態
+      this.updateLocalStateFromChanges(changes);
+      return true;
+    } else {
+      console.error('Unexpected response:', response);
+      throw new Error('Failed to save changes');
+    }
+  } catch (error) {
+    console.error('Error saving all changes:', error);
+    throw error;
+  }
+},
 
+updateLocalStateFromChanges(changes: {
+  updatedCategories: Partial<Category>[],
+  updatedMenuItems: Partial<MenuItem>[]
+}) {
+  // 更新分類
+  changes.updatedCategories.forEach(updatedCategory => {
+    if (typeof updatedCategory.categoryId === 'number') {
+      const index = this.categories.findIndex(c => c.categoryId === updatedCategory.categoryId);
+      if (index !== -1) {
+        this.categories[index] = { ...this.categories[index], ...updatedCategory };
+        this.originalData.categories[updatedCategory.categoryId] = { ...this.categories[index] };
+      }
+    }
+  });
+
+  // 更新菜單項
+  changes.updatedMenuItems.forEach(updatedItem => {
+    if (typeof updatedItem.menuItemId === 'number' && typeof updatedItem.categoryId === 'number') {
+      const category = this.categories.find(c => c.categoryId === updatedItem.categoryId);
+      if (category) {
+        const itemIndex = category.menuItems.findIndex(item => item.menuItemId === updatedItem.menuItemId);
+        if (itemIndex !== -1) {
+          category.menuItems[itemIndex] = { ...category.menuItems[itemIndex], ...updatedItem };
+          this.originalData.menuItems[updatedItem.menuItemId] = { ...category.menuItems[itemIndex] };
+        }
+      }
+    }
+  });
+},
+getOriginalCategory(categoryId: number): Category | undefined {
+  return this.originalData.categories[categoryId];
+},
+
+getOriginalMenuItem(menuItemId: number): MenuItem | undefined {
+  return this.originalData.menuItems[menuItemId];
+}
   },
 persist:true
 })

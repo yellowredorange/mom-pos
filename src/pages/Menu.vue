@@ -70,9 +70,13 @@ const currentCategory = computed({
   get: () => menuStore.currentCategory?.categoryId || null,
   set: (value: number | null) => menuStore.setCurrentCategory(value)
 });
-const currentItems = computed(() =>
-  currentCategory.value ? categories.value.find(c => c.categoryId === currentCategory.value)?.menuItems : []
-);
+const currentItems = computed(() => {
+  if (currentCategory.value) {
+    const category = categories.value.find(c => c.categoryId === currentCategory.value);
+    return category?.menuItems.slice().sort((a, b) => a.sortOrder - b.sortOrder) || [];
+  }
+  return [];
+});
 
 const cartItemCount = computed(() => menuStore.cartItemCount);
 

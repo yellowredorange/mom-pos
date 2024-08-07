@@ -202,11 +202,17 @@ const swipeThreshold = 10; // pixels
 onMounted(async () => {
   try {
     await menuStore.fetchAllMenus();
+    sortAllMenuItems();
   } catch (error) {
     console.error('Failed to fetch orders:', error);
   }
 });
 
+const sortAllMenuItems = ()=>{
+  categories.value.forEach(category => {
+    category.menuItems.sort((a, b) => a.sortOrder - b.sortOrder);
+  });
+}
 
 const handleTouchStart = (event: TouchEvent) => {
   touchStartY.value = event.touches[0].clientY;

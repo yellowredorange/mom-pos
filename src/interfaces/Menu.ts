@@ -4,6 +4,7 @@ export interface MenuItemOption {
   optionCategory: string;
   additionalPrice: number;
   sortOrder: number;
+  menuItemId: number;
 }
 
 export interface MenuItem {
@@ -38,10 +39,4 @@ export type AllMenusApiResponse = MenuConfiguration[];
 
 export type UploadImageResponse= {
   imageUrl: string;
-}
-
-export interface MenuConfigurationUpdateDto {
-  updatedCategories?: Category[];
-  updatedMenuItems?: MenuItem[];
-  updatedMenuItemOptions?: MenuItemOption[];
 }

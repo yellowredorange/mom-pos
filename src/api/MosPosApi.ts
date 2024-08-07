@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AllMenusApiResponse,Category,MenuConfigurationUpdateDto,MenuItem,UploadImageResponse  } from '../interfaces/Menu'
+import { AllMenusApiResponse,Category,MenuItem,MenuItemOption,UploadImageResponse  } from '../interfaces/Menu'
 import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
 
 const api = axios.create({
@@ -104,6 +104,25 @@ export const updateAllMenuConfiguration = async (changes: {
     return response.data;
   } catch (error) {
     console.error('Error updating menu configuration:', error);
+    throw error;
+  }
+};
+
+export const saveMenuItemOption = async (option: MenuItemOption): Promise<MenuItemOption> => {
+  try {
+    const response = await api.post('/MenuItemOption', option);
+    return response.data;
+  } catch (error) {
+    console.error('Error saving menu item option:', error);
+    throw error;
+  }
+};
+
+export const deleteMenuItemOption = async (optionId: number): Promise<void> => {
+  try {
+    await api.delete(`/MenuItemOption/${optionId}`);
+  } catch (error) {
+    console.error('Error deleting menu item option:', error);
     throw error;
   }
 };

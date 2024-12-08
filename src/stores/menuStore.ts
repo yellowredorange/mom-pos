@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
-import { addMenuItem, getAllMenus,getOrderHistory,removeMenuItem,submitOrder, updateAllMenuConfiguration, updateCategory, updateMenuItem } from '../api/MosPosApi';
+import { addMenuItem, getAllMenus,getOrderHistory,addCategoryAPI ,removeCategoryAPI,removeMenuItem,submitOrder, updateAllMenuConfiguration, updateCategory, updateMenuItem } from '../api/MosPosApi';
 import { OrderItem, CreateOrderRequest, OrderResponse } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
 
@@ -73,6 +73,7 @@ export const useMenuStore = defineStore('menu', {
         const data = await getAllMenus();
         data.forEach(menuConfig => {
           menuConfig.categories.forEach(category => {
+            category.menuConfigurationId = menuConfig.menuConfigurationId; 
             category.menuItems.forEach(item => {
               item.categoryId = category.categoryId;
             });
@@ -276,6 +277,36 @@ async removeMenuItem(removeItem:MenuItem) {
     return true;
   } catch (error) {
     console.error('Error removing menu item:', error);
+    throw error;
+  }
+},
+
+async addCategory(categoryData: Omit<Category, 'categoryId'>) {
+  try {
+    const newCategory = await addCategoryAPI(categoryData);
+    return newCategory;
+  } catch (error) {
+    console.error('Error removing category:', error);
+    throw error;
+  }
+},
+
+async removeCategory(removeCategory: Category) {
+  try {
+    await removeCategoryAPI(removeCategory.categoryId);
+    if (this.currentMenuConfiguration) {
+      const updatedCategories = this.currentMenuConfiguration.categories
+        .filter(category => category.categoryId !== removeCategory.categoryId)
+        .map((category, index) => ({ ...category, sortOrder: index + 1 }));
+
+        this.currentMenuConfiguration = {
+        ...this.currentMenuConfiguration,
+        categories: updatedCategories
+      };
+    }
+    return true;
+  } catch (error) {
+    console.error('Error removing category:', error);
     throw error;
   }
 },

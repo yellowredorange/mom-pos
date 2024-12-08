@@ -25,6 +25,7 @@ export interface Category {
   isActive: boolean;
   sortOrder: number;
   menuItems: MenuItem[];
+  menuConfigurationId: number;
 }
 
 export interface MenuConfiguration {

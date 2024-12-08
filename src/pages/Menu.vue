@@ -11,7 +11,7 @@
         outside-arrows
         mobile-arrows
       >
-        <q-tab v-for="category in categories" :key="category.categoryId" :name="category.categoryId">
+        <q-tab v-for="category in categories.filter(c => c.isActive)" :key="category.categoryId" :name="category.categoryId">
           <template v-slot:default>
             <div class="row items-center">
               {{ category.name }}
@@ -28,8 +28,10 @@
             v-if="item.photoUrl && item.photoUrl !== ''"
             :src="item.photoUrl"
             :ratio="$q.screen.lt.sm?16/9:4/3"
+            spinner-color="primary"
             class="card-image" />
           <q-img v-else src="../assets/DefaultItemImage.webp"
+           spinner-color="primary"
           :ratio="$q.screen.lt.sm?16/9:4/3"
           class="card-image" />
           <q-card-section class="card-content">
@@ -49,8 +51,8 @@
       </div>
     </div>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="shopping_cart" color="primary" @click="goToCart">
+    <q-page-sticky position="bottom-right" :offset="[18, 40]">
+      <q-btn size="50px" fab icon="shopping_cart" color="primary" @click="goToCart">
         <q-badge color="red" floating>{{ cartItemCount }}</q-badge>
       </q-btn>
     </q-page-sticky>
@@ -73,7 +75,10 @@ const currentCategory = computed({
 const currentItems = computed(() => {
   if (currentCategory.value) {
     const category = categories.value.find(c => c.categoryId === currentCategory.value);
-    return category?.menuItems.slice().sort((a, b) => a.sortOrder - b.sortOrder) || [];
+    return category?.menuItems
+      .filter(item => item.isActive)
+      .slice()
+      .sort((a, b) => a.sortOrder - b.sortOrder) || [];
   }
   return [];
 });

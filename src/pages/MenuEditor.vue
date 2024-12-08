@@ -1,20 +1,43 @@
 <template>
   <q-page padding class="menu-editor">
     <h1 class="text-2xl font-bold mb-4">Menu Configuration</h1>
+    <q-btn color="primary" class="mb-4" @click="showAddCategoryDialog = true">Add Category</q-btn>
+    <q-dialog v-model="showAddCategoryDialog" persistent>
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Add New Category</div>
+        </q-card-section>
+        <q-card-section>
+          <q-input v-model="newCategoryName" label="Category Name" />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" v-close-popup @click="resetNewCategory" />
+          <q-btn flat label="Add" color="primary" @click="addCategory" :disable="!newCategoryName" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <div v-for="(category, categoryIndex) in categories" :key="category.categoryId" class="mb-8" :id="`category-${category.categoryId}`">
       <div class="flex items-center mb-2">
-        <div class="w-1/12 drag-handle" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
-          <div class="text-sm font-medium">Index</div>
-          <q-input
-            v-model.number="category.sortOrder"
-            type="number"
-            dense
-            @change="updateCategorySortOrder(category, categoryIndex)"
-          />
+        <div class="w-1/12 flex flex-col items-center justify-center">
+          <q-btn flat dense size="sm" icon="arrow_upward" color="primary" @click="moveCategoryUp(categoryIndex)" :disable="categoryIndex === 0">
+        <q-tooltip>Move category up</q-tooltip>
+      </q-btn>
+      <div class="text-sm font-medium">{{ category.sortOrder }}</div>
+      <q-btn flat dense size="sm" icon="arrow_downward" color="primary" @click="moveCategoryDown(categoryIndex)" :disable="categoryIndex === categories.length - 1">
+        <q-tooltip>Move category down</q-tooltip>
+      </q-btn>
         </div>
-        <div class="w-11/12 px-2">
+        <div class="w-11/12 px-2 flex items-center">
+           <div class="flex-1">
           <div class="text-sm font-medium">Category Name</div>
-          <q-input v-model="category.name" dense @change="markCategoryAsChanged(category)" />
+          <q-input class="custom-input" v-model="category.name" dense @change="markCategoryAsChanged(category)" color="primary"  />
+          </div>
+          <div class="flex items-center">
+          <q-toggle v-model="category.isActive" @update:model-value="markCategoryAsChanged(category)" color="primary" />
+          <q-btn flat round dense icon="close" color="primary" @click="confirmRemoveCategory(category)">
+              <q-tooltip>Delete category</q-tooltip>
+            </q-btn>
+          </div>
         </div>
       </div>
       <q-list bordered separator>
@@ -37,6 +60,7 @@
                   :src="element.photoUrl || 'path/to/default/image.jpg'"
                   style="width: 50px; height: 50px;"
                   fit="cover"
+                   spinner-color="primary"
                 />
               </q-item-section>
               <q-item-section>
@@ -55,7 +79,7 @@
                 >
                   <q-tooltip>Toggle item availability</q-tooltip>
                 </q-toggle>
-                <q-btn flat round color="primary" icon="close" @click="confirmRemove(element)">
+                <q-btn flat round color="primary" icon="close" @click="confirmRemoveMenuItem(element)">
   <q-tooltip>Delete item</q-tooltip>
 </q-btn></div>
                 <q-btn color="primary" label="Edit" @click="editMenuItem(element)" class="text-base" style="margin-right: 1rem" />
@@ -88,7 +112,7 @@
           <q-input v-model.number="editedItem.price" label="Price" type="number" class="text-lg" />
           <q-toggle v-model="editedItem.isActive" label="Available" class="text-sm  text-primary"  :class="[editedItem.isActive ? 'text-primary' : 'text-grey']" />
           <div v-if="editedItem.photoUrl" class="q-mt-md">
-            <q-img :src="editedItem.photoUrl" style="max-width: 200px; max-height: 200px;" />
+            <q-img :src="editedItem.photoUrl" style="max-width: 200px; max-height: 200px;"  spinner-color="primary" />
             <q-btn color="primary" label="Upload New Image" @click="openImageUpload" class="q-mt-sm" />
           </div>
           <div v-else>
@@ -139,6 +163,7 @@ import { uploadImage } from '../api/MosPosApi';
 
 const $q = useQuasar();
 const menuStore = useMenuStore();
+
 const categories = computed(() => menuStore.categories);
 
 const localEditedItems = ref<{
@@ -153,6 +178,7 @@ const hasChanges = computed(() =>
   Object.keys(localEditedItems.value.categories).length > 0 || 
   Object.keys(localEditedItems.value.menuItems).length > 0
 );
+
 
 watch(categories, (newCategories) => {
   newCategories.forEach(category => {
@@ -184,19 +210,16 @@ const editDialog = ref(false);
 const editedItem = ref<MenuItem>({} as MenuItem);
 const isNewItem = ref(false);
 const isSaving = ref(false);
-const changedCategories = ref<Set<number>>(new Set());
-const changedItems = ref<Set<number>>(new Set());
-
 const cropperDialogOpen = ref(false);
 const cropperImg = ref('');
 const tempImageUrl = ref('');
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
-const touchStartY = ref(0);
-const touchEndY = ref(0);
-const isSwiping = ref(false);
-const swipeThreshold = 10; // pixels
+// const touchStartY = ref(0);
+// const touchEndY = ref(0);
+// const isSwiping = ref(false);
+// const swipeThreshold = 10; // pixels
 
 
 onMounted(async () => {
@@ -208,38 +231,54 @@ onMounted(async () => {
   }
 });
 
-const sortAllMenuItems = ()=>{
+const sortAllMenuItems = () => {
+  // 檢查 categories 是否為空或未定義
+  if (!categories.value || categories.value.length === 0) {
+    console.warn('No categories to sort');
+    return;
+  }
+
+  // 遍歷每個 category 並排序其 menuItems
   categories.value.forEach(category => {
-    category.menuItems.sort((a, b) => a.sortOrder - b.sortOrder);
+    if (Array.isArray(category.menuItems)) {
+      // 只有在 menuItems 是陣列時才進行排序
+      category.menuItems.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    }
   });
-}
 
-const handleTouchStart = (event: TouchEvent) => {
-  touchStartY.value = event.touches[0].clientY;
+  // 對 categories 進行排序
+  categories.value.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 };
 
-const handleTouchMove = (event: TouchEvent) => {
-  touchEndY.value = event.touches[0].clientY;
-  const deltaY = touchEndY.value - touchStartY.value;
 
-  if (Math.abs(deltaY) > swipeThreshold) {
-    isSwiping.value = true;
-  }
 
-  if (isSwiping.value) {
-    event.stopPropagation();
-  }
-};
 
-const handleTouchEnd = (event: TouchEvent) => {
-  if (!isSwiping.value) {
-    const input = event.target as HTMLInputElement;
-    input.focus();
-  }
-  isSwiping.value = false;
-};
+// const handleTouchStart = (event: TouchEvent) => {
+//   touchStartY.value = event.touches[0].clientY;
+// };
 
-const confirmRemove = (item: MenuItem) => {
+// const handleTouchMove = (event: TouchEvent) => {
+//   touchEndY.value = event.touches[0].clientY;
+//   const deltaY = touchEndY.value - touchStartY.value;
+
+//   if (Math.abs(deltaY) > swipeThreshold) {
+//     isSwiping.value = true;
+//   }
+
+//   if (isSwiping.value) {
+//     event.stopPropagation();
+//   }
+// };
+
+// const handleTouchEnd = (event: TouchEvent) => {
+//   if (!isSwiping.value) {
+//     const input = event.target as HTMLInputElement;
+//     input.focus();
+//   }
+//   isSwiping.value = false;
+// };
+
+const confirmRemoveMenuItem = (item: MenuItem) => {
   $q.dialog({
     title: 'Confirm Deletion',
     message: `Are you sure you want to delete "${item.name}"?`,
@@ -382,49 +421,71 @@ const resetEditedItem = () => {
 };
 
 const markCategoryAsChanged = (category: Category) => {
-  changedCategories.value.add(category.categoryId);
-};
-
-const updateCategorySortOrder = async (category: Category, index: number) => {
-  const maxSortOrder = categories.value.length;
-  category.sortOrder = Math.max(1, Math.min(category.sortOrder, maxSortOrder));
-
-  if (category.sortOrder !== index + 1) {
-    const oldIndex = index;
-    const newIndex = category.sortOrder - 1;
-    const categoryToMove = categories.value.splice(oldIndex, 1)[0];
-    categories.value.splice(newIndex, 0, categoryToMove);
-
-    categories.value.forEach((cat, idx) => {
-      cat.sortOrder = idx + 1;
-      changedCategories.value.add(cat.categoryId);
-    });
-
-    await nextTick();
-  }
-};
+  localEditedItems.value.categories[category.categoryId] = {
+    ...localEditedItems.value.categories[category.categoryId],
+    name: category.name,
+    isActive: category.isActive
+  };};
 
 
 const updateItemSortOrder = (category: Category) => {
   category.menuItems.forEach((item, index) => {
     if (item.sortOrder !== index + 1) {
-      item.sortOrder = index + 1;
-      changedItems.value.add(item.menuItemId);
+      localEditedItems.value.menuItems[item.menuItemId] = {
+        ...localEditedItems.value.menuItems[item.menuItemId],
+        sortOrder: index + 1
+      };
     }
   });
 };
 
 const updateMenuItem = (item: MenuItem) => {
-  changedItems.value.add(item.menuItemId);
+  localEditedItems.value.menuItems[item.menuItemId] = {
+    ...localEditedItems.value.menuItems[item.menuItemId],
+    isActive: item.isActive
+  };
 };
 
 const saveAllChanges = async () => {
   try {
-    await menuStore.saveAllChanges({
-      updatedCategories: Object.values(localEditedItems.value.categories),
-      updatedMenuItems: Object.values(localEditedItems.value.menuItems)
+    const updatedCategories = Object.entries(localEditedItems.value.categories).map(([categoryId, changes]) => {
+      const category = categories.value.find(c => c.categoryId === Number(categoryId));
+      if (!category) {
+        throw new Error(`Category with id ${categoryId} not found`);
+      }
+      return {
+        categoryId: Number(categoryId),
+        name: changes.name ?? category.name,
+        isActive: changes.isActive??category.isActive,
+        sortOrder: changes.sortOrder ?? category.sortOrder,
+        menuConfigurationId: category.menuConfigurationId,
+      };
     });
+
+    const updatedMenuItems = Object.entries(localEditedItems.value.menuItems).map(([menuItemId, changes]) => {
+    const menuItem = categories.value.flatMap(category => category.menuItems).find(mi => mi.menuItemId === Number(menuItemId));
+    if (!menuItem) {
+      throw new Error(`MenuItem with id ${menuItemId} not found`);
+    }
+    return {
+      menuItemId: Number(menuItemId),
+      name: changes.name ?? menuItem.name,
+      description: changes.description ?? menuItem.description,
+      price: changes.price ?? menuItem.price,
+      isActive: changes.isActive ?? menuItem.isActive,
+      photoUrl: changes.photoUrl ?? menuItem.photoUrl,
+      sortOrder: changes.sortOrder ?? menuItem.sortOrder,
+      categoryId: changes.categoryId ?? menuItem.categoryId,
+    };
+  });
+
+    await menuStore.saveAllChanges({
+      updatedCategories,
+      updatedMenuItems,
+    });
+
     localEditedItems.value = { categories: {}, menuItems: {} };
+
     $q.notify({
       color: 'positive',
       message: 'All changes saved successfully'
@@ -438,18 +499,127 @@ const saveAllChanges = async () => {
   }
 };
 
+const moveCategoryUp = (index: number) => {
+  if (index > 0) {
+    swapCategories(index, index - 1);
+  }
+};
+
+const moveCategoryDown = (index: number) => {
+  if (index < categories.value.length - 1) {
+    swapCategories(index, index + 1);
+  }
+};
+
+const swapCategories = (index1: number, index2: number) => {
+  const temp = categories.value[index1];
+  categories.value[index1] = categories.value[index2];
+  categories.value[index2] = temp;
+
+  categories.value[index1].sortOrder = index1 + 1;
+  categories.value[index2].sortOrder = index2 + 1;
+
+  localEditedItems.value.categories[categories.value[index1].categoryId] = {
+    ...localEditedItems.value.categories[categories.value[index1].categoryId],
+    sortOrder: index1 + 1
+  };
+  localEditedItems.value.categories[categories.value[index2].categoryId] = {
+    ...localEditedItems.value.categories[categories.value[index2].categoryId],
+    sortOrder: index2 + 1
+  };
+};
+
+const confirmRemoveCategory = (category: Category) => {
+  $q.dialog({
+    title: 'Confirm Deletion',
+    message: `Are you sure you want to delete the category "${category.name}"?`,
+    persistent: true,
+    ok: {
+      color: 'negative',
+      label: 'Delete'
+    },
+    cancel: {
+      flat:true,
+      color: 'white',
+      textColor: 'black',
+      label: 'Cancel'
+    }
+  }).onOk(() => {
+    removeCategory(category);
+  });
+};
+
+const removeCategory = async (category: Category) => {
+  try {
+    await menuStore.removeCategory(category);
+
+    await nextTick();
+    $q.notify({
+      color: 'positive',
+      message: 'Category removed successfully'
+    });
+  } catch (error) {
+    console.error('Error removing category:', error);
+    $q.notify({
+      color: 'negative',
+      message: 'Failed to remove category. Please try again.'
+    });
+  }
+};
+
+const resetNewCategory = () => {
+  newCategoryName.value = '';
+};
+const addCategory = async () => {
+  if (!newCategoryName.value.trim()) {
+    console.error('Category name cannot be empty!');
+    return;
+  }
+  try {
+    const  newCategory={
+    name: newCategoryName.value,  isActive: true,  sortOrder: 0,  menuItems: [],menuConfigurationId: categories.value[0].menuConfigurationId}
+    const newCategoryReturn = await menuStore.addCategory(newCategory);
+    categories.value.push(newCategoryReturn)
+    categories.value.forEach(category => {
+      localEditedItems.value.categories[category.categoryId] = {
+        ...category, // 將 category 本身的屬性加進去
+      };
+    });
+    Object.keys(localEditedItems.value.categories).forEach(categoryId => {
+      const category = localEditedItems.value.categories[Number(categoryId)];
+      if (category) {
+        category.sortOrder = (category.sortOrder || 0) + 1; // Increment sortOrder safely
+      }
+    });
+    saveAllChanges();
+    sortAllMenuItems();
+    showAddCategoryDialog.value = false;
+    newCategoryName.value = '';
+    console.log('Category added successfully!');
+  } catch (error) {
+    console.error('Failed to add category:', error);
+  }
+};
+
+const showAddCategoryDialog = ref(false);
+const newCategoryName = ref('');
+
+const cancelAddCategory = () => {
+  showAddCategoryDialog.value = false;
+  newCategoryName.value = '';
+};
+
 onBeforeRouteLeave((_to, _from, next) => {
   if (hasChanges.value) {
     $q.dialog({
       title: 'Unsaved Changes',
       message: 'You have unsaved changes. Do you want to save before leaving?',
       ok: {
-        color:'positive',
+        color:'secondary',
         label:'Save'},
       cancel: {
-        flat:true,
-        color:'black',
-        label:'Cancel'},
+        color:'accent',
+        label:'Discard'},
       persistent: true
     }).onOk(() => {
       saveAllChanges().then(() => next());
@@ -462,7 +632,7 @@ onBeforeRouteLeave((_to, _from, next) => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu-editor {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
@@ -475,6 +645,9 @@ onBeforeRouteLeave((_to, _from, next) => {
 .drag-handle {
   cursor: move;
 }
+// .custom-input ::v-deep .q-field__native  {
+//   color: $primary;
+// }
 
 @media (max-width: 599px) {
   .q-list {

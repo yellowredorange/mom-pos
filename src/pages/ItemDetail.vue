@@ -17,6 +17,7 @@
           :ratio="1"
           fit="cover"
           style="width: 50vh; height: 50vh;"
+          spinner-color="primary"
         />
         <q-img
           v-else
@@ -24,6 +25,7 @@
           :ratio="1"
           fit="cover"
           style="width: 50vh; height: 20vh;"
+          spinner-color="primary"
         />
       </div>
       
@@ -61,7 +63,7 @@
       <div class="text-h6 q-mt-md text-center">{{ currentMenuItem.description }}</div>
     </div>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[18, 40]">
       <q-btn fab icon="shopping_cart" color="primary" @click="goToCart">
         <q-badge color="red" floating>{{ cartItemCount }}</q-badge>
       </q-btn>

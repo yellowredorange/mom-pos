@@ -64,7 +64,7 @@ export const updateMenuItem = async (menuItemId: number, menuItemData: Partial<M
   }
 };
 
-
+//Omit是為了移除MenuItem中的menuItemId，讓我不用重複新增物件
 export const addMenuItem = async (menuItemData: Omit<MenuItem, 'menuItemId'>): Promise<MenuItem> => {
   try {
     const response = await api.post<MenuItem>('/MenuItem', menuItemData);
@@ -88,6 +88,26 @@ export const removeMenuItem = async (menuItemId:number): Promise<number> => {
 export const updateCategory = async (categoryId: number, categoryData: Partial<Category>): Promise<Category> => {
   try {
     const response = await api.put<Category>(`/Category/${categoryId}`, categoryData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating category:', error);
+    throw error;
+  }
+};
+
+export const addCategoryAPI = async (categoryData: Omit<Category, 'categoryId'>): Promise<Category> => {
+  try {
+    const response = await api.post<Category>('/Category', categoryData);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding menu item:', error);
+    throw error;
+  }
+};
+
+export const removeCategoryAPI  = async (categoryId: number): Promise<Category> => {
+  try {
+    const response = await api.delete(`/Category/${categoryId}`);
     return response.data;
   } catch (error) {
     console.error('Error updating category:', error);
@@ -126,3 +146,4 @@ export const deleteMenuItemOption = async (optionId: number): Promise<void> => {
     throw error;
   }
 };
+

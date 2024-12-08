@@ -604,11 +604,6 @@ const addCategory = async () => {
 const showAddCategoryDialog = ref(false);
 const newCategoryName = ref('');
 
-const cancelAddCategory = () => {
-  showAddCategoryDialog.value = false;
-  newCategoryName.value = '';
-};
-
 onBeforeRouteLeave((_to, _from, next) => {
   if (hasChanges.value) {
     $q.dialog({

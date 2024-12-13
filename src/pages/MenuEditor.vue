@@ -57,7 +57,7 @@
               </q-item-section>
               <q-item-section avatar>
                 <q-img
-                  :src="element.photoUrl || 'path/to/default/image.jpg'"
+                  :src="element.photoUrl || ''"
                   style="width: 50px; height: 50px;"
                   fit="cover"
                    spinner-color="primary"
@@ -340,14 +340,16 @@ const openImageUpload = () => {
 
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
+  //宣告為target 為 event的target 是input element
   const file = target.files?.[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = (event: ProgressEvent<FileReader>) => {
-      cropperImg.value = event.target?.result as string;
+      //Once the file is read, the onload event is triggered, event is the filereaderprogress, which I want it's result
+      cropperImg.value = event.target?.result as string;//先丟入crooper裡，v-bind
       cropperDialogOpen.value = true;
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file); //顯示預覽圖
   }
 };
 const handleCroppedImage = async (imageBlob: Blob) => {

@@ -2,7 +2,15 @@
   <div class="home container mx-auto px-4 py-8">
     <div class="flex flex-col items-center">
       <div class="logo-container mb-8 scroll-reveal">
-        <img src="@/assets/MomPosMainPage.webp" alt="MOM POS Logo" class="logo max-w-full h-auto" loading="lazy">
+        <img
+          :src="logoSrc"
+          alt="MOM POS Logo"
+          class="logo max-w-full h-auto"
+          loading="lazy"
+          @load="onImageLoad"
+          :class="{ 'fade-in': imageLoaded }"
+        />
+
       </div>
       <h1 class="text-3xl font-bold text-center mb-3 scroll-reveal">歡迎使用 MomPos</h1>
       <section class="text-center max-w-2xl mx-auto mb-8 scroll-reveal">
@@ -26,14 +34,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import ScrollReveal from 'scrollreveal';
 import VTypical from 'vue-typical';
 import { useMenuStore } from '@/stores/menuStore';
-const menuStore = useMenuStore();
+import { useThemeStore } from '@/stores/themeStore';
+import lightLogo from '@/assets/MomPosMainPage.webp';
+import darkLogo from '@/assets/MomPosMainPageDark.webp';
+
 export default defineComponent({
   name: 'Home',
   setup() {
+      const menuStore = useMenuStore();
+      const themeStore = useThemeStore();
+
+      // Dynamically determine the logo based on dark mode
+      const logoSrc = computed(() =>
+        themeStore.isDarkMode ? darkLogo : lightLogo
+      );
+
+      const imageLoaded = ref(false);
+      const onImageLoad = () => {
+        imageLoaded.value = true;
+      };
+    // Scroll reveal animations
     onMounted(async () => {
       ScrollReveal().reveal('.scroll-reveal', {
         delay: 200,
@@ -43,15 +67,25 @@ export default defineComponent({
         easing: 'ease-in-out',
         interval: 100,
         opacity: 0,
-        scale: 1
+        scale: 1,
       });
-      await menuStore.fetchAllMenus()
+      await menuStore.fetchAllMenus();
     });
+
+    
+return {
+  logoSrc,
+  imageLoaded,
+  onImageLoad,
+};
+
   },
   components: {
-    VTypical,}
+    VTypical,
+  },
 });
 </script>
+
 
 <style scoped lang="scss">
 .scroll-reveal {
@@ -68,7 +102,14 @@ export default defineComponent({
 }
 .logo {
   max-width: 50vh;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
 }
+
+.logo.fade-in {
+  opacity: 1; /* 修改點：圖片加載完成後顯示 */
+}
+
 .primary-color {
   color: $primary;
 }

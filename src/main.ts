@@ -12,6 +12,8 @@ import quasarIconSet from 'quasar/icon-set/material-icons'
 import ScrollReveal from 'scrollreveal';
 import '@mdi/font/css/materialdesignicons.min.css'
 import '@/global.scss'
+import './css/app.scss';
+
 const pinia=createPinia()
 pinia.use(piniaPluginPersistedstate)
 const app = createApp(App)
@@ -24,7 +26,14 @@ app.use(ScrollReveal)
 app.use(Quasar, {
   plugins: { Notify,Dialog },
   lang: quasarLang,
-  iconSet:quasarIconSet,
+  iconSet:quasarIconSet
+})
+app.use(Quasar, {
   config: {
-}})
+    dark: 'auto', // Ensure dark mode is enabled
+  },
+});
+
+app.config.globalProperties.$q.dark.set(localStorage.getItem('darkMode') === 'true');
+
 app.mount('#app')

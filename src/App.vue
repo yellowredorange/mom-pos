@@ -6,7 +6,17 @@
           <q-toolbar-title :class="{ 'fade-out': isFadeOut, 'fade-in': isFadeIn }">
             MomPos
           </q-toolbar-title>
+
+          
         </router-link>
+        <q-btn
+        flat
+        round
+        icon="brightness_6"
+        @click="toggleDarkMode"
+        :label="buttonLabel"
+        class="dark-mode-btn"
+      />
         <q-space></q-space>
         <div class="gt-xs">
           <q-tabs align="right">
@@ -66,13 +76,36 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from './stores/menuStore';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useThemeStore } from './stores/themeStore';
 
 const menuStore = useMenuStore();
 const { cartItemCount } = storeToRefs(menuStore);
 const isFadeOut = ref(false);
 const isFadeIn = ref(false);
 const loading = ref(true);
+const $q = useQuasar();
+const isDark = ref($q.dark.isActive)
+
+const themeStore = useThemeStore();
+
+// Sync Quasar's dark mode with Pinia
+themeStore.loadDarkMode();
+$q.dark.set(themeStore.isDarkMode);
+
+// Toggle dark mode
+const toggleDarkMode = () => {
+  $q.dark.toggle(); // Toggle Quasar dark mode
+  themeStore.setDarkMode($q.dark.isActive); // Update Pinia and localStorage
+};
+
+// Dynamic label for the button
+const buttonLabel = computed(() => {
+  return $q.screen.lt.sm ? '' : isDark.value ? 'Light Mode' : 'Dark Mode';
+});
+
+
 onMounted(() => {
   setTimeout(() => {
     loading.value = false;
@@ -125,9 +158,24 @@ const onMarqueeIteration = () => {
   display: block;
 }
 
+.dark-mode-btn {
+  margin-left: 16px; /* MomPos 和按鈕的距離 */
+}
+
 @media (max-width: 599px) {
   .marquee-container {
     font-size: 2vh;
   }
+  
+.dark-mode-btn {
+  margin-left: 0px; /* MomPos 和按鈕的距離 */
 }
+}
+
+
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
 </style>

@@ -182,11 +182,17 @@ watch(currentCategory, (newValue) => {
 .item-font{
   font-size: 1.3rem;
   font-weight: 550;
-  color: rgba(0, 0, 0, 0.8);;
+  color: rgba(0, 0, 0, 0.8);
+  body.body--dark & {
+    color: white;
+  }
 }
 .price-font{
   font-size: 1.1rem;
-  color: rgba(0, 0, 0, 0.8);;
+  color: rgba(0, 0, 0, 0.8);
+  body.body--dark & {
+    color: white;
+  }
 }
 @media (max-width: 599px) {
   .card-image {
@@ -209,6 +215,7 @@ watch(currentCategory, (newValue) => {
     font-size: 0.9rem;
     padding: 0.5em 1em; 
   }
+
 
 }
 

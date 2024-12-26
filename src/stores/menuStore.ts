@@ -3,6 +3,7 @@ import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
 import { addMenuItem, getAllMenus,getOrderHistory,addCategoryAPI ,removeCategoryAPI,removeMenuItem,submitOrder, updateAllMenuConfiguration, updateCategory, updateMenuItem } from '../api/MosPosApi';
 import { OrderItem, CreateOrderRequest, OrderResponse } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
+import isEqual from 'lodash/isEqual';
 
 
 interface MenuState {
@@ -127,17 +128,20 @@ export const useMenuStore = defineStore('menu', {
       this.error = 'Menu item not found';
     },
     addToCart(menuItem: MenuItem, quantity: number, selectedOptions: SelectedOption[]) {
+      // 查找是否已經有相同的產品和選項
       const cartItemIndex = this.cart.findIndex(item =>
         item.menuItemId === menuItem.menuItemId &&
-        JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
+        isEqual(item.selectedOptions, selectedOptions)
       );
-
+    
       const totalPrice = this.calculateTotalPrice(menuItem, quantity, selectedOptions);
-
+    
       if (cartItemIndex !== -1) {
+        // 已存在，累加數量和價格
         this.cart[cartItemIndex].quantity += quantity;
         this.cart[cartItemIndex].totalPrice += totalPrice;
       } else {
+        // 不存在，新增到購物車
         this.cart.push({
           menuItemId: menuItem.menuItemId,
           name: menuItem.name,
@@ -145,15 +149,16 @@ export const useMenuStore = defineStore('menu', {
           quantity,
           selectedOptions,
           totalPrice,
-          description: '',
-          isActive: false,
-          photoUrl: '',
-          sortOrder: 0,
-          categoryId: 0,
-          menuItemOptions: []
+          description: menuItem.description,
+          isActive: menuItem.isActive,
+          photoUrl: menuItem.photoUrl,
+          sortOrder: menuItem.sortOrder,
+          categoryId: menuItem.categoryId,
+          menuItemOptions: menuItem.menuItemOptions
         });
       }
     },
+    
 
     updateCartItemQuantity(index: number, newQuantity: number) {
       const item = this.cart[index];

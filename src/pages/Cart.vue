@@ -3,12 +3,12 @@
     <q-list v-if="cart.length" bordered separator class="rounded-borders">
       <q-item v-for="(item, index) in cart" :key="index" class="q-py-md">
         <q-item-section avatar>
-          <q-img v-if="item.photoUrl && item.photoUrl !== ''"
+          <q-img v-if="item.photoUrl"
                  :src="item.photoUrl"
                  style="width: 100px; height: 100px"
                  :ratio="1"
                  class="rounded-borders" />
-          <q-img v-else></q-img>
+          <q-img v-else src="src/assets/PepeBugFly.png"></q-img>
         </q-item-section>
         <q-item-section>
           <q-item-label class="item-name">{{ item.name }}</q-item-label>

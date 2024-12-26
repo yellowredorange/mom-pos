@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     component:() => import('../pages/OrderHistory.vue')
   },
   {
+    path: '/user',
+    name: 'User',
+    component:() => import('../pages/UserPage.vue')
+  },
+  {
     path: '/menu-editor',
     name: 'MenuEditor',
     component: () => import('../pages/MenuEditor.vue')

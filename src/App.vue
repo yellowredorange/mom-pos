@@ -25,8 +25,8 @@
             <q-route-tab :to="'/cart'" :label="`Cart (${cartItemCount})`" icon="shopping_cart">
               <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
             </q-route-tab>
-            <q-route-tab to="/order-history" label="History" icon="history" />
             <q-route-tab to="/menu-editor" label="Editor" icon="edit" />
+            <q-route-tab to="/user" label="User" icon="fas fa-user-circle" />
           </q-tabs>
         </div>
         <div class="lt-sm full-width row items-center justify-between">
@@ -74,6 +74,7 @@
 </template>
 
 <script lang="ts" setup>
+import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from './stores/menuStore';
 import { computed, onMounted, ref } from 'vue';

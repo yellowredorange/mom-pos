@@ -8,7 +8,7 @@
                  style="width: 100px; height: 100px"
                  :ratio="1"
                  class="rounded-borders" />
-          <q-img v-else src="src/assets/PepeBugFly.png"></q-img>
+          <q-img v-else src="@/assets/PepeBugFly.png"></q-img>
         </q-item-section>
         <q-item-section>
           <q-item-label class="item-name">{{ item.name }}</q-item-label>

@@ -18,6 +18,17 @@ body.body--light {
   color: black;
 }
 
+
+
+body.body--dark {
+  .q-item__label,
+  .text-caption,
+  .item-name,
+  .normal-font.q-mb-sm {
+    color: white !important;
+  }
+}
+
 // /* Override the default dark mode background */
 // body.body--dark {
 //   background: #333333; /* Gray background */

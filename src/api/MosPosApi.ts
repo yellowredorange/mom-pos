@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { AllMenusApiResponse,Category,MenuItem,MenuItemOption,UploadImageResponse  } from '../interfaces/Menu'
 import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
+import { Cookies } from 'quasar'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API,
   headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
+      'Content-Type': 'application/json',
+      'token': Cookies.get("token") ? Cookies.get("token") : ""
+  }
 })
 
 export const getAllMenus = async (): Promise<AllMenusApiResponse>  => {

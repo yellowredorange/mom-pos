@@ -66,8 +66,8 @@
         <q-route-tab :to="'/cart'" icon="shopping_cart">
           <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
         </q-route-tab>
-        <q-route-tab to="/order-history" icon="history" />
         <q-route-tab to="/menu-editor" icon="edit" />
+        <q-route-tab to="/user" icon="fas fa-user-circle" />
       </q-tabs>
     </q-footer>
   </q-layout>
@@ -130,6 +130,7 @@ const onMarqueeIteration = () => {
   height: 6vh;
   display: flex;
   align-items: center;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .custom-copyright-title {

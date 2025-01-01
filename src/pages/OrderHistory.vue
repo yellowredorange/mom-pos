@@ -7,6 +7,7 @@
         <q-spinner-dots color="white" size="50px" />
       </div>
       <q-expansion-item
+        v-if="orders && orders.length > 0"
         v-for="order in orders"
         :key="order.orderId"
         :label="`Order #${order.orderId} - ${formatDate(order.orderDate)}`"
@@ -36,6 +37,17 @@
           </q-card-section>
         </q-card>
       </q-expansion-item>
+      <div v-else class="text-h6 q-pa-md text-center text-color text-color-primary">
+          You don't have any orders yet.
+          <div class="btn-container">
+  <q-btn
+    color="primary"
+    label="Order Now 🤩"
+    @click="$router.push('/menu')"
+    class="cta-button"
+  />
+</div>
+        </div>
     </q-list>
   </q-page>
 </template>
@@ -105,4 +117,23 @@ const formatOptions = (options: string[]): string => {
   padding: 1rem;
 }
 
+.text-color-primary{
+  color: $primary;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: $primary;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+.btn-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the button */
+  margin-top: 0rem; /* Add spacing from the text above */
+  margin-bottom: 2rem;
+}
 </style>

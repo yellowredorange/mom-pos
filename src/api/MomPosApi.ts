@@ -33,7 +33,7 @@ export const submitOrder = async (orderData: CreateOrderRequest): Promise<OrderR
 };
 export const getOrderHistory = async (): Promise<OrderResponse[]> => {
   try {
-    const response = await api.get<OrderResponse[]>('/order/history');
+    const response = await api.get<OrderResponse[]>('/Order/user');
     return response.data;
   } catch (error) {
     console.error('Error fetching order history:', error);
@@ -214,3 +214,4 @@ export async function deleteUserInfo(id: number): Promise<void> {
     throw error;
   }
 }
+

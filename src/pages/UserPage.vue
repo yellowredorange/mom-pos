@@ -1,53 +1,34 @@
 <template>
   <q-page class="q-pa-md flex flex-center">
     <div class="user-page-container">
-      <!-- 用戶資料條 -->
-      <q-card
-  class="user-profile-bar"
->
-  <q-card-section class="row items-center">
-    <!-- 左側頭像 -->
-    <q-btn
-        flat
-        round
-        @click=""
-        icon="fas fa-user"
-      />
-
-    <!-- 右側名稱和電子郵件 -->
-    <div class="q-ml-md">
-      <div class="text-h6" style="font-weight:700">{{ userStore.user?.userName || 'Guest' }}</div>
-      <div>{{  permissionUpper|| 'Not logged in' }}</div>
-    </div>
-  </q-card-section>
-</q-card>
-
-
-      <!-- 歷史訂單 -->
-      <q-card class="order-history-bar  beautiful-shadow">
-        <q-card-section>
-          <div class="text-h6 flex flex-center history-title" >History Orders</div>
+      <!-- User Profile Section -->
+      <q-card class="user-profile-bar">
+        <q-card-section class="row items-center">
+          <q-btn flat round @click="" icon="fas fa-user" />
+          <div class="q-ml-md">
+            <div class="text-h6" style="font-weight:700">{{ userStore.user?.userName || 'Guest' }}</div>
+            <div>{{ permissionUpper || 'Not logged in' }}</div>
+          </div>
         </q-card-section>
-        <q-list>
-          <q-item v-for="order in orders" :key="order.id" clickable @click="viewOrder(order)">
-            <q-item-section>{{ order.date }}</q-item-section>
-            <q-item-section>{{ order.total }}</q-item-section>
-          </q-item>
-        </q-list>
       </q-card>
 
-      <!-- 登出條 -->
-      <q-card class="logout-bar"  @click="logout">
+      <q-card v-if="permission" class="logout-bar" @click="logout">
         <q-card-section class="logout-text">
           <div class="text-h6" style="font-weight:700">Logout</div>
         </q-card-section>
       </q-card>
 
-      <!-- 彈窗 -->
-      <q-dialog v-model="showLogin" persistent>
+      <q-card v-if="!permission" class="logout-bar" @click="login">
+        <q-card-section class="logout-text">
+          <div class="text-h6" style="font-weight:700">Login</div>
+        </q-card-section>
+      </q-card>
+
+      <!-- Dialogs -->
+      <q-dialog v-model="showLogin">
         <login-component @open-register="openRegister" @close="closeLogin" />
       </q-dialog>
-      <q-dialog v-model="showRegister" persistent>
+      <q-dialog v-model="showRegister">
         <register-component @open-login="openLogin" @close="closeRegister" />
       </q-dialog>
       <q-dialog v-model="showProfile">
@@ -57,15 +38,58 @@
         <user-history-order-component :order="selectedOrder" @close="showOrderDetails = false" />
       </q-dialog>
     </div>
+
+    <!-- Q&A Section -->
+    <!-- Q&A Section -->
+<div class="qa-container beautiful-shadow">
+  <div class="text-h6 flex flex-center qa-title">Q & A</div>
+  <div class="qa-list">
+    <!-- Question 2 -->
+    <div class="qa-item">
+      <div class="q-text">
+        <strong>Q:</strong> Will you reveal my password?
+      </div>
+      <div class="a-text">
+        <strong>A:</strong> No. I use PasswordHasher in .NET Core, so your password is securely hashed and never actually stored in the database. Don't worry. You can also just use a fake password to register.
+      </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="qa-item">
+      <div class="q-text">
+        <strong>Q:</strong> Did you build this on your own?
+      </div>
+      <div class="a-text">
+        <strong>A:</strong> Yes, I built both the frontend and backend by myself. 
+        Click 
+        <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/project-details')">here</a>
+        to see the details of how I built this. I initially thought it would be a simple website, but it became much more complicated and cost me a lot of time. 🫠 If you'd like to give me some advice, just click 
+        <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/feedback')">here</a>. Thank you!
+      </div>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="qa-item">
+      <div class="q-text">
+        <strong>Q:</strong> Can I become a shopper to build my own menu?
+      </div>
+      <div class="a-text">
+        <strong>A:</strong> Yes, but not yet. It's still in the beta phase. You can click
+        <span class="clickable-text" @click="becomeAdmin">here</span>
+        to explore the menu editor, but you can't save changes to the backend yet.
+      </div>
+    </div>
+  </div>
+</div>
+
   </q-page>
 </template>
+
 
 <script lang="ts" setup>
 import { ref,onMounted } from 'vue';
 import { useUserStore } from '../stores/userStore';
 import LoginComponent from '../components/LoginComponent.vue';
-import UserProfileComponent from '../components/UserProfileComponent.vue';
-import UserHistoryOrderComponent from '../components/UserHistoryOrderComponent.vue';
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
 import RegisterComponent from '../components/RegisterComponent.vue';
 
@@ -103,11 +127,6 @@ const closeRegister = () => {
   showRegister.value = false;
 };
 
-const viewOrder = (order: null) => {
-  selectedOrder.value = order;
-  showOrderDetails.value = true;
-};
-
 const logout = () => {
   if (confirm('Are you sure you want to logout?')) {
     userStore.logout();
@@ -118,6 +137,10 @@ const logout = () => {
     window.location.href = '/user';
   } 
 };
+
+const login = () => {
+  showLogin.value=true;
+  } 
 let isInitialized = false;
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'));
@@ -129,6 +152,22 @@ const userId = getCookie('userId');
 const permission = getCookie('permission');
 const permissionUpper=permission?.toUpperCase()
 console.log(token)
+
+const becomeAdmin = () => {
+  // Remove the 'permission' cookie
+  $q.cookies.remove('permission');
+
+  // Add a new 'permission' cookie with value 'admin'
+  $q.cookies.set('permission', 'admin', {
+    path: '/', // Ensure the cookie applies to the entire site
+    expires: 1, // Optional: Set expiration (1 day in this case)
+  });
+
+  window.location.href = `${window.location.origin}/#/menu-editor`;
+  setTimeout(() => {
+    window.location.reload();
+  }, 2000);
+};
 
 onMounted(async () => {
   console.log("yooo");
@@ -176,10 +215,14 @@ onMounted(async () => {
 }
 
 .order-history-bar {
-  height: 50vh;
+  height: auto; /* Allow height to adjust to content */
+  max-height: 50vh; /* Add a maximum height for scrollable content */
   border-radius: 12px;
   margin-bottom: 1rem;
+  padding: 1rem; /* Add padding to avoid content overflowing */
+  overflow-y: auto; /* Enable scrolling if content exceeds max-height */
 }
+
 
 .logout-bar {
   height: 10vh;
@@ -190,7 +233,6 @@ onMounted(async () => {
   cursor: pointer;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 .history-title{
@@ -200,6 +242,63 @@ onMounted(async () => {
 
 .logout-text{
   display: flex;
+}
+
+.qa-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 0.1rem solid #ffcc00;
+  box-shadow: 3px 6px 10px rgba(255, 230, 0, 0.5);
+  border-radius: 12px;
+}
+
+.qa-title {
+  color: #ffa600;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.qa-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Adds spacing between Q&A entries */
+}
+
+.qa-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.q-text,
+.a-text {
+  margin-bottom: 0.5rem;
+  word-wrap: break-word; /* Handle long words or URLs */
+}
+
+.q-btn {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.clickable-text {
+  color: #ffa600; /* Highlight color */
+  text-decoration: underline; /* Add underline for link appearance */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.clickable-text:hover {
+  color: #ff8800; /* Change color on hover for feedback */
+}
+
+.clickable-link {
+  color: #ffa600; /* Highlight color */
+  text-decoration: underline; /* Underline to resemble a link */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+.clickable-link:hover {
+  color: #ff8800; /* Change color on hover for feedback */
 }
 
 </style>

@@ -24,35 +24,87 @@
       <q-input v-model="password" label="Password" type="password" outlined dense />
     </q-card-section>
     <q-card-actions align="center">
-      <q-btn label="Login" color="primary" @click="tryLogin" class="login-button" />
+      <q-btn label="Login" color="primary" :disable="!account || !password" @click="tryLogin" class="login-button" />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { Notify, useQuasar } from 'quasar';
-import{LoginInfo,RegisterInfo,UserInfo} from '../interfaces/User'
+import { Notify } from 'quasar';
 import lightLogo from '@/assets/MomPosMainPage.webp';
 import darkLogo from '@/assets/MomPosMainPageDark.webp';
 import { useThemeStore } from '@/stores/themeStore';
-import { login,register } from '../api/MomPosApi';
-
-const $q = useQuasar();
+import { login } from '../api/MomPosApi';
 const account = ref('');
 const password = ref('');
+import { useRoute, useRouter } from 'vue-router';
 
-const showRegister = ref(false);
+const route = useRoute();
+const router = useRouter();
+
+const redirectTo = typeof route.query.from === 'string' ? route.query.from : '/'
+
+
 
 const themeStore = useThemeStore();
 const tryLogin = async () => {
+  // Validate account and password
+  const validateInput = () => {
+    let error = '';
+
+    // Account validation
+    if (account.value.length < 6 || account.value.length > 20) {
+      error += 'Account must be 6-20 characters long. ';
+    }
+
+    if (!/^[a-zA-Z0-9._]+$/.test(account.value)) {
+      error += 'Account must not include special characters other than "." and "_". ';
+    }
+
+    if (/[_\.]{2,}/.test(account.value)) {
+      error += 'Account must not include consecutive special characters. ';
+    }
+
+    if (!/^[a-zA-Z0-9]/.test(account.value) || !/[a-zA-Z0-9]$/.test(account.value)) {
+      error += 'Account must start and end with a letter or number. ';
+    }
+
+    if (/\b(admin|root)\b/.test(account.value)) {
+      error += 'Account must not include reserved words like "admin" or "root". ';
+    }
+
+    // Password validation
+    if (password.value.length < 8 || password.value.length > 20) {
+      error += 'Password must be 8-20 characters long. ';
+    }
+
+    if (!/[a-zA-Z]/.test(password.value) || !/\d/.test(password.value)) {
+      error += 'Password must include both letters and numbers. ';
+    }
+
+    return error;
+  };
+
+  const validationError = validateInput();
+  if (validationError) {
+    Notify.create({
+      type: 'negative',
+      message: validationError.trim(),
+    });
+    return; // Stop login process if validation fails
+  }
+
   try {
     const result = await login({ account: account.value, password: password.value });
     Notify.create({
       type: 'positive',
       message: 'Login successful!',
     });
-    location.reload();
+    router.push(redirectTo);
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
   } catch (error: any) {
     Notify.create({
       type: 'negative',
@@ -62,14 +114,11 @@ const tryLogin = async () => {
 };
 
 
+
 // Dynamic logo source based on theme
 const logoSrc = computed(() =>
         themeStore.isDarkMode ? darkLogo : lightLogo
       );
-
-const openRegister = () => {
-  showRegister.value = true;
-};
 
 </script>
 

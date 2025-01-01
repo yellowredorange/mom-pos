@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { AllMenusApiResponse,Category,MenuItem,MenuItemOption,UploadImageResponse  } from '../interfaces/Menu'
+import{LoginInfo,RegisterInfo,UserInfo} from '../interfaces/User'
 import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
 import { Cookies } from 'quasar'
 
@@ -8,7 +9,8 @@ const api = axios.create({
   headers: {
       'Content-Type': 'application/json',
       'token': Cookies.get("token") ? Cookies.get("token") : ""
-  }
+  },
+  withCredentials: true
 })
 
 export const getAllMenus = async (): Promise<AllMenusApiResponse>  => {
@@ -149,3 +151,66 @@ export const deleteMenuItemOption = async (optionId: number): Promise<void> => {
   }
 };
 
+export const login = async (loginInfo: LoginInfo): Promise<string> => {
+  try {
+    const response = await api.post('/Auth/login', loginInfo);
+    return response.data;
+  } catch (error: any) {
+    // Extract the 'errors' field from the response
+    const errorMessage = error.response?.data?.errors || 'An unexpected error occurred.';
+    console.error('Login Error:', errorMessage);
+    throw new Error(errorMessage); // Throw the extracted error message
+  }
+};
+
+export const register = async(registerInfo: RegisterInfo):Promise<string> =>{
+  try{
+    const response = await api.post('/Auth/register',registerInfo);
+    return response.data;
+  } catch (error) {
+    console.error('Error register', error);
+    throw error;
+  }
+}
+
+export async function getUserInfoById(id: number): Promise<UserInfo> {
+  try {
+    const response = await api.get<UserInfo>(`/UserInfo/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching UserInfo by ID:', error);
+    throw error;
+  }
+}
+
+// Add a new UserInfo
+export async function addUserInfo(userInfo: UserInfo): Promise<UserInfo> {
+  try {
+    const response = await api.post<UserInfo>(`/api/UserInfo`, userInfo);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding new UserInfo:', error);
+    throw error;
+  }
+}
+
+// Update an existing UserInfo
+export async function updateUserInfo(userInfo: UserInfo): Promise<UserInfo> {
+  try {
+    const response = await api.put<UserInfo>(`/api/UserInfo/${userInfo.userInfoId}`, userInfo);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating UserInfo:', error);
+    throw error;
+  }
+}
+
+// Delete a UserInfo by ID
+export async function deleteUserInfo(id: number): Promise<void> {
+  try {
+    await api.delete(`/api/UserInfo/${id}`);
+  } catch (error) {
+    console.error('Error deleting UserInfo:', error);
+    throw error;
+  }
+}

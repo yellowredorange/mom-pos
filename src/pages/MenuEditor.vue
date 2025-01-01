@@ -1,6 +1,7 @@
 <template>
   <q-page padding class="menu-editor">
-    <h1 class="text-2xl font-bold mb-4">Menu Configuration</h1>
+    <h5 class="page-title">📝Menu Editor  </h5>
+    <div style="font-size:1rem; margin-bottom: 1rem; text-align: center;">You can edit your store menu by this! 🍳</div>
     <q-btn color="primary" class="mb-4" @click="showAddCategoryDialog = true">Add Category</q-btn>
     <q-dialog v-model="showAddCategoryDialog" persistent>
       <q-card>
@@ -159,7 +160,7 @@ import draggable from 'vuedraggable';
 import { useQuasar } from 'quasar';
 import { onBeforeRouteLeave } from 'vue-router';
 import EditPhotoFrame from '@/components/EditPhotoFrame.vue';
-import { uploadImage } from '../api/MosPosApi';
+import { uploadImage } from '../api/MomPosApi';
 
 const $q = useQuasar();
 const menuStore = useMenuStore();
@@ -653,5 +654,10 @@ onBeforeRouteLeave((_to, _from, next) => {
   .q-item {
     touch-action: pan-x pan-y;
   }
+}
+.page-title {
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
 }
 </style>

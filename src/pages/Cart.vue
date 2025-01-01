@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <h5 class="page-title">🛒Shopping Cart  </h5>
     <q-list v-if="cart.length" bordered separator class="rounded-borders">
       <q-item v-for="(item, index) in cart" :key="index" class="q-py-md">
         <q-item-section avatar>
@@ -145,5 +146,11 @@ const checkout = async () => {
   font-size: 1.15rem;
   color:rgba(0, 0, 0, 0.821);
   font-weight: 550;
+}
+
+.page-title {
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
 }
 </style>

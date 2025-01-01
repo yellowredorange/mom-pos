@@ -1,5 +1,7 @@
 <template>
   <q-page padding>
+    <h5 class="page-title">🛍️Order History  </h5>
+    <div style="font-size:1rem; margin-bottom: 1rem; text-align: center;">Your order hisotry will be displayed in here. 🍳</div>
     <q-list bordered separator>
       <div v-if="loading" class="loading-overlay">
         <q-spinner-dots color="white" size="50px" />
@@ -95,6 +97,12 @@ const formatOptions = (options: string[]): string => {
   justify-content: center;
   align-items: center;
   z-index: 9999;
+}
+
+.page-title {
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
 }
 
 </style>

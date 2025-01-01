@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { MenuConfiguration, Category, MenuItem } from '../interfaces/Menu';
-import { addMenuItem, getAllMenus,getOrderHistory,addCategoryAPI ,removeCategoryAPI,removeMenuItem,submitOrder, updateAllMenuConfiguration, updateCategory, updateMenuItem } from '../api/MosPosApi';
+import { addMenuItem, getAllMenus,getOrderHistory,addCategoryAPI ,removeCategoryAPI,removeMenuItem,submitOrder, updateAllMenuConfiguration, updateCategory, updateMenuItem } from '../api/MomPosApi';
 import { OrderItem, CreateOrderRequest, OrderResponse } from '@/interfaces/Order';
 import { SelectedOption, CartItem } from '../interfaces/Order';
 import isEqual from 'lodash/isEqual';

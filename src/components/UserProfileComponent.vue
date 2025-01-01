@@ -4,7 +4,7 @@
       <div class="text-h6">Edit Profile</div>
     </q-card-section>
     <q-card-section>
-      <q-input v-model="user.name" label="Name" outlined dense />
+      <q-input v-model="user.userName" label="Name" outlined dense />
       <q-input v-model="user.email" label="Email" outlined dense />
       <q-input v-model="user.phone" label="Phone" outlined dense />
     </q-card-section>
@@ -17,10 +17,10 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '../stores/userStore';
 
-const authStore = useAuthStore();
-const user = ref({ ...authStore.user });
+const userStore = useUserStore();
+const user = ref({ ...userStore.user });
 
 const saveProfile = async () => {
   if (!user.value.name || !user.value.email) {
@@ -28,7 +28,7 @@ const saveProfile = async () => {
     return;
   }
 
-  const success = await authStore.updateProfile(user.value);
+  const success = await userStore.updateProfile(user.value);
   if (success) {
     alert('Profile updated successfully!');
     $emit('close'); // 關閉彈窗

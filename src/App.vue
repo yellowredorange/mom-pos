@@ -25,7 +25,8 @@
             <q-route-tab :to="'/cart'" :label="`Cart (${cartItemCount})`" icon="shopping_cart">
               <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
             </q-route-tab>
-            <q-route-tab to="/menu-editor" label="Editor" icon="edit" />
+            <q-route-tab v-if="shopper || admin" to="/menu-editor" label="Editor" icon="edit" />
+            <q-route-tab v-if="customer || admin" to="/order-history" label="History" icon="history" />
             <q-route-tab to="/user" label="User" icon="fas fa-user-circle" />
           </q-tabs>
         </div>
@@ -66,7 +67,8 @@
         <q-route-tab :to="'/cart'" icon="shopping_cart">
           <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
         </q-route-tab>
-        <q-route-tab to="/menu-editor" icon="edit" />
+        <q-route-tab v-if="shopper || admin" to="/menu-editor" icon="edit" />
+        <q-route-tab v-if="customer || admin" to="/order-history" icon="history" />
         <q-route-tab to="/user" icon="fas fa-user-circle" />
       </q-tabs>
     </q-footer>
@@ -80,13 +82,18 @@ import { useMenuStore } from './stores/menuStore';
 import { computed, onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useThemeStore } from './stores/themeStore';
+const $q = useQuasar();
+const permission = ref($q.cookies.get("permission"))
+const shopper = ref(false);
+const admin = ref(false);
+const customer = ref(false);
 
 const menuStore = useMenuStore();
 const { cartItemCount } = storeToRefs(menuStore);
 const isFadeOut = ref(false);
 const isFadeIn = ref(false);
 const loading = ref(true);
-const $q = useQuasar();
+
 const isDark = ref($q.dark.isActive)
 
 const themeStore = useThemeStore();
@@ -106,11 +113,18 @@ const buttonLabel = computed(() => {
   return $q.screen.lt.sm ? '' : isDark.value ? 'Light Mode' : 'Dark Mode';
 });
 
+const permissionSet = () => {
+  shopper.value = permission.value==="shopper"?true:false;
+  customer.value = permission.value==="customer"?true:false;
+  admin.value = permission.value==="admin"?true:false;
+};
+
 
 onMounted(() => {
+  permissionSet();
   setTimeout(() => {
     loading.value = false;
-  }, 3000); // 给足够的时间加载样式
+  }, 3000);
 });
 const onMarqueeIteration = () => {
   isFadeOut.value = true;

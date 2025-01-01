@@ -4,7 +4,6 @@
       <!-- 用戶資料條 -->
       <q-card
   class="user-profile-bar"
-  @click="showProfile = true"
 >
   <q-card-section class="row items-center">
     <!-- 左側頭像 -->
@@ -17,8 +16,8 @@
 
     <!-- 右側名稱和電子郵件 -->
     <div class="q-ml-md">
-      <div class="text-h6" style="font-weight:700">{{ authStore.user?.name || 'Guest' }}</div>
-      <div>{{ authStore.user?.email || 'Not logged in' }}</div>
+      <div class="text-h6" style="font-weight:700">{{ userStore.user?.userName || 'Guest' }}</div>
+      <div>{{  permissionUpper|| 'Not logged in' }}</div>
     </div>
   </q-card-section>
 </q-card>
@@ -46,7 +45,10 @@
 
       <!-- 彈窗 -->
       <q-dialog v-model="showLogin" persistent>
-        <login-component />
+        <login-component @open-register="openRegister" @close="closeLogin" />
+      </q-dialog>
+      <q-dialog v-model="showRegister" persistent>
+        <register-component @open-login="openLogin" @close="closeRegister" />
       </q-dialog>
       <q-dialog v-model="showProfile">
         <user-profile-component @close="showProfile = false" />
@@ -59,24 +61,47 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useAuthStore } from '../stores/auth';
+import { ref,onMounted } from 'vue';
+import { useUserStore } from '../stores/userStore';
 import LoginComponent from '../components/LoginComponent.vue';
 import UserProfileComponent from '../components/UserProfileComponent.vue';
 import UserHistoryOrderComponent from '../components/UserHistoryOrderComponent.vue';
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
+import RegisterComponent from '../components/RegisterComponent.vue';
 
+import { AxiosError } from 'axios';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const orders = ref([
   { id: 1, date: '2024-12-01', total: '$100', items: [{ id: 1, name: 'Item A', quantity: 2, price: '$50' }] },
   { id: 2, date: '2024-12-15', total: '$150', items: [{ id: 2, name: 'Item B', quantity: 3, price: '$50' }] },
 ]);
 
-const showLogin = ref(true);
+const showLogin = ref(false);
+const showRegister = ref(false);
 const showProfile = ref(false);
 const showOrderDetails = ref(false);
 const selectedOrder = ref(null);
+
+const openLogin = () => {
+  showRegister.value = false;
+  showLogin.value = true;
+};
+
+const openRegister = () => {
+  showLogin.value = false;
+  showRegister.value = true;
+};
+
+const closeLogin = () => {
+  showLogin.value = false;
+};
+
+const closeRegister = () => {
+  showRegister.value = false;
+};
 
 const viewOrder = (order: null) => {
   selectedOrder.value = order;
@@ -85,10 +110,47 @@ const viewOrder = (order: null) => {
 
 const logout = () => {
   if (confirm('Are you sure you want to logout?')) {
-    authStore.logout();
+    userStore.logout();
+    $q.cookies.remove('token')
+    $q.cookies.remove('permission')
+    $q.cookies.remove('userId')
+    isInitialized=false;
     window.location.href = '/user';
   } 
 };
+let isInitialized = false;
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
+const token = getCookie('token');
+const userId = getCookie('userId');
+const permission = getCookie('permission');
+const permissionUpper=permission?.toUpperCase()
+console.log(token)
+
+onMounted(async () => {
+  console.log("yooo");
+  if (!token || !userId) {
+    showLogin.value = true;
+    return;
+  }
+  if(isInitialized){
+    return;
+  }
+  try {
+    await userStore.fetchUserInfo(parseInt(userId));
+    isInitialized=true;
+  } catch (error) {
+    if ((error as AxiosError).response?.status === 401) {
+      showLogin.value = true;
+    } else {
+      console.error('Unexpected error:', error);
+    }
+  }
+});
+
 </script>
 
 <style scoped lang="scss">
@@ -108,7 +170,6 @@ const logout = () => {
   border-radius: 1rem;
   background-color: #ffa600;
   color: #fff;
-  cursor: pointer;
   display: flex;
   align-items: center; /* 垂直置中 */
   margin-bottom: 1rem;

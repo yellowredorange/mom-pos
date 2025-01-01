@@ -102,6 +102,7 @@ return {
 }
 .logo {
   max-width: 50vh;
+  width: 100%;
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }

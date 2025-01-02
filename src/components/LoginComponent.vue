@@ -1,5 +1,5 @@
 <template>
-  <q-card class="rounded-borders" style="max-width: 400px;">
+  <q-card class="rounded-borders authpage">
     <q-card-section>
       <div class="text-h6 text-center ">Welcome!</div>
     </q-card-section>
@@ -96,7 +96,7 @@ const tryLogin = async () => {
   }
 
   try {
-    const result = await login({ account: account.value, password: password.value });
+    await login({ account: account.value, password: password.value });
     Notify.create({
       type: 'positive',
       message: 'Login successful!',
@@ -125,8 +125,8 @@ const logoSrc = computed(() =>
 <style scoped>
 .login-image {
   height: auto;
-  width: 100%;
-  max-width: 10rem;
+  max-width: 20vh;
+  max-height: 20vh;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;

@@ -86,23 +86,18 @@
 </template>
 
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref,onMounted } from 'vue';
 import { useUserStore } from '../stores/userStore';
-import LoginComponent from '../components/LoginComponent.vue';
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
 import RegisterComponent from '../components/RegisterComponent.vue';
+import LoginComponent from '../components/LoginComponent.vue';
 
 import { AxiosError } from 'axios';
 import { useQuasar } from 'quasar';
 const $q = useQuasar();
 
 const userStore = useUserStore();
-const orders = ref([
-  { id: 1, date: '2024-12-01', total: '$100', items: [{ id: 1, name: 'Item A', quantity: 2, price: '$50' }] },
-  { id: 2, date: '2024-12-15', total: '$150', items: [{ id: 2, name: 'Item B', quantity: 3, price: '$50' }] },
-]);
-
 const showLogin = ref(false);
 const showRegister = ref(false);
 const showProfile = ref(false);

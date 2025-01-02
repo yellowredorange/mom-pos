@@ -1,5 +1,5 @@
 <template>
-  <q-card class="rounded-borders" style="max-width: 400px;">
+  <q-card class="rounded-borders" style="max-width: 50rem;">
     <q-card-section>
       <div class="text-h6 text-center">Register</div>
     </q-card-section>
@@ -82,7 +82,7 @@ const tryRegister = async () => {
   }
 
   try {
-    const result = await register({
+    await register({
       account: account.value,
       password: password.value,
       name: userName.value,

@@ -9,7 +9,6 @@ import quasarLang from 'quasar/lang/zh-TW'; // 或者其他语言
 import 'quasar/dist/quasar.sass';
 import '@quasar/extras/material-icons/material-icons.css';
 import quasarIconSet from 'quasar/icon-set/material-icons';
-import ScrollReveal from 'scrollreveal';
 import '@/global.scss';
 import './css/app.scss';
 

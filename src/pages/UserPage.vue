@@ -137,16 +137,12 @@ const login = () => {
   showLogin.value=true;
   } 
 let isInitialized = false;
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'));
-  return match ? decodeURIComponent(match[2]) : null;
-}
 
-const token = getCookie('token');
-const userId = getCookie('userId');
-const permission = getCookie('permission');
-const permissionUpper=permission?.toUpperCase()
-console.log(token)
+const token = $q.cookies.get('token');
+const userId = $q.cookies.get('userId');
+const permission = $q.cookies.get('permission');
+const permissionUpper = permission?.toUpperCase();
+
 
 const becomeAdmin = () => {
   // Remove the 'permission' cookie

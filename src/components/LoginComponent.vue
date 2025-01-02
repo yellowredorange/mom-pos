@@ -38,12 +38,12 @@ import { useThemeStore } from '@/stores/themeStore';
 import { login } from '../api/MomPosApi';
 const account = ref('');
 const password = ref('');
-import { useRoute, useRouter } from 'vue-router';
+// import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute();
-const router = useRouter();
+// const route = useRoute();
+// const router = useRouter();
 
-const redirectTo = typeof route.query.from === 'string' ? route.query.from : '/'
+// const redirectTo = typeof route.query.from === 'string' ? route.query.from : '/'
 
 
 

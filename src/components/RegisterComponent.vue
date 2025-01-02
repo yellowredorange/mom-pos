@@ -1,5 +1,5 @@
 <template>
-  <q-card class="rounded-borders" style="max-width: 50rem;">
+  <q-card class="rounded-borders">
     <q-card-section>
       <div class="text-h6 text-center">Register</div>
     </q-card-section>
@@ -109,8 +109,8 @@ const tryRegister = async () => {
 <style scoped>
 .login-image {
   height: auto;
-  width: 100%;
-  max-width: 10rem;
+  max-width: 20vh;
+  max-height: 20vh;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;

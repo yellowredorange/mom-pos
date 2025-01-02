@@ -1,5 +1,5 @@
 <template>
-  <q-card class="rounded-borders authpage">
+  <q-card class="rounded-borders">
     <q-card-section>
       <div class="text-h6 text-center ">Welcome!</div>
     </q-card-section>

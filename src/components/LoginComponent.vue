@@ -101,10 +101,10 @@ const tryLogin = async () => {
       type: 'positive',
       message: 'Login successful!',
     });
-    router.push(redirectTo);
-    setTimeout(() => {
-      window.location.reload();
-    }, 0);
+    // router.push(redirectTo);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 0);
   } catch (error: any) {
     Notify.create({
       type: 'negative',

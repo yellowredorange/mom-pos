@@ -41,6 +41,8 @@ import { useMenuStore } from '@/stores/menuStore';
 import { useThemeStore } from '@/stores/themeStore';
 import lightLogo from '@/assets/MomPosMainPage.webp';
 import darkLogo from '@/assets/MomPosMainPageDark.webp';
+import { Cookies } from 'quasar'
+console.log(Cookies.get('token'));
 
 export default defineComponent({
   name: 'Home',

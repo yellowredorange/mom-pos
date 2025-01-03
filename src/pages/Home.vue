@@ -62,6 +62,14 @@ const onImageLoad = () => {
 const token = Cookies.get('token');
 console.log('Token from cookie:', token);
 
+const loadToken = async () => {
+  console.log('Waiting for token to be available...');
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // Delay for 2 seconds
+  const token2 = Cookies.get("token") ? Cookies.get("token") : ""
+  console.log('Token from cookie (after delay):', token2);
+};
+
+
 // Scroll reveal animations
 onMounted(async () => {
   ScrollReveal().reveal('.scroll-reveal', {
@@ -77,6 +85,7 @@ onMounted(async () => {
 
   // Fetch all menus
   await menuStore.fetchAllMenus();
+  await loadToken();
 });
 </script>
 

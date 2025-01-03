@@ -92,7 +92,7 @@ import RegisterComponent from '../components/RegisterComponent.vue';
 import LoginComponent from '../components/LoginComponent.vue';
 
 import { AxiosError } from 'axios';
-import {Cookies,useQuasar } from 'quasar';
+import {useQuasar } from 'quasar';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 const $q = useQuasar();
@@ -130,10 +130,7 @@ const logout = () => {
     persistent: true,
   }).onOk(() => {
     userStore.logout();
-    Cookies.remove('token');
-    Cookies.remove('permission');
-    Cookies.remove('userId');
-    authStore.clearPermission();
+    authStore.logout();
     isInitialized = false;
     router.push('/');
 

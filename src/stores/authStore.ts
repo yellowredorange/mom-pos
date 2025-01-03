@@ -11,10 +11,12 @@ export const useAuthStore = defineStore('auth', {
       this.permission = newPermission;
       Cookies.set('permission', newPermission, { path: '/', expires: 1 }); // Set cookie for 1 day
     },
-    clearPermission() {
+    logout() {
       this.permission = null;
-      Cookies.remove('permission', { path: '/' });
-      Cookies.remove('userId', { path: '/' });
+      this.userId=null;
+      Cookies.remove('token', { path: '/', domain: '.yellowredorange.com' });
+      Cookies.remove('permission', { path: '/', domain: '.yellowredorange.com' });
+      Cookies.remove('userId', { path: '/', domain: '.yellowredorange.com' });
     },
   },
 });

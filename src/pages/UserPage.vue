@@ -94,8 +94,7 @@ import RegisterComponent from '../components/RegisterComponent.vue';
 import LoginComponent from '../components/LoginComponent.vue';
 
 import { AxiosError } from 'axios';
-import { useQuasar } from 'quasar';
-const $q = useQuasar();
+import {Cookies } from 'quasar';
 
 const userStore = useUserStore();
 const showLogin = ref(false);
@@ -125,9 +124,9 @@ const closeRegister = () => {
 const logout = () => {
   if (confirm('Are you sure you want to logout?')) {
     userStore.logout();
-    $q.cookies.remove('token')
-    $q.cookies.remove('permission')
-    $q.cookies.remove('userId')
+    Cookies.remove('token')
+    Cookies.remove('permission')
+    Cookies.remove('userId')
     isInitialized=false;
     window.location.href = '/user';
   } 
@@ -138,30 +137,34 @@ const login = () => {
   } 
 let isInitialized = false;
 
-const token = $q.cookies.get('token');
-const userId = $q.cookies.get('userId');
-const permission = $q.cookies.get('permission');
+const token = Cookies.get("token")
+const userId = Cookies.get("userId")
+const permission = Cookies.get("permission")
 const permissionUpper = permission?.toUpperCase();
 
 
 const becomeAdmin = () => {
   // Remove the 'permission' cookie
-  $q.cookies.remove('permission');
+  Cookies.remove('permission');
 
   // Add a new 'permission' cookie with value 'admin'
-  $q.cookies.set('permission', 'admin', {
+  Cookies.set('permission', 'admin', {
     path: '/', // Ensure the cookie applies to the entire site
     expires: 1, // Optional: Set expiration (1 day in this case)
   });
 
+  // Redirect to the menu editor
   window.location.href = `${window.location.origin}/#/menu-editor`;
+
+  // Reload the page after 2 seconds
   setTimeout(() => {
     window.location.reload();
   }, 2000);
 };
 
 onMounted(async () => {
-  console.log("yooo");
+  console.log(token)
+  console.log(userId)
   if (!token || !userId) {
     showLogin.value = true;
     return;

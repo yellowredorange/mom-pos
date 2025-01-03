@@ -4,6 +4,7 @@ import { Cookies } from 'quasar';
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     permission: Cookies.get('permission') || null,
+    userId: Cookies.get('userId') || null,
   }),
   actions: {
     setPermission(newPermission: string) {
@@ -13,6 +14,7 @@ export const useAuthStore = defineStore('auth', {
     clearPermission() {
       this.permission = null;
       Cookies.remove('permission', { path: '/' });
+      Cookies.remove('userId', { path: '/' });
     },
   },
 });

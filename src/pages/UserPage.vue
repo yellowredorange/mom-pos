@@ -12,13 +12,13 @@
         </q-card-section>
       </q-card>
 
-      <q-card v-if="permission" class="logout-bar" @click="logout">
+      <q-card v-if="authStore.permission" class="logout-bar" @click="logout">
         <q-card-section class="logout-text">
           <div class="text-h6" style="font-weight:700">Logout</div>
         </q-card-section>
       </q-card>
 
-      <q-card v-if="!permission" class="logout-bar" @click="login">
+      <q-card v-if="!authStore.permission" class="logout-bar" @click="login">
         <q-card-section class="logout-text">
           <div class="text-h6" style="font-weight:700">Login</div>
         </q-card-section>
@@ -154,27 +154,18 @@ const logout = () => {
 
 const login = () => {
   showLogin.value=true;
-  } 
+  }
 let isInitialized = false;
-
-const token = Cookies.get("token")
-const userId = Cookies.get("userId")
-const permission = Cookies.get("permission")
-const permissionUpper = permission?.toUpperCase();
 const authStore = useAuthStore();
+const permissionUpper = authStore.permission?.toUpperCase();
 
 const becomeAdmin = () => {
-  // Remove the 'permission' cookie
-  Cookies.remove('permission');
-  // Add a new 'permission' cookie with value 'admin'
   authStore.setPermission('admin');
   router.push('/menu-editor');
 };
 
 onMounted(async () => {
-  console.log(token)
-  console.log(userId)
-  if (!token || !userId) {
+  if (!authStore.permission || !authStore.userId) {
     showLogin.value = true;
     return;
   }
@@ -182,7 +173,7 @@ onMounted(async () => {
     return;
   }
   try {
-    await userStore.fetchUserInfo(parseInt(userId));
+    await userStore.fetchUserInfo(parseInt(authStore.userId));
     isInitialized=true;
   } catch (error) {
     if ((error as AxiosError).response?.status === 401) {

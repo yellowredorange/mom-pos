@@ -14,9 +14,15 @@ export const useAuthStore = defineStore('auth', {
     logout() {
       this.permission = null;
       this.userId=null;
-      Cookies.remove('token', { path: '/', domain: '.yellowredorange.com' });
-      Cookies.remove('permission', { path: '/', domain: '.yellowredorange.com' });
-      Cookies.remove('userId', { path: '/', domain: '.yellowredorange.com' });
+      const isDevelopment = process.env.NODE_ENV === 'development';
+      const cookieOptions = isDevelopment
+        ? { path: '/' } // 開發環境不需要設定 domain
+        : { path: '/', domain: '.yellowredorange.com' }; // 生產環境需要指定 domain
+    
+      // 移除 Cookies
+      Cookies.remove('token', cookieOptions);
+      Cookies.remove('permission', cookieOptions);
+      Cookies.remove('userId', cookieOptions);
     },
   },
 });

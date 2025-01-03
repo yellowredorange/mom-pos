@@ -39,8 +39,6 @@
       </q-dialog>
     </div>
 
-    <!-- Q&A Section -->
-    <!-- Q&A Section -->
 <div class="qa-container beautiful-shadow">
   <div class="text-h6 flex flex-center qa-title">Q & A</div>
   <div class="qa-list">
@@ -94,8 +92,10 @@ import RegisterComponent from '../components/RegisterComponent.vue';
 import LoginComponent from '../components/LoginComponent.vue';
 
 import { AxiosError } from 'axios';
-import {Cookies } from 'quasar';
-
+import {Cookies,useQuasar } from 'quasar';
+import router from '@/router';
+import { useAuthStore } from '@/stores/authStore';
+const $q = useQuasar();
 const userStore = useUserStore();
 const showLogin = ref(false);
 const showRegister = ref(false);
@@ -122,15 +122,35 @@ const closeRegister = () => {
 };
 
 const logout = () => {
-  if (confirm('Are you sure you want to logout?')) {
+  $q.dialog({
+    title: 'Confirm Logout',
+    message: 'Are you sure you want to logout?',
+    ok: { label: 'Logout', color: 'primary' }, // Custom button label and style
+    cancel: { label: 'Cancel', color: 'primary', outline: true }, // Custom button label and style
+    persistent: true,
+  }).onOk(() => {
     userStore.logout();
-    Cookies.remove('token')
-    Cookies.remove('permission')
-    Cookies.remove('userId')
-    isInitialized=false;
-    window.location.href = '/user';
-  } 
+    Cookies.remove('token');
+    Cookies.remove('permission');
+    Cookies.remove('userId');
+    authStore.clearPermission();
+    isInitialized = false;
+    router.push('/');
+
+    // Notify user of successful logout
+    $q.notify({
+      color: 'secondary',
+      message: 'You have logged out successfully.',
+    });
+  }).onCancel(() => {
+    // Optional: Log or handle cancel action
+    $q.notify({
+      color: 'primary',
+      message: 'Logout canceled.',
+    });
+  });
 };
+
 
 const login = () => {
   showLogin.value=true;
@@ -141,25 +161,14 @@ const token = Cookies.get("token")
 const userId = Cookies.get("userId")
 const permission = Cookies.get("permission")
 const permissionUpper = permission?.toUpperCase();
-
+const authStore = useAuthStore();
 
 const becomeAdmin = () => {
   // Remove the 'permission' cookie
   Cookies.remove('permission');
-
   // Add a new 'permission' cookie with value 'admin'
-  Cookies.set('permission', 'admin', {
-    path: '/', // Ensure the cookie applies to the entire site
-    expires: 1, // Optional: Set expiration (1 day in this case)
-  });
-
-  // Redirect to the menu editor
-  window.location.href = `${window.location.origin}/#/menu-editor`;
-
-  // Reload the page after 2 seconds
-  setTimeout(() => {
-    window.location.reload();
-  }, 2000);
+  authStore.setPermission('admin');
+  router.push('/menu-editor');
 };
 
 onMounted(async () => {

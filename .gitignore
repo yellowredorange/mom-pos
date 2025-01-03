@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+*.timestamp-*
 node_modules
 dist
 dist-ssr
@@ -44,3 +44,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 
+vite.config.ts.timestamp-1735886806028-eaff779363d7c.mjs

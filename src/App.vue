@@ -82,11 +82,8 @@ import { useMenuStore } from './stores/menuStore';
 import { computed, onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useThemeStore } from './stores/themeStore';
+import { useAuthStore } from './stores/authStore';
 const $q = useQuasar();
-const permission = ref($q.cookies.get("permission"))
-const shopper = ref(false);
-const admin = ref(false);
-const customer = ref(false);
 
 const menuStore = useMenuStore();
 const { cartItemCount } = storeToRefs(menuStore);
@@ -113,15 +110,12 @@ const buttonLabel = computed(() => {
   return $q.screen.lt.sm ? '' : isDark.value ? 'Light Mode' : 'Dark Mode';
 });
 
-const permissionSet = () => {
-  shopper.value = permission.value==="shopper"?true:false;
-  customer.value = permission.value==="customer"?true:false;
-  admin.value = permission.value==="admin"?true:false;
-};
-
+const authStore = useAuthStore();
+const shopper = computed(() => authStore.permission === 'shopper');
+const customer = computed(() => authStore.permission === 'customer');
+const admin = computed(() => authStore.permission === 'admin');
 
 onMounted(() => {
-  permissionSet();
   setTimeout(() => {
     loading.value = false;
   }, 3000);

@@ -38,12 +38,12 @@ import { useThemeStore } from '@/stores/themeStore';
 import { login } from '../api/MomPosApi';
 const account = ref('');
 const password = ref('');
-// import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-// const route = useRoute();
-// const router = useRouter();
+const route = useRoute();
+const router = useRouter();
 
-// const redirectTo = typeof route.query.from === 'string' ? route.query.from : '/'
+const redirectTo = typeof route.query.from === 'string' ? route.query.from : '/'
 
 
 
@@ -101,10 +101,10 @@ const tryLogin = async () => {
       type: 'positive',
       message: 'Login successful!',
     });
-    // router.push(redirectTo);
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 0);
+    router.push(redirectTo);
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
   } catch (error: any) {
     Notify.create({
       type: 'negative',

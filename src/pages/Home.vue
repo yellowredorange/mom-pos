@@ -33,58 +33,50 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
+<script lang="ts" setup>
+import { ref, computed, onMounted } from 'vue';
 import ScrollReveal from 'scrollreveal';
 import VTypical from 'vue-typical';
 import { useMenuStore } from '@/stores/menuStore';
 import { useThemeStore } from '@/stores/themeStore';
 import lightLogo from '@/assets/MomPosMainPage.webp';
 import darkLogo from '@/assets/MomPosMainPageDark.webp';
-import { Cookies } from 'quasar'
-console.log(Cookies.get('token'));
+import { Cookies } from 'quasar';
 
-export default defineComponent({
-  name: 'Home',
-  setup() {
-      const menuStore = useMenuStore();
-      const themeStore = useThemeStore();
+// Retrieve stores
+const menuStore = useMenuStore();
+const themeStore = useThemeStore();
 
-      // Dynamically determine the logo based on dark mode
-      const logoSrc = computed(() =>
-        themeStore.isDarkMode ? darkLogo : lightLogo
-      );
+// Dynamically determine the logo based on dark mode
+const logoSrc = computed(() =>
+  themeStore.isDarkMode ? darkLogo : lightLogo
+);
 
-      const imageLoaded = ref(false);
-      const onImageLoad = () => {
-        imageLoaded.value = true;
-      };
-    // Scroll reveal animations
-    onMounted(async () => {
-      ScrollReveal().reveal('.scroll-reveal', {
-        delay: 200,
-        distance: '15px',
-        origin: 'bottom',
-        duration: 1000,
-        easing: 'ease-in-out',
-        interval: 100,
-        opacity: 0,
-        scale: 1,
-      });
-      await menuStore.fetchAllMenus();
-    });
-
-    
-return {
-  logoSrc,
-  imageLoaded,
-  onImageLoad,
+// Handle image load state
+const imageLoaded = ref(false);
+const onImageLoad = () => {
+  imageLoaded.value = true;
 };
 
-  },
-  components: {
-    VTypical,
-  },
+
+const token = Cookies.get('token');
+console.log('Token from cookie:', token);
+
+// Scroll reveal animations
+onMounted(async () => {
+  ScrollReveal().reveal('.scroll-reveal', {
+    delay: 200,
+    distance: '15px',
+    origin: 'bottom',
+    duration: 1000,
+    easing: 'ease-in-out',
+    interval: 100,
+    opacity: 0,
+    scale: 1,
+  });
+
+  // Fetch all menus
+  await menuStore.fetchAllMenus();
 });
 </script>
 

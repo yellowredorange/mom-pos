@@ -12,7 +12,7 @@
         />
 
       </div>
-      <h1 class="text-3xl font-bold text-center mb-3 scroll-reveal">歡迎使用 MomPos</h1>
+      <h1 class="text-3xl font-bold text-center mb-3 scroll-reveal">{{ $t('welcome-to-mompos') }}</h1>
       <section class="text-center max-w-2xl mx-auto mb-8 scroll-reveal">
         <h2 class="text-xl font-semibold mb-2 scroll-reveal primary-color" >最貼心的點餐 Pos 神器</h2>
         <p class="mb-4">

@@ -11,9 +11,20 @@ import '@quasar/extras/material-icons/material-icons.css';
 import quasarIconSet from 'quasar/icon-set/material-icons';
 import '@/global.scss';
 import './css/app.scss';
-
+import { createI18n } from 'vue-i18n';
+import zhTW from './locales/zh-tw.json';
+import en from './locales/en.json';
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
+type MessageSchema = typeof zhTW;
+const i18n = createI18n<[MessageSchema], 'zh-tw' | 'en'>({
+  locale: 'zh-tw', // 默认语言
+  fallbackLocale: 'en', // 后备语言
+  messages: {
+    'zh-tw': zhTW,
+    en
+  }
+});
 
 const app = createApp(App);
 app.use(pinia);
@@ -27,6 +38,8 @@ app.use(Quasar, {
     dark: 'auto', // Ensure dark mode is enabled
   },
 });
+
+app.use(i18n);
 
 app.config.globalProperties.$q.dark.set(localStorage.getItem('darkMode') === 'true');
 

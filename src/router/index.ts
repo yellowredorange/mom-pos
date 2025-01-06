@@ -40,7 +40,16 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(_to, _from, savedPosition) {
+    // 如果有保存的位置 (例如，返回按鈕)，則滾動到保存的位置
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      // 否則，滾動到頁面的頂部
+      return { top: 0 };
+    }
+  },
 })
 
 export default router

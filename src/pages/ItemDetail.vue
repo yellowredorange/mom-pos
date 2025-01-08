@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <q-btn color="primary" class="q-mt-md q-px-xl" label="Add to Cart" @click="addToCart" style="font-size: 1.1rem;"/>
+      <q-btn color="primary" class="q-mt-md q-px-xl" :label=" $t('add-to-cart') " @click="addToCart" style="font-size: 1.1rem;"/>
 
       <div class="text-h6 q-mt-md text-center">{{ currentMenuItem.description }}</div>
     </div>

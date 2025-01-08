@@ -44,7 +44,7 @@
             <div class="price-font col">
               ${{ item.price.toFixed(2) }}</div>
               <div class="col-auto">
-              <q-btn color="primary" label="Add to Cart" @click="viewDetails(item)" /></div>
+              <q-btn color="primary" :label="$t('add-to-cart-0')"  @click="viewDetails(item)" /></div>
               </div>
           </q-card-section>
         </q-card>

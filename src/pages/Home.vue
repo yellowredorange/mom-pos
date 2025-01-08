@@ -14,27 +14,28 @@
       </div>
       <h1 class="text-3xl font-bold text-center mb-3 scroll-reveal">{{ $t('welcome-to-mompos') }}</h1>
       <section class="text-center max-w-2xl mx-auto mb-8 scroll-reveal">
-        <h2 class="text-xl font-semibold mb-2 scroll-reveal primary-color" >最貼心的點餐 Pos 神器</h2>
+        <h2 class="text-xl font-semibold mb-2 scroll-reveal primary-color" >{{ $t('best-pos-system') }}</h2>
         <p class="mb-4">
-          MOM POS 是一款專為餐廳設計的銷售點系統（POS），旨在幫助餐廳提高營運效率，方便餐廳店主快速上手。
+          {{ $t('description') }}
         </p>
         <v-typical
+        :key="languageStore.currentLanguage"
     class="blink text-lg font-semibold mb-2"
-    :steps="[' 媽媽都說', 1000, ' 媽媽都說好用的', 500, ' 媽媽都說好用的 Pos 系統', 1000,' 媽媽都說好用的 Pos 系統👍',500]"
+    :steps="typicalSteps"
     :loop="2"
     :wrapper="'h2'"
   ></v-typical>
         <p class="mb-4">
-          MOM POS 就像媽媽一樣的精打細算、細心周到，幫你省下時間，及精確的掌握店內營銷。包含了線上點餐、顧客追蹤、訂單管理。
+          {{$t('mompos-like-mom')}}
         </p>
-        <router-link to="/menu" class="cta-button">👉點餐去</router-link>
+        <router-link to="/menu" class="cta-button">{{ $t('cta-order-now') }}</router-link>
       </section>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, toRef } from 'vue';
 import ScrollReveal from 'scrollreveal';
 import VTypical from 'vue-typical';
 import { useMenuStore } from '@/stores/menuStore';
@@ -42,6 +43,37 @@ import { useThemeStore } from '@/stores/themeStore';
 import lightLogo from '@/assets/MomPosMainPage.webp';
 import darkLogo from '@/assets/MomPosMainPageDark.webp';
 import { Cookies } from 'quasar';
+import { useLanguageStore } from '@/stores/languageStore';
+import { storeToRefs } from 'pinia';
+
+const languageStore = useLanguageStore();
+const { currentLanguage } = storeToRefs(languageStore); 
+const typicalSteps = computed(() => {
+  console.log(currentLanguage.value);
+  if (currentLanguage.value === 'zh-tw') {
+    return [
+      ' 媽媽都說',
+      1000,
+      ' 媽媽都說好用的',
+      500,
+      ' 媽媽都說好用的 Pos 系統',
+      1000,
+      ' 媽媽都說好用的 Pos 系統👍',
+      500,
+    ];
+  } else {
+    return [
+      'Mom says',
+      1000,
+      "Mom says it's useful",
+      500,
+      "Mom says it's the best POS system",
+      1000,
+      "Mom says it's the best POS system 👍",
+      500,
+    ];
+  }
+});
 
 // Retrieve stores
 const menuStore = useMenuStore();

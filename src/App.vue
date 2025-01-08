@@ -17,19 +17,41 @@
         :label="buttonLabel"
         class="dark-mode-btn"
       />
+      <q-button @click="toggleLanguage" class="language-icon">
+        <q-img
+          src="@/assets/LanguageSwitch.png"
+          alt="{{ $t('language') }}"
+          class="language-icon"
+        />
+      </q-button>
         <q-space></q-space>
         <div class="gt-xs">
-          <q-tabs align="right">
-            <q-route-tab to="/" label="Home" icon="home" />
-            <q-route-tab to="/menu" label="Menu" icon="restaurant_menu" />
-            <q-route-tab :to="'/cart'" :label="`Cart (${cartItemCount})`" icon="shopping_cart">
-              <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
-            </q-route-tab>
-            <q-route-tab v-if="shopper || admin" to="/menu-editor" label="Editor" icon="edit" />
-            <q-route-tab v-if="customer || admin" to="/order-history" label="History" icon="history" />
-            <q-route-tab to="/user" label="User" icon="fas fa-user-circle" />
-          </q-tabs>
-        </div>
+      <q-tabs align="right">
+        <q-route-tab :to="'/'" :label="$t('home')" icon="home" />
+        <q-route-tab :to="'/menu'" :label="$t('menu')" icon="restaurant_menu" />
+        <q-route-tab 
+          :to="'/cart'" 
+          :label="`${$t('cart')} (${cartItemCount})`" 
+          icon="shopping_cart"
+        >
+          <q-badge color="accent" floating>{{ cartItemCount }}</q-badge>
+        </q-route-tab>
+        <q-route-tab 
+          v-if="shopper || admin" 
+          :to="'/menu-editor'" 
+          :label="$t('editor')" 
+          icon="edit" 
+        />
+        <q-route-tab 
+          v-if="customer || admin" 
+          :to="'/order-history'" 
+          :label="$t('history')" 
+          icon="history" 
+        />
+        <q-route-tab :to="'/user'" :label="$t('user')" icon="fas fa-user-circle" />
+      </q-tabs>
+    </div>
+
         <div class="lt-sm full-width row items-center justify-between">
           <div class="marquee-container col">
             <div class="marquee" @animationiteration="onMarqueeIteration">
@@ -84,12 +106,15 @@ import { useQuasar } from 'quasar';
 import { useThemeStore } from './stores/themeStore';
 import { useAuthStore } from './stores/authStore';
 const $q = useQuasar();
+import { useLanguageStore } from '@/stores/languageStore';
+const languageStore = useLanguageStore();
 
 const menuStore = useMenuStore();
 const { cartItemCount } = storeToRefs(menuStore);
 const isFadeOut = ref(false);
 const isFadeIn = ref(false);
 const loading = ref(true);
+languageStore.initializeLanguage();
 
 const isDark = ref($q.dark.isActive)
 
@@ -99,6 +124,10 @@ const themeStore = useThemeStore();
 themeStore.loadDarkMode();
 $q.dark.set(themeStore.isDarkMode);
 
+const toggleLanguage = () => {
+  languageStore.toggleLanguage();
+};
+
 // Toggle dark mode
 const toggleDarkMode = () => {
   $q.dark.toggle(); // Toggle Quasar dark mode
@@ -107,7 +136,7 @@ const toggleDarkMode = () => {
 
 // Dynamic label for the button
 const buttonLabel = computed(() => {
-  return $q.screen.lt.sm ? '' : isDark.value ? 'Light Mode' : 'Dark Mode';
+  return $q.screen.lt.sm ? '' : isDark.value ? '' : '';
 });
 
 const authStore = useAuthStore();
@@ -187,5 +216,12 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+.language-icon {
+    width: 3rem !important; /* Override global styles */
+    height: auto !important; /* Maintain aspect ratio */
+    object-fit: contain;
+    margin: 0 0.1rem !important;
+    cursor: pointer !important;
+}
 
 </style>

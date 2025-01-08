@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-    <h5 class="page-title">🛒Shopping Cart  </h5>
-    <div style="font-size:1rem; margin-bottom: 1rem; text-align: center;">Here is the product you order. 🍳</div>
+    <h5 class="page-title">{{ $t('shopping-cart') }}  </h5>
+    <div style="font-size:1rem; margin-bottom: 1rem; text-align: center;">{{ $t('here-is-the-product-you-order') }}</div>
     <q-list v-if="cart.length" bordered separator class="rounded-borders">
       <q-item v-for="(item, index) in cart" :key="index" class="q-py-md">
         <q-item-section avatar>
@@ -15,19 +15,22 @@
         <q-item-section>
           <q-item-label class="item-name">{{ item.name }}</q-item-label>
           <q-item-label caption>
-            Unit: ${{ item.price.toFixed(2) }}
+            {{ $t('unit-price', { price: item.price.toFixed(2) }) }}
           </q-item-label>
+
           <q-item-label v-for="option in item.selectedOptions" :key="option.category" caption>
             {{ option.category }}: {{ option.option }} (+${{ option.additionalPrice.toFixed(2) }})
           </q-item-label>
           <q-item-label caption>
-            Total: ${{ item.totalPrice.toFixed(2) }}
+            {{ $t('total') }}: ${{ item.totalPrice.toFixed(2) }}
           </q-item-label>
+
         </q-item-section>
         <q-item-section side>
           <div class="normal-font q-mb-sm">
-            Quantity: {{ item.quantity }}
+            {{ $t('quantity', { quantity: item.quantity }) }}
           </div>
+
           <q-btn-group spread>
             <q-btn flat color="secondary" icon="remove" @click="decreaseQuantity(index)" />
             <q-btn flat color="primary" icon="add" @click="increaseQuantity(index)" />
@@ -36,26 +39,25 @@
       </q-item>
     </q-list>
     <div v-else class="text-h6 q-pa-md text-center text-color text-color-primary">
-          Your cart is empty now.
-        </div>
+          {{ $t('your-cart-is-empty-now') }} </div>
         <div class="btn-container">
   <q-btn
   v-if="!cart.length"
     color="primary"
-    label="Buy Now 🤩"
+    :label="t('buy-now')"
     @click="$router.push('/menu')"
     class="cta-button"
   />
 </div>
     <q-separator v-if="cart.length" class="q-my-md" />
   <div v-if="cart.length" class="row justify-between items-center q-mt-md">
-    <q-btn outline class="clear-cart" label="Clear Cart" @click="clearCart" />
+    <q-btn outline class="clear-cart" label="{{ $t('clear-cart') }}" @click="clearCart" />
     <q-btn
     color="primary"
     @click="handleCheckout"
     class="cta-button">
       <div class="row no-wrap items-center">
-        <div class="q-mr-sm text-base">Checkout</div>
+        <div class="q-mr-sm text-base">{{ $t('checkout') }}</div>
         <q-separator vertical inset color="white" />
         <div class="q-ml-sm text-base">${{ Math.ceil(cartTotal).toFixed(2) }}</div>
       </div>
@@ -77,6 +79,9 @@ const { cart } = storeToRefs(menuStore);
 const cartTotal = computed(() => menuStore.cartTotal);
 const loading = ref(false);
 const $q = useQuasar();
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const increaseQuantity = (index: number) => {
   const item = cart.value[index];
@@ -93,21 +98,22 @@ const decreaseQuantity = (index: number) => {
 };
 
 const clearCart = () => {
-  $q.dialog({
-    title: 'Confirm',
-    message: 'Are you sure you want to clear your cart?',
-    ok: { label: 'Yes', color: 'primary'}, // Custom button label and style
-    cancel: { label: 'No', color: 'primary', outline: true }, // Custom button label and style
-    persistent: true,
-  }).onOk(() => {
-    menuStore.clearCart();
-    $q.notify({
-      color: 'secondary',
-      message: 'Cart cleared successfully!',
-    });
-  }).onCancel(() => {
-  });
-};
+      $q.dialog({
+        title: t('confirm'), // Use the `t` function for translation
+        message: t('clearCartMessage'), // Use the `t` function for the message
+        ok: { label: t('yes'), color: 'primary' }, // Translate button labels
+        cancel: { label: t('no'), color: 'primary', outline: true }, // Translate button labels
+        persistent: true,
+      }).onOk(() => {
+        menuStore.clearCart(); // Clear the cart using your store
+        $q.notify({
+          color: 'secondary',
+          message: t('cartCleared'), // Use translation for notification message
+        });
+      }).onCancel(() => {
+        // Handle cancel action if needed
+      });
+    };
 
 const checkout = async () => {
   loading.value = true;
@@ -124,23 +130,26 @@ const checkout = async () => {
   }
 };
 const handleCheckout = async () => {
-  // Ask for confirmation
-  const dialog = await $q.dialog({
-    title: 'Confirmation',
-    message: 'Are you sure you want to proceed with checkout?',
-    ok: { label: 'Yes', color: 'primary', outline: false },
-    cancel: { label: 'No', color: 'primary', outline: true },
-    persistent: true,
-  });
+  try {
+    // Ask for confirmation
+    const result = await $q.dialog({
+      title: 'Confirmation', // Use i18n if needed: $t('confirmation')
+      message: 'Are you sure you want to proceed with checkout?', // $t('proceedCheckout')
+      ok: { label: 'Yes', color: 'primary', outline: false }, // $t('yes')
+      cancel: { label: 'No', color: 'primary', outline: true }, // $t('no')
+      persistent: true,
+    }).onOk(() => true).onCancel(() => false);
 
-  dialog.onOk(async () => {
+    // Exit if user cancels
+    if (!result) return;
+
     // Check if the user is logged in
     const token = $q.cookies.get('token');
     if (!token) {
       Notify.create({
         type: 'negative',
         color: 'accent',
-        message: 'You are not logged in yet. Please login first.',
+        message: 'You are not logged in yet. Please login first.', // $t('notLoggedIn')
       });
       router.push({ path: '/user', query: { from: '/cart' } });
       return;
@@ -148,30 +157,32 @@ const handleCheckout = async () => {
 
     // Proceed with checkout
     try {
-      await checkout(); // Ensure this is your actual API call
+      await checkout(); // Replace `checkout` with your actual API call
       Notify.create({
         type: 'positive',
-        message: 'Checkout successful!',
+        message: 'Checkout successful!', // $t('checkoutSuccess')
       });
       router.push('/order-history'); // Redirect to order history after successful checkout
     } catch (error: any) {
       if (error.response?.status === 401) {
         Notify.create({
-          color: 'accent',
           type: 'negative',
-          message: 'Unauthorized. Please log in again.',
+          color: 'accent',
+          message: 'Unauthorized. Please log in again.', // $t('unauthorized')
         });
-        router.push('/user'); // Redirect to UserPage
+        router.push('/user'); // Redirect to login page
       } else {
         Notify.create({
-          color: 'accent',
           type: 'negative',
-          message: error.message || 'An error occurred during checkout.',
+          color: 'accent',
+          message: error.message || 'An error occurred during checkout.', // $t('checkoutError')
         });
       }
     }
-  });
-
+  } catch (error) {
+    console.error('Dialog error:', error);
+    // Optionally handle unexpected dialog errors
+  }
 };
 
 </script>

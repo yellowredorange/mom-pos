@@ -6,21 +6,21 @@
         <q-card-section class="row items-center">
           <q-btn flat round @click="" icon="fas fa-user" />
           <div class="q-ml-md">
-            <div class="text-h6" style="font-weight:700">{{ userStore.user?.userName || 'Guest' }}</div>
-            <div>{{ permissionUpper || 'Not logged in' }}</div>
+            <div class="text-h6" style="font-weight:700">{{ userStore.user?.userName || $t('guest') }}</div>
+            <div>{{ permissionUpper || $t('notLoggedIn') }}</div>
           </div>
         </q-card-section>
       </q-card>
 
       <q-card v-if="authStore.permission" class="logout-bar" @click="logout">
         <q-card-section class="logout-text">
-          <div class="text-h6" style="font-weight:700">Logout</div>
+          <div class="text-h6" style="font-weight:700">{{ $t('logout') }}</div>
         </q-card-section>
       </q-card>
 
       <q-card v-if="!authStore.permission" class="logout-bar" @click="login">
         <q-card-section class="logout-text">
-          <div class="text-h6" style="font-weight:700">Login</div>
+          <div class="text-h6" style="font-weight:700">{{ $t('login') }}</div>
         </q-card-section>
       </q-card>
 
@@ -39,49 +39,55 @@
       </q-dialog>
     </div>
 
-<div class="qa-container beautiful-shadow">
-  <div class="text-h6 flex flex-center qa-title">Q & A</div>
-  <div class="qa-list">
-    <!-- Question 2 -->
-    <div class="qa-item">
-      <div class="q-text">
-        <strong>Q:</strong> Will you reveal my password?
-      </div>
-      <div class="a-text">
-        <strong>A:</strong> No. I use PasswordHasher in .NET Core, so your password is securely hashed and never actually stored in the database. Don't worry. You can also just use a fake password to register.
-      </div>
-    </div>
+    <div class="qa-container beautiful-shadow">
+      <div class="text-h6 flex flex-center qa-title">{{ $t('qaTitle') }}</div>
+      <div class="qa-list">
 
-    <!-- Question 3 -->
-    <div class="qa-item">
-      <div class="q-text">
-        <strong>Q:</strong> Did you build this on your own?
-      </div>
-      <div class="a-text">
-        <strong>A:</strong> Yes, I built both the frontend and backend by myself. 
-        Click 
-        <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/project-details')">here</a>
-        to see the details of how I built this. I initially thought it would be a simple website, but it became much more complicated and cost me a lot of time. 🫠 If you'd like to give me some advice, just click 
-        <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/feedback')">here</a>. Thank you!
-      </div>
-    </div>
-
-    <!-- Question 1 -->
-    <div class="qa-item">
-      <div class="q-text">
-        <strong>Q:</strong> Can I become a shopper to build my own menu?
-      </div>
-      <div class="a-text">
-        <strong>A:</strong> Yes, but not yet. It's still in the beta phase. You can click
-        <span class="clickable-text" @click="becomeAdmin">here</span>
-        to explore the menu editor, but you can't save changes to the backend yet.
-      </div>
-    </div>
+        <div class="qa-item">
+  <div class="q-text">
+    <strong>{{ $t('question') }}:</strong> {{ $t('passwordRevealQuestion') }}
+  </div>
+  <div class="a-text">
+    <strong>{{ $t('answer') }}:</strong>
+    {{ $t('passwordRevealAnswerPart1') }}
+    {{ $t('passwordRevealAnswerPart2') }}
   </div>
 </div>
 
+          <div class="qa-item">
+          <div class="q-text">
+            <strong>{{ $t('question') }}:</strong> {{ $t('shopperQuestion') }}
+          </div>
+          <div class="a-text">
+            <strong>{{ $t('answer') }}:</strong>
+            {{ $t('shopperAnswerPart1') }}
+            <span class="clickable-text" @click="becomeAdmin">{{ $t('shopperAnswerPart3') }}</span>
+            {{ $t('shopperAnswerPart4') }}
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="q-text">
+            <strong>{{ $t('question') }}:</strong> {{ $t('selfBuildQuestion') }}
+          </div>
+          <div class="a-text">
+            <strong>{{ $t('answer') }}:</strong>
+            {{ $t('selfBuildAnswerPart1') }}
+            <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/project-details')">{{ $t('selfBuildAnswerPart3') }}</a>
+            {{ $t('selfBuildAnswerPart4') }}
+            {{ $t('selfBuildAnswerPart5') }}
+            <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/feedback')">{{ $t('selfBuildAnswerPart7') }}</a>
+            {{ $t('selfBuildAnswerPart8') }}
+          </div>
+        </div>
+
+
+      </div>
+
+      </div>
   </q-page>
 </template>
+
 
 
 <script setup lang="ts">

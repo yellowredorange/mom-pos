@@ -1,7 +1,9 @@
 <template>
   <q-page padding>
-    <h5 class="page-title">🛍️Order History  </h5>
-    <div style="font-size:1rem; margin-bottom: 1rem; text-align: center;">Your order hisotry will be displayed in here. 🍳</div>
+    <h5 class="page-title">{{ $t('orderHistory.title') }}</h5>
+    <div style="font-size:1rem; margin-bottom: 1rem; text-align: center;">
+      {{ $t('orderHistory.description') }}
+    </div>
     <q-list bordered separator>
       <div v-if="loading" class="loading-overlay">
         <q-spinner-dots color="white" size="50px" />
@@ -10,8 +12,8 @@
         v-if="orders && orders.length > 0"
         v-for="order in orders"
         :key="order.orderId"
-        :label="`Order #${order.orderId} - ${formatDate(order.orderDate)}`"
-        :caption="`Total: $${order.totalAmount.toFixed(2)}`"
+        :label="`${$t('orderHistory.orderLabel', { orderId: order.orderId, date: formatDate(order.orderDate) })}`"
+        :caption="`${$t('orderHistory.total', { totalAmount: order.totalAmount.toFixed(2) })}`"
         group="orders"
         header-class="order-header"
       >
@@ -23,10 +25,11 @@
                   <q-item-label>
                     {{ item.quantity }}x {{ item.menuItemName }}
                     <span v-if="hasValidOptions(item.options)" class="text-grey-8">
-    ({{ formatOptions(item.options) }})</span>
+                      ({{ formatOptions(item.options) }})
+                    </span>
                   </q-item-label>
                   <q-item-label caption>
-                    Unit Price: ${{ item.unitPrice.toFixed(2) }}
+                    {{ $t('orderHistory.unitPrice', { unitPrice: item.unitPrice.toFixed(2) }) }}
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side>
@@ -37,17 +40,17 @@
           </q-card-section>
         </q-card>
       </q-expansion-item>
-      <div v-else class="text-h6 q-pa-md text-center text-color text-color-primary">
-          You don't have any orders yet.
-          <div class="btn-container">
-  <q-btn
-    color="primary"
-    label="Order Now 🤩"
-    @click="$router.push('/menu')"
-    class="cta-button"
-  />
-</div>
+      <div v-else class="text-h6 q-pa-md text-center text-color-primary">
+        {{ $t('orderHistory.noOrders') }}
+        <div class="btn-container">
+          <q-btn
+            color="primary"
+            :label="$t('orderHistory.orderNow')"
+            @click="$router.push('/menu')"
+            class="cta-button"
+          />
         </div>
+      </div>
     </q-list>
   </q-page>
 </template>

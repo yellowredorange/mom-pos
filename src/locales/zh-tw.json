@@ -18,19 +18,18 @@
   "checkout": "結帳",
   "clear-cart": "清空購物車",
   "confirm": "確認",
-  "here-is-the-product-you-order": "這裡是你所有的訂單紀錄 🍳",
+  "here-is-the-product-you-order": "這裡是您目前選購的商品 🍳",
   "shopping-cart": "購物車 🛒",
-  "unitPrice": "單價: ${price}",
-  "clearCartMessage": "您確定要清空購物車嗎？",
+  "unitPrice": "單價",
+  "total": "總計",
+  "priceDetails": "{label}: ${price}",
+    "clearCartMessage": "您確定要清空購物車嗎？",
   "yes": "是",
   "no": "否",
   "cartCleared": "購物車已成功清空！",
   "your-cart-is-empty-now": "您的購物車現在是空的。",
-  "total": "總計",
+
   "confirmation": "確認",
-  "proceedCheckout": "您確定要結帳嗎？",
-  "checkoutSuccess": "結帳成功！",
-  "checkoutFailed": "結帳失敗，請再試一次。",
   "add-to-cart-0": "加入購物車",
   "logout": "登出",
   "login": "登入",
@@ -91,6 +90,19 @@
     "admin": "管理員"
   },
   "guest": "訪客",
-  "notLoggedIn": "您尚未登入，請先登入。"
-  
+  "notLoggedIn": "您尚未登入，請先登入。",
+    "orderHistory": {
+      "title": "🛍️ 訂單紀錄",
+      "description": "您的訂單紀錄將顯示在此處。🍳",
+      "orderLabel": "訂單 #{orderId} - {date}",
+      "total": "總金額: ${totalAmount}",
+      "unitPrice": "單價: ${unitPrice}",
+      "noOrders": "您尚未有任何訂單。",
+      "orderNow": "立即下單 🤩"
+    },
+  "confirmCheckout": "送出訂單",
+  "proceedCheckout": "您確定要送出訂單嗎？",
+  "checkoutSuccess": "結帳成功！",
+  "unauthorized": "未授權，請重新登入。",
+  "checkoutError": "結帳時發生錯誤，請再試一次。"
 }

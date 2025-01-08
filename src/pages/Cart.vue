@@ -15,14 +15,14 @@
         <q-item-section>
           <q-item-label class="item-name">{{ item.name }}</q-item-label>
           <q-item-label caption>
-            {{ $t('unit-price', { price: item.price.toFixed(2) }) }}
+            {{ $t('priceDetails', { label: $t('unitPrice'), price: item.price.toFixed(2) }) }}
           </q-item-label>
 
           <q-item-label v-for="option in item.selectedOptions" :key="option.category" caption>
             {{ option.category }}: {{ option.option }} (+${{ option.additionalPrice.toFixed(2) }})
           </q-item-label>
           <q-item-label caption>
-            {{ $t('total') }}: ${{ item.totalPrice.toFixed(2) }}
+            {{ $t('priceDetails', { label: $t('total'), price: item.totalPrice.toFixed(2) }) }}
           </q-item-label>
 
         </q-item-section>
@@ -51,7 +51,7 @@
 </div>
     <q-separator v-if="cart.length" class="q-my-md" />
   <div v-if="cart.length" class="row justify-between items-center q-mt-md">
-    <q-btn outline class="clear-cart" label="{{ $t('clear-cart') }}" @click="clearCart" />
+    <q-btn outline class="clear-cart" :label="$t('clear-cart')" @click="clearCart" />
     <q-btn
     color="primary"
     @click="handleCheckout"
@@ -67,17 +67,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useMenuStore } from '../stores/menuStore';
-import { useQuasar,Notify } from 'quasar';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
 const menuStore = useMenuStore();
 const { cart } = storeToRefs(menuStore);
 const cartTotal = computed(() => menuStore.cartTotal);
-const loading = ref(false);
 const $q = useQuasar();
 import { useI18n } from 'vue-i18n';
 
@@ -116,72 +115,74 @@ const clearCart = () => {
     };
 
 const checkout = async () => {
-  loading.value = true;
   try {
     await menuStore.checkout();
-    router.push('/order-history');
-  } catch (error) {
     $q.notify({
-      color: 'accent',
-      message: 'Failed to place order. Please try again.'
+      type: 'positive',
+      message: t('checkoutSuccess')
     });
-  } finally {
-    loading.value = false;
-  }
-};
-const handleCheckout = async () => {
-  try {
-    // Ask for confirmation
-    const result = await $q.dialog({
-      title: 'Confirmation', // Use i18n if needed: $t('confirmation')
-      message: 'Are you sure you want to proceed with checkout?', // $t('proceedCheckout')
-      ok: { label: 'Yes', color: 'primary', outline: false }, // $t('yes')
-      cancel: { label: 'No', color: 'primary', outline: true }, // $t('no')
-      persistent: true,
-    }).onOk(() => true).onCancel(() => false);
-
-    // Exit if user cancels
-    if (!result) return;
-
-    // Check if the user is logged in
-    const token = $q.cookies.get('token');
-    if (!token) {
-      Notify.create({
+    router.push('/order-history');
+  } catch (error:any) {
+    if (error.response?.status === 401) {
+      $q.notify({
         type: 'negative',
         color: 'accent',
-        message: 'You are not logged in yet. Please login first.', // $t('notLoggedIn')
+        message: t('unauthorized')
       });
-      router.push({ path: '/user', query: { from: '/cart' } });
-      return;
+      router.push('/user'); // 重定向到用戶頁面
+    } else {
+      $q.notify({
+        type: 'negative',
+        color: 'accent',
+        message: error.message || t('checkoutError')
+      });
     }
+  }
+};
 
-    // Proceed with checkout
-    try {
-      await checkout(); // Replace `checkout` with your actual API call
-      Notify.create({
-        type: 'positive',
-        message: 'Checkout successful!', // $t('checkoutSuccess')
-      });
-      router.push('/order-history'); // Redirect to order history after successful checkout
-    } catch (error: any) {
-      if (error.response?.status === 401) {
-        Notify.create({
+const handleCheckout = async () => {
+  try {
+    const dialog = await $q.dialog({
+      title: t('confirmation'),
+      message: t('proceedCheckout'),
+      ok: { label: t('yes'), color: 'primary', outline: false },
+      cancel: { label: t('no'), color: 'primary', outline: true },
+      persistent: true,
+    });
+
+    dialog.onOk(async () => {
+      // 檢查用戶是否已登錄
+      const token = $q.cookies.get('token');
+      if (!token) {
+        $q.notify({
           type: 'negative',
           color: 'accent',
-          message: 'Unauthorized. Please log in again.', // $t('unauthorized')
+          message: t('notLoggedIn'),
         });
-        router.push('/user'); // Redirect to login page
-      } else {
-        Notify.create({
-          type: 'negative',
-          color: 'accent',
-          message: error.message || 'An error occurred during checkout.', // $t('checkoutError')
-        });
+        router.push({ path: '/user', query: { from: '/cart' } });
+        return;
       }
-    }
+
+      // 執行結帳操作
+      await checkout();
+    });
+
+    // 當用戶點擊 "Cancel" 或關閉對話框
+    dialog.onCancel(() => {
+    });
+
+    dialog.onDismiss(() => {
+      // 可選：處理對話框被關閉的情況
+      console.log('Dialog dismissed.');
+    });
   } catch (error) {
+    // 處理對話框初始化失敗的情況
     console.error('Dialog error:', error);
-    // Optionally handle unexpected dialog errors
+    $q.notify({
+      type: 'negative',
+      color: 'accent',
+      message: 'An error occurred while opening the confirmation dialog.', // 這裡也可以進行翻譯
+    });
   }
 };
 

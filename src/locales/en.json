@@ -14,7 +14,9 @@
   "cart": "CART",
   "shopping-cart": "Shopping Cart 🛒",
   "here-is-the-product-you-order": "Here is the product you order. 🍳",
-  "unitPrice": "Unit: ${price}",
+    "unitPrice": "Unit Price",
+    "total": "Total",
+    "priceDetails": "{label}: ${price}",
   "checkout": "Checkout",
   "clear-cart": "Clear Cart",
   "buy-now": "Buy Now 🤩",
@@ -26,7 +28,6 @@
   "no": "No",
   "cartCleared": "Cart cleared successfully!",
   "your-cart-is-empty-now": "Your cart is empty now.",
-  "total": "Total",
   "confirmation": "Confirmation",
   "proceedCheckout": "Are you sure you want to proceed with checkout?",
   "checkoutSuccess": "Checkout successful!",
@@ -93,10 +94,19 @@
     "admin": "Administrator"
   },
   "guest": "Guest",
-  "notLoggedIn": "You are not logged in yet. Please login first."
+  "notLoggedIn": "You are not logged in yet. Please login first.",
 
-  
-
-  
+    "orderHistory": {
+      "title": "🛍️ Order History",
+      "description": "Your order history will be displayed here. 🍳",
+      "orderLabel": "Order #{orderId} - {date}",
+      "total": "Total: ${totalAmount}",
+      "unitPrice": "Unit Price: ${unitPrice}",
+      "noOrders": "You don't have any orders yet.",
+      "orderNow": "Order Now 🤩"
+    },
+      "confirmCheckout": "Confirm Checkout",
+      "unauthorized": "Unauthorized. Please log in again.",
+      "checkoutError": "An error occurred during checkout. Please try again."
 
 }

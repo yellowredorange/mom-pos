@@ -14,7 +14,7 @@
   "cart": "CART",
   "shopping-cart": "Shopping Cart 🛒",
   "here-is-the-product-you-order": "Here is the product you order. 🍳",
-    "unitPrice": "Unit Price",
+    "unitPrice": "Unit",
     "total": "Total",
     "priceDetails": "{label}: ${price}",
   "checkout": "Checkout",

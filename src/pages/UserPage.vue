@@ -199,7 +199,7 @@ onMounted(async () => {
 <style scoped lang="scss">
 .user-page-container {
   width: 100%;
-  max-width: 1000px;
+  max-width: 50rem;
 }
 
 .beautiful-shadow{
@@ -254,6 +254,7 @@ onMounted(async () => {
   border: 0.1rem solid #ffcc00;
   box-shadow: 3px 6px 10px rgba(255, 230, 0, 0.5);
   border-radius: 12px;
+  max-width: 50rem;
 }
 
 .qa-title {

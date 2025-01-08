@@ -59,6 +59,8 @@
 import { ref, onMounted } from 'vue';
 import { useMenuStore } from '../stores/menuStore';
 import { OrderResponse } from '../interfaces/Order';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 const menuStore = useMenuStore();
 const orders = ref<OrderResponse[]>([]);
@@ -73,10 +75,11 @@ onMounted(async () => {
     loading.value=false;
   }
 });
+dayjs.extend(utc);
 
 const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleString();
+  const day = dayjs.utc(new Date(dateString.toString() + "Z")).local();
+  return day.format("YYYY-MM-DD HH:mm");
 };
 
 const hasValidOptions = (options: string[]): boolean => {

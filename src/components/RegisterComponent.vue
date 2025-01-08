@@ -1,26 +1,36 @@
 <template>
   <q-card class="rounded-borders">
     <q-card-section>
-      <div class="text-h6 text-center">Register</div>
+      <div class="text-h6 text-center">{{ $t('register') }}</div>
     </q-card-section>
     <q-card-section>
       <div class="flex-center">
-      <img
-        :src="logoSrc"
-        spinner-color="white"
-        class="login-image"
-      />
-    </div>
-     <q-input v-model="userName" label="User Name" outlined dense />
-      <q-input v-model="account" label="Account" outlined dense />
-      <q-input v-model="password" label="Password" type="password" outlined dense />
+        <img
+          :src="logoSrc"
+          spinner-color="white"
+          class="login-image"
+        />
+      </div>
+      <q-input v-model="userName" :label="$t('userName')" outlined dense />
+      <q-input v-model="account" :label="$t('account')" outlined dense />
+      <q-input v-model="password" :label="$t('password')" type="password" outlined dense />
     </q-card-section>
     <q-card-actions align="center" class="card-margin">
-      <q-btn label="Register" color="primary" @click="tryRegister" :disable="!account || !password || !userName"/>
-      <q-btn label="Back to Login" color="secondary" @click="$emit('open-login')" />
+      <q-btn 
+        :label="$t('register')" 
+        color="primary" 
+        @click="tryRegister" 
+        :disable="!account || !password || !userName" 
+      />
+      <q-btn 
+        :label="$t('backToLogin')" 
+        color="secondary" 
+        @click="$emit('open-login')" 
+      />
     </q-card-actions>
   </q-card>
 </template>
+
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
@@ -29,7 +39,8 @@ import { register } from '../api/MomPosApi';
 import { useThemeStore } from '@/stores/themeStore';
 import lightLogo from '@/assets/MomPosMainPage.webp';
 import darkLogo from '@/assets/MomPosMainPageDark.webp';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const account = ref('');
 const password = ref('');
 const userName = ref('');
@@ -39,34 +50,34 @@ const logoSrc = computed(() =>
         themeStore.isDarkMode ? darkLogo : lightLogo
       );
 
-const tryRegister = async () => {
+      const tryRegister = async () => {
   // Validate input fields
   const validateInput = () => {
     let error = '';
 
     // Account validation
     if (account.value.length < 6 || account.value.length > 20) {
-      error += 'Account must be 6-20 characters long. ';
+      error += `${t('accountLengthError')} `;
     }
     if (!/^[a-zA-Z0-9._]+$/.test(account.value)) {
-      error += 'Account must not include special characters other than "." and "_". ';
+      error += `${t('accountSpecialCharError')} `;
     }
     if (/[_\.]{2,}/.test(account.value)) {
-      error += 'Account must not include consecutive special characters. ';
+      error += `${t('accountConsecutiveError')} `;
     }
     if (!/^[a-zA-Z0-9]/.test(account.value) || !/[a-zA-Z0-9]$/.test(account.value)) {
-      error += 'Account must start and end with a letter or number. ';
+      error += `${t('accountStartEndError')} `;
     }
     if (/\b(admin|root)\b/.test(account.value)) {
-      error += 'Account must not include reserved words like "admin" or "root". ';
+      error += `${t('accountReservedWordError')} `;
     }
 
     // Password validation
     if (password.value.length < 8 || password.value.length > 20) {
-      error += 'Password must be 8-20 characters long. ';
+      error += `${t('passwordLengthError')} `;
     }
     if (!/[a-zA-Z]/.test(password.value) || !/\d/.test(password.value)) {
-      error += 'Password must include both letters and numbers. ';
+      error += `${t('passwordComplexityError')} `;
     }
 
     return error;
@@ -90,7 +101,7 @@ const tryRegister = async () => {
 
     Notify.create({
       type: 'positive',
-      message: 'Registration successful! Please login now',
+      message: t('registerSuccess'),
     });
 
     setTimeout(() => {
@@ -99,10 +110,11 @@ const tryRegister = async () => {
   } catch (error: any) {
     Notify.create({
       type: 'negative',
-      message: error.message || 'Registration failed. Please try again.',
+      message: error.message || t('registerFailed'),
     });
   }
 };
+
 
 </script>
 

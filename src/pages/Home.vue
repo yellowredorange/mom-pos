@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, toRef } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import ScrollReveal from 'scrollreveal';
 import VTypical from 'vue-typical';
 import { useMenuStore } from '@/stores/menuStore';

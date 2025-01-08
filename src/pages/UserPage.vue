@@ -7,7 +7,7 @@
           <q-btn flat round @click="" icon="fas fa-user" />
           <div class="q-ml-md">
             <div class="text-h6" style="font-weight:700">{{ userStore.user?.userName || $t('guest') }}</div>
-            <div>{{ permissionUpper || $t('notLoggedIn') }}</div>
+            <div>{{ translatedPermission  }}</div>
           </div>
         </q-card-section>
       </q-card>
@@ -91,7 +91,7 @@
 
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, computed } from 'vue';
 import { useUserStore } from '../stores/userStore';
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
 import RegisterComponent from '../components/RegisterComponent.vue';
@@ -101,6 +101,9 @@ import { AxiosError } from 'axios';
 import {useQuasar } from 'quasar';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 const $q = useQuasar();
 const userStore = useUserStore();
 const showLogin = ref(false);
@@ -129,10 +132,10 @@ const closeRegister = () => {
 
 const logout = () => {
   $q.dialog({
-    title: 'Confirm Logout',
-    message: 'Are you sure you want to logout?',
-    ok: { label: 'Logout', color: 'primary' }, // Custom button label and style
-    cancel: { label: 'Cancel', color: 'primary', outline: true }, // Custom button label and style
+    title: t('confirmLogout'), // 國際化的標題
+    message: t('confirmLogoutMessage'), // 國際化的訊息
+    ok: { label: t('logout'), color: 'primary' }, // 國際化的按鈕標籤
+    cancel: { label: t('cancel'), color: 'primary', outline: true }, // 國際化的按鈕標籤
     persistent: true,
   }).onOk(() => {
     userStore.logout();
@@ -143,24 +146,28 @@ const logout = () => {
     // Notify user of successful logout
     $q.notify({
       color: 'secondary',
-      message: 'You have logged out successfully.',
+      message: t('logoutSuccess'), // 國際化的成功訊息
     });
   }).onCancel(() => {
     // Optional: Log or handle cancel action
     $q.notify({
       color: 'primary',
-      message: 'Logout canceled.',
+      message: t('logoutCanceled'), // 國際化的取消訊息
     });
   });
 };
-
 
 const login = () => {
   showLogin.value=true;
   }
 let isInitialized = false;
+
 const authStore = useAuthStore();
-const permissionUpper = authStore.permission?.toUpperCase();
+const translatedPermission = computed(() => {
+  const permission = authStore.permission?.toLowerCase();
+  if (!permission) return t('notLoggedIn'); // Default for no permission
+  return t(`permissions.${permission}`);
+});
 
 const becomeAdmin = () => {
   authStore.setPermission('admin');

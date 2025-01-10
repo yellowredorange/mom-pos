@@ -14,9 +14,9 @@
   "cart": "CART",
   "shopping-cart": "Shopping Cart 🛒",
   "here-is-the-product-you-order": "Here is the product you order. 🍳",
-    "unitPrice": "Unit",
-    "total": "Total",
-    "priceDetails": "{label}: ${price}",
+  "unitPrice": "Unit",
+  "total": "Total",
+  "priceDetails": "{label}: ${price}",
   "checkout": "Checkout",
   "clear-cart": "Clear Cart",
   "buy-now": "Buy Now 🤩",
@@ -41,17 +41,14 @@
   "qaTitle": "Q & A",
   "question": "Q",
   "answer": "A",
-
   "shopperQuestion": "Can I become a shopper to build my own menu?",
   "shopperAnswerPart1": "Yes, but not yet. It's still in the beta phase.",
   "shopperAnswerPart2": "You can click ",
   "shopperAnswerPart3": "here",
   "shopperAnswerPart4": " to explore the menu editor, but you can't save changes to the backend yet.",
-  
   "passwordRevealQuestion": "Will you reveal my password?",
   "passwordRevealAnswerPart1": "No. I use PasswordHasher in .NET Core, so your password is securely hashed and never actually stored in the database.",
   "passwordRevealAnswerPart2": "Don't worry. You can also just use a fake password to register.",
-  
   "selfBuildQuestion": "Did you build this on your own?",
   "selfBuildAnswerPart1": "Yes, I built both the frontend and backend by myself.",
   "selfBuildAnswerPart2": "Click ",
@@ -61,7 +58,6 @@
   "selfBuildAnswerPart6": "",
   "selfBuildAnswerPart7": "here",
   "selfBuildAnswerPart8": ". Thank you! 🧡",
-
   "welcome": "Welcome!",
   "noAccount": "Do not have account?",
   "clickForRegister": "Click For Register!",
@@ -77,17 +73,13 @@
   "passwordComplexityError": "Password must include both letters and numbers.",
   "loginSuccess": "Login successful!",
   "loginFailed": "Login failed. Please try again.",
-
-  
   "register": "Register",
   "userName": "User Name",
   "backToLogin": "Back to Login",
   "registerSuccess": "Registration successful! Please login now.",
   "registerFailed": "Registration failed. Please try again.",
-
   "cancel": "Cancel",
   "logoutCanceled": "Logout canceled.",
-
   "permissions": {
     "customer": "Customer",
     "shopper": "Shopper",
@@ -95,18 +87,17 @@
   },
   "guest": "Guest",
   "notLoggedIn": "You are not logged in yet. Please login first.",
-
-    "orderHistory": {
-      "title": "🛍️ Order History",
-      "description": "Your order history will be displayed here. 🍳",
-      "orderLabel": "Order #{orderId} - {date}",
-      "total": "Total: ${totalAmount}",
-      "unitPrice": "Unit Price: ${unitPrice}",
-      "noOrders": "You don't have any orders yet.",
-      "orderNow": "Order Now 🤩"
-    },
-      "confirmCheckout": "Confirm Checkout",
-      "unauthorized": "Unauthorized. Please log in again.",
-      "checkoutError": "An error occurred during checkout. Please try again."
-
+  "orderHistory": {
+    "title": "🛍️ Order History",
+    "description": "Your order history will be displayed here. 🍳",
+    "orderLabel": "Order #{orderId} - {date}",
+    "total": "Total: ${totalAmount}",
+    "unitPrice": "Unit Price: ${unitPrice}",
+    "noOrders": "You don't have any orders yet.",
+    "orderNow": "Order Now 🤩"
+  },
+  "confirmCheckout": "Confirm Checkout",
+  "unauthorized": "Unauthorized. Please log in again.",
+  "checkoutError": "An error occurred during checkout. Please try again.",
+  "loginTooMany": "You have tried to log in too many times. Please calm down. We will temporarily stop your login attempts."
 }

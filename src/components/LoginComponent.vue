@@ -55,7 +55,7 @@ const redirectTo = typeof route.query.from === 'string' ? route.query.from : '/'
 
 const themeStore = useThemeStore();
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n(); // 使用 i18n 的翻譯方法
+const { t } = useI18n();
 
 const tryLogin = async () => {
   // Validate account and password
@@ -115,12 +115,17 @@ const tryLogin = async () => {
       window.location.reload();
     }, 0);
   } catch (error: any) {
+    let errorMessage = error.message || t('loginFailed');
+    if(error.message=='loginTooMany'){
+      errorMessage =t("loginTooMany")
+    }
     Notify.create({
       type: 'negative',
-      message: error.message || t('loginFailed'),
+      message: errorMessage,
     });
   }
-};
+}
+
 
 // Dynamic logo source based on theme
 const logoSrc = computed(() =>

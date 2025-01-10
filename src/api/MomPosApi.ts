@@ -156,12 +156,18 @@ export const login = async (loginInfo: LoginInfo): Promise<string> => {
     const response = await api.post('/Auth/login', loginInfo);
     return response.data;
   } catch (error: any) {
+    let errorMessage =""
     // Extract the 'errors' field from the response
-    const errorMessage = error.response?.data?.errors || 'An unexpected error occurred.';
-    console.error('Login Error:', errorMessage);
-    throw new Error(errorMessage); // Throw the extracted error message
-  }
+    if(error.response?.status === 429){
+       errorMessage = 'loginTooMany';
+    }
+    else{
+       errorMessage = error.response?.data?.errors || 'An unexpected error occurred.';
+    }
+    console.log(error.response?.status)
+    throw new Error(errorMessage);
 };
+}
 
 export const register = async(registerInfo: RegisterInfo):Promise<string> =>{
   try{

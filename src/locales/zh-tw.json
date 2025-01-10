@@ -104,5 +104,6 @@
   "proceedCheckout": "您確定要送出訂單嗎？",
   "checkoutSuccess": "結帳成功！",
   "unauthorized": "未授權，請重新登入。",
-  "checkoutError": "結帳時發生錯誤，請再試一次。"
+  "checkoutError": "結帳時發生錯誤，請再試一次。",
+  "loginTooMany": "你嘗試太多次登入囉！我會暫停你的登入一陣子，喝口茶冷靜一下吧。如果試太多次會被鎖 IP 喔！"
 }

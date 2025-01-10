@@ -2,14 +2,15 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue';
-import router from './router'; // 引入路由
+import router from './router';
 import './index.css';
 import { Dialog, Notify, Quasar, Cookies } from 'quasar';
-import quasarLang from 'quasar/lang/zh-TW'; // 或者其他语言
+import quasarLang from 'quasar/lang/zh-TW';
 import 'quasar/dist/quasar.sass';
 import '@quasar/extras/material-icons/material-icons.css';
 import quasarIconSet from 'quasar/icon-set/material-icons';
 import '@/global.scss';
+import '@mdi/font/css/materialdesignicons.css';
 import './css/app.scss';
 import { createI18n } from 'vue-i18n';
 import zhTW from './locales/zh-tw.json';
@@ -18,8 +19,8 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 type MessageSchema = typeof zhTW;
 const i18n = createI18n<[MessageSchema], 'zh-tw' | 'en'>({
-  locale: 'zh-tw', // 默认语言
-  fallbackLocale: 'en', // 后备语言
+  locale: 'zh-tw',
+  fallbackLocale: 'en',
   messages: {
     'zh-tw': zhTW,
     en
@@ -35,7 +36,7 @@ app.use(Quasar, {
   lang: quasarLang,
   iconSet: quasarIconSet,
   config: {
-    dark: 'auto', // Ensure dark mode is enabled
+    dark: 'auto',
   },
 });
 

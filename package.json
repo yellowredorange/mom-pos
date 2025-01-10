@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gitgraph/js": "^1.4.0",
     "@mdi/font": "^7.4.47",
     "axios": "^1.7.2",
     "cropperjs": "^1.6.2",

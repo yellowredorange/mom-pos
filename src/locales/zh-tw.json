@@ -52,7 +52,7 @@
   "passwordRevealAnswerPart2": "若你真的怕的話，可以直接使用假密碼來註冊。",
   
   "selfBuildQuestion": "這是你獨立完成的嗎？",
-  "selfBuildAnswerPart1": "沒錯，我完成了前端的 UI 設計、API 串接，和後端的邏輯、資料庫設計，以及自動化部署、Docker 等。你可以點擊",
+  "selfBuildAnswerPart1": "沒錯，我完成了前端的 UI 設計、API 串接，和後端的三層式架構、資料庫設計，以及自動化部署、Docker 等。你可以點擊",
   "selfBuildAnswerPart2": "",
   "selfBuildAnswerPart3": "這裡",
   "selfBuildAnswerPart4": "查看我是如何完成這個專案的。",

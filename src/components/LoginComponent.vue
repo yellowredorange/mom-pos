@@ -137,8 +137,8 @@ const logoSrc = computed(() =>
 <style scoped>
 .login-image {
   height: auto;
-  max-width: 20vh;
-  max-height: 20vh;
+  max-width: 30vh;
+  max-height: 30vh;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;

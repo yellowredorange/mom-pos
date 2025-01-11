@@ -58,7 +58,7 @@
               🐎 &copy; 2024 MomPos. Created by Hendrix Huang. 🌟✨🐕
             </div>
           </div>
-          <div class="col-auto">
+          <div class="col-5 phone-icon">
             <q-btn flat round icon="mdi-github" type="a" href="https://github.com/yellowredorange" target="_blank" />
             <q-btn flat round icon="mdi-linkedin" type="a" href="https://www.linkedin.com/in/hendrixhuang/" target="_blank" />
           </div>
@@ -222,6 +222,10 @@ body {
     object-fit: contain;
     margin: 0 0.1rem !important;
     cursor: pointer !important;
+}
+
+.phone-icon{
+  margin-right: 2rem;
 }
 
 </style>

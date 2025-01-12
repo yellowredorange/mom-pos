@@ -76,7 +76,10 @@
             <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/project-details')">{{ $t('selfBuildAnswerPart3') }}</a>
             {{ $t('selfBuildAnswerPart4') }}
             {{ $t('selfBuildAnswerPart5') }}
-            <a href="javascript:void(0)" class="clickable-link" @click="$router.push('/feedback')">{{ $t('selfBuildAnswerPart7') }}</a>
+            <a 
+  href="mailto:yellowredorange1999@gmail.com?subject=About%20Project%20MomPos" 
+  class="clickable-link"
+>{{ $t('selfBuildAnswerPart7') }}</a>
             {{ $t('selfBuildAnswerPart8') }}
           </div>
         </div>

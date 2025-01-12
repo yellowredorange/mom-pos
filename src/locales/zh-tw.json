@@ -23,12 +23,11 @@
   "unitPrice": "單價",
   "total": "總計",
   "priceDetails": "{label}: ${price}",
-    "clearCartMessage": "您確定要清空購物車嗎？",
+  "clearCartMessage": "您確定要清空購物車嗎？",
   "yes": "是",
   "no": "否",
   "cartCleared": "購物車已成功清空！",
   "your-cart-is-empty-now": "您的購物車現在是空的。",
-
   "confirmation": "確認",
   "add-to-cart-0": "加入購物車",
   "logout": "登出",
@@ -40,17 +39,14 @@
   "qaTitle": "問與答",
   "question": "問",
   "answer": "答",
-
   "shopperQuestion": "我能成為管理員來建立自己的菜單開店嗎？",
   "shopperAnswerPart1": "目前還不行，這是我原先規劃的其中一個功能，讓所有人都能直接開店，但光是其他功能就耗掉我太多時間了，所以目前僅完成儲存單一菜單的變更。",
   "shopperAnswerPart2": "您可以點擊",
   "shopperAnswerPart3": "這裡",
   "shopperAnswerPart4": "來使用菜單編輯器，但目前無法實際儲存到後端。",
-
   "passwordRevealQuestion": "您會洩露我的密碼嗎？",
   "passwordRevealAnswerPart1": "放心，密碼都是經 PasswordHasher 加密後存在後端，並不會明碼儲存在資料庫中，我完全不會知道你的密碼。",
   "passwordRevealAnswerPart2": "若你真的怕的話，可以直接使用假密碼來註冊。",
-  
   "selfBuildQuestion": "這是你獨立完成的嗎？",
   "selfBuildAnswerPart1": "沒錯，我完成了前端的 UI 設計、API 串接，和後端的三層式架構、資料庫設計，以及自動化部署、Docker 等。你可以點擊",
   "selfBuildAnswerPart2": "",
@@ -59,8 +55,7 @@
   "selfBuildAnswerPart5": "我原本以為這只會是一個簡單的網站，但它遠比我預期的還要複雜太多了。一個簡單的功能，需要動到前端、後端、資料庫三邊，甚至有未知的 Bug 發生在 Docker 裡。而且我寫完一個功能又想再增一個功能，這些實在耗費我很多心力。🫠  如果你願意給我一些建議回饋，請點擊",
   "selfBuildAnswerPart6": "",
   "selfBuildAnswerPart7": "這裡",
-  "selfBuildAnswerPart8": "。感謝你！🧡",
-
+  "selfBuildAnswerPart8": "。或是 Email 到 yellowredorange1999@gmail.com。感謝你！🧡",
   "welcome": "歡迎！",
   "noAccount": "還沒有帳號嗎？",
   "clickForRegister": "點擊註冊！",
@@ -82,8 +77,6 @@
   "registerFailed": "註冊失敗，請再試一次。",
   "cancel": "取消",
   "logoutCanceled": "已取消登出。",
-
-  
   "permissions": {
     "customer": "顧客",
     "shopper": "商家",
@@ -91,15 +84,15 @@
   },
   "guest": "訪客",
   "notLoggedIn": "您尚未登入，請先登入。",
-    "orderHistory": {
-      "title": "🛍️ 訂單紀錄",
-      "description": "您的訂單紀錄將顯示在此處。🍳",
-      "orderLabel": "訂單 #{orderId} - {date}",
-      "total": "總金額: ${totalAmount}",
-      "unitPrice": "單價: ${unitPrice}",
-      "noOrders": "您尚未有任何訂單。",
-      "orderNow": "立即下單 🤩"
-    },
+  "orderHistory": {
+    "title": "🛍️ 訂單紀錄",
+    "description": "您的訂單紀錄將顯示在此處。🍳",
+    "orderLabel": "訂單 #{orderId} - {date}",
+    "total": "總金額: ${totalAmount}",
+    "unitPrice": "單價: ${unitPrice}",
+    "noOrders": "您尚未有任何訂單。",
+    "orderNow": "立即下單 🤩"
+  },
   "confirmCheckout": "送出訂單",
   "proceedCheckout": "您確定要送出訂單嗎？",
   "checkoutSuccess": "結帳成功！",

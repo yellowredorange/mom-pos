@@ -80,7 +80,7 @@
   href="mailto:yellowredorange1999@gmail.com?subject=About%20Project%20MomPos" 
   class="clickable-link"
 >{{ $t('selfBuildAnswerPart7') }}</a>
-            {{ $t('selfBuildAnswerPart8') }}
+            {{ $t('selfBuildAnswerPart8', { email: 'yellowredorange1999@gmail.com' }) }}
           </div>
         </div>
 

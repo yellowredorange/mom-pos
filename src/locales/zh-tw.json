@@ -55,7 +55,7 @@
   "selfBuildAnswerPart5": "我原本以為這只會是一個簡單的網站，但它遠比我預期的還要複雜太多了。一個簡單的功能，需要動到前端、後端、資料庫三邊，甚至有未知的 Bug 發生在 Docker 裡。而且我寫完一個功能又想再增一個功能，這些實在耗費我很多心力。🫠  如果你願意給我一些建議回饋，請點擊",
   "selfBuildAnswerPart6": "",
   "selfBuildAnswerPart7": "這裡",
-  "selfBuildAnswerPart8": "。或是 Email 到 yellowredorange1999@gmail.com。感謝你！🧡",
+  "selfBuildAnswerPart8": "。或是 Email 到 {email}。感謝你！🧡",
   "welcome": "歡迎！",
   "noAccount": "還沒有帳號嗎？",
   "clickForRegister": "點擊註冊！",

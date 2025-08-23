@@ -25,9 +25,9 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    
+    "esModuleInterop": true,
+    "types": ["scrollreveal"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src", "types"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "types": ["scrollreveal"]
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

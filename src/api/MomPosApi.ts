@@ -3,6 +3,7 @@ import { AllMenusApiResponse,Category,MenuItem,MenuItemOption,UploadImageRespons
 import{LoginInfo,RegisterInfo,UserInfo} from '../interfaces/User'
 import { CreateOrderRequest, OrderResponse  } from '../interfaces/Order'
 import { Cookies } from 'quasar'
+import allMenus from '../mocks/allmenus.json';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API,
@@ -15,8 +16,8 @@ const api = axios.create({
 
 export const getAllMenus = async (): Promise<AllMenusApiResponse>  => {
   try {
-    const response = await api.get<AllMenusApiResponse>('/MenuConfiguration/allmenus');
-    return response.data;
+    // const response = await api.get<AllMenusApiResponse>('/MenuConfiguration/allmenus');
+    return allMenus as AllMenusApiResponse;
   } catch (error) {
     console.error('Error fetching all menus:', error);
     throw error;

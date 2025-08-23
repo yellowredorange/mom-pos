@@ -1,0 +1,890 @@
+﻿[
+    {
+        "menuConfigurationId": 1,
+        "name": "AoDai",
+        "isActive": true,
+        "sortOrder": 1,
+        "categories": [
+            {
+                "categoryId": 1,
+                "name": "河粉",
+                "isActive": true,
+                "sortOrder": 1,
+                "menuItems": [
+                    {
+                        "menuItemId": 1,
+                        "name": "鮮牛肉肉丸河粉",
+                        "description": "精選新鮮牛肉搭配手工肉丸，口感鮮嫩多汁，每一口都充滿豐富的牛肉香氣。內含牛肉。",
+                        "price": 140.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737053/vuc0ksi5ryipcmvzuvhe.jpg",
+                        "sortOrder": 1,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 2,
+                        "name": "鮮牛肉河粉",
+                        "description": "經典的鮮牛肉河粉，湯頭清爽，搭配鮮嫩的牛肉片，讓您品嚐到最純正的越南風味。內含牛肉。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733662626/gbpscenazkwedhpofvwf.jpg",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 3,
+                        "name": "總統河粉",
+                        "description": "頂級總統河粉，選用最優質的牛肉，搭配特製湯頭，口感絕佳，適合品味高尚的您。內含牛肉。",
+                        "price": 250.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737076/mxiibv0ntxey9q78alrb.jpg",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 4,
+                        "name": "越式紅燒牛肉河粉",
+                        "description": "融合越南獨特香料，湯頭濃郁，牛肉鮮嫩，讓您每一口都充滿異國風情。內含牛肉。",
+                        "price": 160.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737097/qzctsvw72f1ygckogxsw.jpg",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 5,
+                        "name": "什錦炒河粉",
+                        "description": "多種食材精心烹調的什錦炒河粉，口感豐富，色香味俱全，帶給您滿滿的驚喜。內含豬肉和海鮮。",
+                        "price": 120.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 6,
+                        "name": "烤排骨乾河粉",
+                        "description": "香氣四溢的烤排骨乾河粉，排骨肉質鮮美，搭配河粉，讓您一口接一口，停不下來。內含豬肉。",
+                        "price": 110.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737124/drilzfyeheges8mf5zrf.jpg",
+                        "sortOrder": 6,
+                        "menuItemOptions": [
+                            {
+                                "menuItemOptionId": 1,
+                                "option": "魚露",
+                                "optionCategory": "口味",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 1
+                            },
+                            {
+                                "menuItemOptionId": 2,
+                                "option": "醬油",
+                                "optionCategory": "口味",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 2
+                            }
+                        ]
+                    },
+                    {
+                        "menuItemId": 7,
+                        "name": "炸春捲乾河粉",
+                        "description": "金黃酥脆的炸春捲乾河粉，外酥內嫩，搭配清爽的河粉，絕對是您不容錯過的美味。內含豬肉。",
+                        "price": 110.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737148/lf4qbkpiliq6vi9h6ttn.jpg",
+                        "sortOrder": 7,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 8,
+                        "name": "蝦醬乾河粉",
+                        "description": "獨特風味的蝦醬乾河粉，濃郁的蝦醬香氣撲鼻而來，讓人垂涎欲滴。內含蝦。",
+                        "price": 100.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737179/utj5jly60omg5boxgjqo.jpg",
+                        "sortOrder": 8,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 2,
+                "name": "米線",
+                "isActive": false,
+                "sortOrder": 2,
+                "menuItems": [
+                    {
+                        "menuItemId": 9,
+                        "name": "原味海鮮米線",
+                        "description": "清淡爽口的原味海鮮米線，海鮮的鮮味完美融入湯頭，帶給您無與倫比的享受。內含海鮮。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733662810/l00vqvurbmdrwcharbdp.jpg",
+                        "sortOrder": 1,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 10,
+                        "name": "酸辣海鮮米線",
+                        "description": "酸辣開胃的海鮮米線，濃郁的湯頭搭配鮮嫩的海鮮，讓您每一口都充滿驚喜。內含海鮮。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 11,
+                        "name": "鮮牛肉肉丸米線",
+                        "description": "鮮牛肉搭配手工肉丸，湯頭濃郁，米線滑順，讓您享受美味的同時也能品味健康。內含牛肉。",
+                        "price": 140.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 12,
+                        "name": "鮮牛肉米線",
+                        "description": "經典的鮮牛肉米線，湯頭鮮美，牛肉嫩滑，每一口都讓您回味無窮。內含牛肉。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 13,
+                        "name": "順化牛肉米線 (辣)",
+                        "description": "順化風味的辣牛肉米線，湯頭香辣濃郁，牛肉鮮嫩，讓您大快朵頤。內含牛肉。",
+                        "price": 140.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 14,
+                        "name": "越式紅燒牛肉米線",
+                        "description": "越式紅燒湯頭醇厚，牛肉軟嫩，風味獨特。內含牛肉。",
+                        "price": 160.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 6,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 15,
+                        "name": "烤排骨乾米線",
+                        "description": "香烤排骨搭配乾米線，口感豐富，味道絕佳。內含豬肉。",
+                        "price": 110.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 7,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 16,
+                        "name": "炸春捲乾米線",
+                        "description": "酥脆的炸春捲乾米線，外酥內嫩，口感一流。內含豬肉。",
+                        "price": 110.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 8,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 17,
+                        "name": "蝦醬乾米線",
+                        "description": "獨特風味的蝦醬乾米線，濃郁的蝦醬香氣撲鼻而來，讓人垂涎欲滴。內含蝦。",
+                        "price": 100.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 10,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 3,
+                "name": "泡麵",
+                "isActive": false,
+                "sortOrder": 3,
+                "menuItems": [
+                    {
+                        "menuItemId": 18,
+                        "name": "原味海鮮泡麵",
+                        "description": "海鮮的鮮美與泡麵的滑順完美結合，帶給您豐富的口感享受。內含海鮮。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 1,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 19,
+                        "name": "酸辣海鮮泡麵",
+                        "description": "酸辣開胃的海鮮泡麵，湯頭濃郁，海鮮鮮嫩，讓您每一口都充滿驚喜。內含海鮮。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 20,
+                        "name": "鮮牛肉肉丸泡麵",
+                        "description": "鮮牛肉搭配肉丸的泡麵，湯頭濃郁，泡麵滑順，讓您享受美味的同時也能品味健康。內含牛肉。",
+                        "price": 140.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 21,
+                        "name": "鮮牛肉泡麵",
+                        "description": "經典的鮮牛肉泡麵，湯頭鮮美，牛肉嫩滑，每一口都讓您回味無窮。內含牛肉。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 22,
+                        "name": "越式紅燒牛肉泡麵",
+                        "description": "越式紅燒湯頭醇厚，牛肉軟嫩，風味獨特。內含牛肉。",
+                        "price": 160.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 23,
+                        "name": "什錦炒泡麵",
+                        "description": "多種食材精心烹調的什錦炒泡麵，口感豐富，色香味俱全，帶給您滿滿的驚喜。內含豬肉和海鮮。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 6,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 4,
+                "name": "飯類",
+                "isActive": true,
+                "sortOrder": 4,
+                "menuItems": [
+                    {
+                        "menuItemId": 24,
+                        "name": "香茅烤排骨飯",
+                        "description": "排骨肉質鮮美，搭配香噴噴的米飯，讓您一口接一口，停不下來。內含豬肉。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737228/ppck5nmive8f6d4tasna.jpg",
+                        "sortOrder": 1,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 25,
+                        "name": "魚露炸雞翅飯",
+                        "description": "雞翅酥脆可口，搭配特製魚露，風味獨特，讓您回味無窮。內含雞肉。",
+                        "price": 100.00,
+                        "isActive": false,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737266/asr4ev7wfuewhx3f39sz.jpg",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 26,
+                        "name": "豬肉香茅蝦醬飯",
+                        "description": "香茅與蝦醬完美結合，味道鮮美，豬肉嫩滑，讓人食指大動。內含豬肉、蝦。",
+                        "price": 100.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 27,
+                        "name": "鮫魚蒸蛋飯",
+                        "description": "重口味鮫魚搭上蒸蛋調味，搭配香噴噴的米飯，讓您一口接一口，停不下來。內含魚肉。",
+                        "price": 100.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 28,
+                        "name": "香茅烤三層肉飯",
+                        "description": "三層肉質地豐富，搭配香茅的獨特香氣，讓人食指大動。內含豬肉。",
+                        "price": 130.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 29,
+                        "name": "雞腿飯",
+                        "description": "香嫩多汁的雞腿飯，搭配特製醬汁和香噴噴的米飯，是一道不可錯過的美味。內含雞肉。",
+                        "price": 130.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 6,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 30,
+                        "name": "蛋炒飯",
+                        "description": "經典的蛋炒飯，雞蛋的香氣融入每一粒米飯，簡單卻令人回味無窮。內含雞蛋。",
+                        "price": 90.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 7,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 31,
+                        "name": "牛肉炒飯",
+                        "description": "嫩滑的牛肉搭配香噴噴的炒飯，每一口都充滿了濃郁的肉香和米飯的香氣。內含牛肉。",
+                        "price": 120.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 8,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 32,
+                        "name": "蝦醬海鮮炒飯",
+                        "description": "辣度自選的蝦醬海鮮炒飯，蝦醬的香氣與海鮮的鮮味完美結合，帶給您豐富的口感體驗。內含海鮮。",
+                        "price": 130.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737378/ke0nv5onpkixiiucuiox.jpg",
+                        "sortOrder": 9,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 33,
+                        "name": "鳳梨海鮮炒飯",
+                        "description": "甜美的鳳梨與鮮美的海鮮炒飯，帶來獨特的酸甜口感，讓您食指大動。內含海鮮。",
+                        "price": 130.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737398/r0pukpmufrjkpbc4wanu.jpg",
+                        "sortOrder": 10,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 5,
+                "name": "湯品",
+                "isActive": true,
+                "sortOrder": 5,
+                "menuItems": [
+                    {
+                        "menuItemId": 34,
+                        "name": "越式酸辣湯",
+                        "description": "湯頭濃郁，酸辣適中，搭配鮮美的魚、蛤蜊或蝦子，讓您大快朵頤。內含海鮮。",
+                        "price": 130.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 1,
+                        "menuItemOptions": [
+                            {
+                                "menuItemOptionId": 3,
+                                "option": "魚",
+                                "optionCategory": "種類",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 1
+                            },
+                            {
+                                "menuItemOptionId": 4,
+                                "option": "蛤蜊",
+                                "optionCategory": "種類",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 2
+                            },
+                            {
+                                "menuItemOptionId": 5,
+                                "option": "蝦子",
+                                "optionCategory": "種類",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 3
+                            }
+                        ]
+                    },
+                    {
+                        "menuItemId": 35,
+                        "name": "海鮮酸辣湯",
+                        "description": "湯頭濃郁，酸辣適中，搭配豐富的海鮮，讓您每一口都充滿驚喜。內含海鮮。",
+                        "price": 220.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 36,
+                        "name": "香茅蛤蜊湯",
+                        "description": "香茅的獨特香氣與蛤蜊的鮮美完美結合，帶來清爽的口感。內含海鮮。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 3,
+                        "menuItemOptions": [
+                            {
+                                "menuItemOptionId": 6,
+                                "option": "清蒸",
+                                "optionCategory": "種類",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 1
+                            },
+                            {
+                                "menuItemOptionId": 7,
+                                "option": "湯",
+                                "optionCategory": "種類",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 2
+                            }
+                        ]
+                    },
+                    {
+                        "menuItemId": 37,
+                        "name": "苦瓜包肉湯",
+                        "description": "湯頭清爽，苦瓜與肉的搭配讓人回味無窮。內含豬肉。",
+                        "price": 130.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737430/cy76elfdpalespeij58n.jpg",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 38,
+                        "name": "鮮牛肉肉丸湯",
+                        "description": "湯頭濃郁，牛肉鮮嫩，肉丸彈牙，絕對是您不容錯過的美味。內含牛肉。",
+                        "price": 100.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 6,
+                "name": "越式小吃",
+                "isActive": true,
+                "sortOrder": 6,
+                "menuItems": [
+                    {
+                        "menuItemId": 39,
+                        "name": "蝦醬高麗菜",
+                        "description": "濃郁的蝦醬香氣與清脆的高麗菜完美融合，口感豐富。內含蝦醬。",
+                        "price": 100.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737495/xynqizq9qzvszt8qhbtt.jpg",
+                        "sortOrder": 1,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 40,
+                        "name": "燙青菜",
+                        "description": "簡單的燙青菜，保留了青菜的清爽口感和自然甜味，讓您品味健康。",
+                        "price": 30.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 41,
+                        "name": "月亮蝦餅 (滿滿蝦)",
+                        "description": "升級版月亮蝦餅，更多蝦的口感，帶給您大滿足。內含蝦。",
+                        "price": 250.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737519/itnfbciwhjh6kljjifsu.jpg",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 42,
+                        "name": "月亮蝦餅",
+                        "description": "經典的月亮蝦餅，酥脆可口，每一口都讓您回味無窮。內含蝦。",
+                        "price": 200.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 43,
+                        "name": "蝦仁小煎餅",
+                        "description": "小煎餅外酥內嫩，蝦仁鮮美，絕對是您不容錯過的美味。內含蝦。",
+                        "price": 160.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737558/taujf2pnvfjo04qwu6m5.jpg",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 44,
+                        "name": "大蝦餅",
+                        "description": "大蝦餅酥脆可口，包裹著鮮蝦，讓您一口接一口，停不下來。內含蝦。",
+                        "price": 180.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737583/ibj0mh67drhqd8hsblwd.jpg",
+                        "sortOrder": 6,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 45,
+                        "name": "酥炸春捲",
+                        "description": "外酥內嫩，口感一流，本店招牌小菜，點了就對了。內含豬肉。",
+                        "price": 80.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737642/viocjlhnens8hsxirjrd.jpg",
+                        "sortOrder": 7,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 46,
+                        "name": "九層塔煎蛋",
+                        "description": "香氣四溢，雞蛋與九層塔的完美結合，讓人食指大動。內含雞蛋。",
+                        "price": 90.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 8,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 47,
+                        "name": "炸雞腿 (單點)",
+                        "description": "香脆多汁的炸雞腿，外酥內嫩，絕對是您不容錯過的美味。內含雞肉。",
+                        "price": 90.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 9,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 48,
+                        "name": "魚露炸雞翅",
+                        "description": "炸雞翅外酥內嫩，搭配特製魚露，風味獨特，讓您回味無窮。內含雞肉。",
+                        "price": 90.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737670/y3zqwbeemhhjctftryca.jpg",
+                        "sortOrder": 10,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 49,
+                        "name": "香茅烤排骨 (單點)",
+                        "description": "排骨肉質鮮美，搭配香茅的獨特香氣，讓人垂涎欲滴。內含豬肉。",
+                        "price": 70.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 11,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 50,
+                        "name": "烤三層肉 (單點)",
+                        "description": "香烤三層肉，外脆內嫩，肉質豐富，絕對是您不容錯過的美味。內含豬肉。",
+                        "price": 80.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 12,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 51,
+                        "name": "涼拌木瓜",
+                        "description": "清爽的涼拌木瓜，搭配特製調料，酸甜可口，讓人食指大動。內含木瓜。",
+                        "price": 80.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 13,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 52,
+                        "name": "涼拌海鮮青木瓜絲",
+                        "description": "海鮮的鮮味與青木瓜的爽脆完美結合，帶來獨特的酸甜口感。內含海鮮。",
+                        "price": 160.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 14,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 53,
+                        "name": "椰子蒸蝦",
+                        "description": "椰子的清香與蝦的鮮美完美融合，帶來獨特的風味享受。內含蝦。",
+                        "price": 200.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 15,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 54,
+                        "name": "黑胡椒蝦",
+                        "description": "蝦肉鮮美，黑胡椒的香氣撲鼻而來，讓人食指大動。內含蝦。",
+                        "price": 200.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 16,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 7,
+                "name": "麵包手捲",
+                "isActive": true,
+                "sortOrder": 7,
+                "menuItems": [
+                    {
+                        "menuItemId": 55,
+                        "name": "火腿法國麵包",
+                        "description": "香脆的法國麵包搭配火腿，口感豐富，帶來滿滿的幸福感。內含豬肉。",
+                        "price": 100.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 1,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 56,
+                        "name": "越式法國麵包",
+                        "description": "經典的越式法國麵包，外脆內軟，搭配多種食材，口感豐富，讓人回味無窮。內含豬肉。",
+                        "price": 120.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 57,
+                        "name": "煉奶花生麵包",
+                        "description": "香甜的煉奶搭配花生，塗抹在香脆的麵包上，帶來滿滿的甜蜜滋味。",
+                        "price": 70.00,
+                        "isActive": true,
+                        "photoUrl": "",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 58,
+                        "name": "涼皮蝦捲 (3卷)",
+                        "description": "涼皮包裹鮮美蝦仁，清爽可口，每一口都充滿了蝦的鮮甜。內含蝦、豬肉。",
+                        "price": 160.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737703/oa4vwvabetqwoorexisv.jpg",
+                        "sortOrder": 4,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 59,
+                        "name": "涼皮春捲 (2卷)",
+                        "description": "清爽的涼皮春捲，搭配多種新鮮食材，帶來豐富的口感體驗。內含蝦、豬肉。",
+                        "price": 60.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737721/p0nds7snjx6xvdxons4q.jpg",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 60,
+                        "name": "涼皮春捲 (3卷)",
+                        "description": "清爽的涼皮春捲，搭配多種新鮮食材，帶來豐富的口感體驗。內含蝦、豬肉。",
+                        "price": 80.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737746/yrrvhqdfnx4zhwzmhapl.jpg",
+                        "sortOrder": 6,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 61,
+                        "name": "綜合全餐手卷 (DIY)(2-3人份)",
+                        "description": "綜合全餐手卷，您可以自己動手搭配多種新鮮食材，享受DIY的樂趣。內含豬肉和海鮮。",
+                        "price": 300.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 7,
+                        "menuItemOptions": []
+                    }
+                ]
+            },
+            {
+                "categoryId": 8,
+                "name": "甜品飲料",
+                "isActive": true,
+                "sortOrder": 8,
+                "menuItems": [
+                    {
+                        "menuItemId": 62,
+                        "name": "滴滴冰煉乳咖啡",
+                        "description": "甜度可選，咖啡的濃香與煉乳的甜蜜完美融合。內含煉乳。",
+                        "price": 60.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737774/od30chv25outypui8mjx.jpg",
+                        "sortOrder": 1,
+                        "menuItemOptions": [
+                            {
+                                "menuItemOptionId": 8,
+                                "option": "煉乳3分",
+                                "optionCategory": "甜度",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 1
+                            },
+                            {
+                                "menuItemOptionId": 9,
+                                "option": "煉乳6分",
+                                "optionCategory": "甜度",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 2
+                            },
+                            {
+                                "menuItemOptionId": 10,
+                                "option": "煉乳9分",
+                                "optionCategory": "甜度",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 3
+                            }
+                        ]
+                    },
+                    {
+                        "menuItemId": 63,
+                        "name": "越式冰拿鐵",
+                        "description": "甜度可選，口感濃郁，讓您回味無窮。內含鮮奶、煉乳。",
+                        "price": 90.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737792/gqqlhm1cxxu9ju9xr1ff.jpg",
+                        "sortOrder": 2,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 64,
+                        "name": "椰奶甜湯",
+                        "description": "椰奶的濃香與甜味完美結合，讓您感受到熱帶風情。內含椰奶。",
+                        "price": 50.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737826/rowqat1xs4ccoyo7gbld.jpg",
+                        "sortOrder": 3,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 65,
+                        "name": "印尼奶茶",
+                        "description": "濃郁香甜，可選溫度，讓您品味不同風味的奶茶。",
+                        "price": 50.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737850/gghtrniossbupdnk0z2e.jpg",
+                        "sortOrder": 4,
+                        "menuItemOptions": [
+                            {
+                                "menuItemOptionId": 11,
+                                "option": "冰",
+                                "optionCategory": "溫度",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 1
+                            },
+                            {
+                                "menuItemOptionId": 12,
+                                "option": "溫",
+                                "optionCategory": "溫度",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 2
+                            },
+                            {
+                                "menuItemOptionId": 13,
+                                "option": "熱",
+                                "optionCategory": "溫度",
+                                "additionalPrice": 0.00,
+                                "sortOrder": 3
+                            }
+                        ]
+                    },
+                    {
+                        "menuItemId": 66,
+                        "name": "法式越南優格",
+                        "description": "法式越南優格，口感濃郁，甜美可口，讓您享受健康美味。內含優格。",
+                        "price": 50.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737870/j7tafvgewwcqwjxcm8zq.jpg",
+                        "sortOrder": 5,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 67,
+                        "name": "檸檬汽水",
+                        "description": "清爽的檸檬汽水，酸甜可口，讓您清涼一夏。",
+                        "price": 50.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 6,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 68,
+                        "name": "羅望子汁",
+                        "description": "酸甜適中，清爽可口，帶來獨特的風味享受。",
+                        "price": 50.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 7,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 69,
+                        "name": "可樂",
+                        "description": "經典的可樂，碳酸清爽，帶來滿滿的活力。",
+                        "price": 30.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737939/gs9ijsvwkt6s1pgqm8mt.jpg",
+                        "sortOrder": 8,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 70,
+                        "name": "椰子水",
+                        "description": "爽解渴，帶來自然的椰子香氣，讓您感受熱帶風情。",
+                        "price": 30.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737958/ct7cem3ps4mg8ydrybr8.jpg",
+                        "sortOrder": 9,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 71,
+                        "name": "越南檸檬風味綠茶 (罐裝)",
+                        "description": "清爽的越南檸檬風味綠茶，酸甜適中，讓您每一口都感受到清涼。",
+                        "price": 30.00,
+                        "isActive": false,
+                        "photoUrl": "",
+                        "sortOrder": 10,
+                        "menuItemOptions": []
+                    },
+                    {
+                        "menuItemId": 72,
+                        "name": "越南草莓口味提神汽水 (罐裝)",
+                        "description": "越南草莓口味提神汽水，甜美的草莓風味與清爽的汽水結合，帶來滿滿的活力。",
+                        "price": 30.00,
+                        "isActive": true,
+                        "photoUrl": "https://res.cloudinary.com/duvy2hgcx/image/upload/v1733737966/hihwo95uurpgefw23yoa.jpg",
+                        "sortOrder": 11,
+                        "menuItemOptions": []
+                    }
+                ]
+            }
+        ]
+    }
+]
